@@ -377,7 +377,7 @@ const LAKES=(()=>{const out=[];RIVERS.forEach((r,ri)=>{let best=null;for(let k=M
     for(const dh of [60,45,32,20]){const Lv=hq+dh;let a=0,b=0;for(a=20;a<1500&&heightAt(qx-uz*a,qz+ux*a)<Lv;a+=20);for(b=20;b<1500&&heightAt(qx+uz*b,qz-ux*b)<Lv;b+=20);if(a>=1500||b>=1500||a+b>1400)continue;
       const L=lakeFill({x:qx,z:qz,ux,uz,L:Lv,a,b,R:2600});if(L&&(!best||L.cells>best.cells))best=L;}}if(best&&!out.some(o=>Math.hypot(o.x-best.x,o.z-best.z)<6000))out.push(best);});return out;})();
 const landTex=(()=>{const N=LANDN,c=document.createElement('canvas');c.width=c.height=N;const x=c.getContext('2d'),n1=SEG+1,s=document.createElement('canvas');s.width=s.height=n1;
-  const sx=s.getContext('2d'),im=sx.createImageData(n1,n1),nA=tg.attributes.normal,cc=new THREE.Color(),c2=new THREE.Color(),SAND=new THREE.Color(0xe2d09c),DRY=new THREE.Color(0xae9a66),GR=new THREE.Color(0x7b8746),RK=new THREE.Color(0x857868),FO=new THREE.Color(0x52663a),SN=new THREE.Color(0xf2f2f2);
+  const sx=s.getContext('2d'),im=sx.createImageData(n1,n1),nA=tg.attributes.normal,cc=new THREE.Color(),c2=new THREE.Color(),SAND=new THREE.Color(0xe2d09c),DRY=new THREE.Color(0xb39c6a),GR=new THREE.Color(0x80834b),RK=new THREE.Color(0x857868),FO=new THREE.Color(0x52663a),SN=new THREE.Color(0xf2f2f2);
   for(let i=0;i<tp.count;i++){const h=tp.getY(i),ny=nA.getY(i),X=tp.getX(i),Z=tp.getZ(i);
     if(h<1.5)cc.set(0x3b6470);else if(h<7&&Z>-200)cc.copy(SAND);else if(h<7)cc.set(0x8f9a62);else{cc.copy(DRY).lerp(GR,clamp(vnoise(X*.0004+5,Z*.0004+2)*1.4-.3,0,1));const fo=clamp((vnoise(X*.0011+40,Z*.0011)-.5)*4,0,1)*clamp((h-150)/80,0,1);cc.lerp(FO,fo*.8);
       if(h>390)cc.lerp(RK,clamp((h-390)/90,0,1));if(h>520)cc.lerp(SN,clamp((h-520)/30,0,1));if(ny<.9)cc.lerp(RK,clamp((.9-ny)*4,0,1));
@@ -412,7 +412,13 @@ const landTex=(()=>{const N=LANDN,c=document.createElement('canvas');c.width=c.h
   line(HWY,Math.max(1.1,2.8*S),'#55555a',1);if(HIQ)line(HWY,.6,'#a8a69c',.8);
   const t=new THREE.CanvasTexture(c);t.anisotropy=renderer.capabilities?Math.min(HIQ?8:2,renderer.capabilities.getMaxAnisotropy()):1;return t;})();
 const terrainMat=new THREE.MeshLambertMaterial({map:landTex}),dTex=noiseTex(128,190,1);
-terrainMat.onBeforeCompile=sh=>{sh.uniforms.dTex={value:dTex};sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nuniform sampler2D dTex;').replace('#include <map_fragment>','#include <map_fragment>\n\tdiffuseColor.rgb*=texture2D(dTex,vUv*2500.).r*1.1;');};
+// Fase 7: detalle del campo a media y gran escala (manchas de cultivo, surcos y variación de tono); su media es 1 y con los mipmaps se desvanece solo a lo lejos
+const blotTex=(N,n,rmin,rmax,amp,furrow)=>{const c=document.createElement('canvas');c.width=c.height=N;const x=c.getContext('2d');x.fillStyle='rgb(128,128,128)';x.fillRect(0,0,N,N);
+  for(let i=0;i<n;i++){const px=Math.random()*N,py=Math.random()*N,r=rmin+Math.random()*(rmax-rmin),v=Math.random()<.5?255:0;for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const qx=px+dx*N,qy=py+dy*N;if(qx<-r||qx>N+r||qy<-r||qy>N+r)continue;const g=x.createRadialGradient(qx,qy,0,qx,qy,r);g.addColorStop(0,'rgba('+v+','+v+','+v+','+amp+')');g.addColorStop(1,'rgba('+v+','+v+','+v+',0)');x.fillStyle=g;x.fillRect(qx-r,qy-r,2*r,2*r);}}
+  if(furrow){x.globalAlpha=.07;for(let y=0;y<N;y+=3){x.fillStyle=y%6?'#fff':'#000';x.fillRect(0,y,N,1.2);}x.globalAlpha=1;}
+  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.anisotropy=renderer.capabilities?Math.min(HIQ?8:2,renderer.capabilities.getMaxAnisotropy()):1;return t;};
+const fTex=blotTex(256,220,5,24,.09,false),mTex=blotTex(128,90,8,34,.09,false);
+terrainMat.onBeforeCompile=sh=>{Object.assign(sh.uniforms,{dTex:{value:dTex},fTex:{value:fTex},mTex:{value:mTex}});sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nuniform sampler2D dTex,fTex,mTex;').replace('#include <map_fragment>','#include <map_fragment>\n\tdiffuseColor.rgb*=texture2D(dTex,vUv*2500.).r*1.1*(texture2D(fTex,vUv*560.).r*2.)*(texture2D(mTex,vUv*23.).r*2.);');};
 const terrain=new THREE.Mesh(tg,terrainMat);terrain.receiveShadow=true;scene.add(terrain);
 // embalses (lámina de agua + presa) y chopos de ribera
 (()=>{const WP=[],DP=[];LAKES.forEach(k=>{const {G,cs,inc,cxz,up}=k;
@@ -1028,7 +1034,7 @@ const ENV={d:{hz:0xcfe2ee,top:0x3a78b8,hemi:.75,sun:1,sunC:0xfff1d6,fog:[2500,12
   a:{hz:0xf0b080,top:0x35507a,hemi:.42,sun:.85,sunC:0xffa860,fog:[2200,11000],wat:0x1c3a55,sd:[-1,.12,.45],disc:0xffc080,cl:0xf6c8a6},
   n:{hz:0x0c1628,top:0x02050c,hemi:.13,sun:.14,sunC:0x9fb0dd,fog:[1500,9000],wat:0x0a1626,sd:[.8,.7,-.4],disc:0xdde6ff,cl:0x3a4252}};
 function applyEnv(k){const e=ENV[k];HZ.setHex(e.hz);scene.fog.color.copy(HZ);scene.fog.near=e.fog[0];scene.fog.far=e.fog[1];
-  skyU.hz.value.copy(HZ);skyU.zen.value.setHex(e.top);skyU.gnd.value.copy(HZ).lerp(new THREE.Color(e.wat),.35);skyU.night.value=k==='n'?1:0;
+  skyU.hz.value.copy(HZ);skyU.zen.value.setHex(e.top);skyU.gnd.value.copy(HZ).lerp(new THREE.Color(e.wat),.06);skyU.night.value=k==='n'?1:0;
   hemi.intensity=e.hemi;sun.intensity=e.sun;sun.color.setHex(e.sunC);SUN.set(...e.sd).normalize();sun.position.copy(SUN);sunDisc.position.copy(SUN).multiplyScalar(13000);sunDisc.lookAt(0,0,0);sunDisc.material.color.setHex(e.disc);skyU.sunDir.value.copy(SUN);skyU.sunC.value.setHex(k==='d'?0xfff1d6:e.disc);
   scene.environment=k==='n'?null:envTex;wU.deep.value.setHex(e.wat);stars.visible=k==='n';nightLights.forEach(o=>o.visible=k!=='d');cloudMats.forEach(m=>m.color.setHex(e.cl));applyWx();}
 function applyWind(k){const w={c:0,m:12+Math.random()*6,f:22+Math.random()*8}[k];windKt=Math.round(w);let dir;
@@ -2042,6 +2048,7 @@ function applyWx(){const w=WXNOW,e=ENV[curTOD]||ENV.d;fogLayer.visible=w==='f';r
 function updWx(dt){rain.m.visible=WXNOW==='r'&&state!=='menu';fogLayer.visible=WXNOW==='f'&&state!=='menu';if(rain.m.visible){rain.u.time.value=wt;rain.u.cam.value.copy(camera.position);rain.u.rel.value.set(0,-11,0);if(plane&&state==='fly')rain.u.rel.value.sub(vel);}
   if(WXNOW==='f'&&state!=='menu'){fogLayer.position.x=Math.round(camera.position.x/500)*500;fogLayer.position.z=Math.round(camera.position.z/500)*500;const k=clamp((FOGTOP+40-camera.position.y)/80,0,1);
     scene.fog.near=fogBase.n+(15-fogBase.n)*k;scene.fog.far=fogBase.f+(900-fogBase.f)*k;}
+  if(WXNOW!=='f'&&state!=='menu'){const k=clamp((camera.position.y-300)/3500,0,1);scene.fog.near=fogBase.n*(1+k*.9);scene.fog.far=Math.min(fogBase.f*(1+k*.5),13500);}
   updDrops(dt);}
 function drawStby(){const c=STBY.x,W=128,q=plane.quaternion,f=fwdOf(q),u=V().set(0,1,0).applyQuaternion(q),r=V().set(1,0,0).applyQuaternion(q),pitch=Math.asin(clamp(f.y,-1,1))*R2D,bank=Math.atan2(-r.y,u.y);
   c.fillStyle='#111';c.fillRect(0,0,256,256);const dial=(cx,cy,a,lab,val,max,ticks)=>{c.save();c.translate(cx,cy);c.fillStyle='#050505';c.beginPath();c.arc(0,0,56,0,7);c.fill();c.strokeStyle='#ddd';c.lineWidth=2;
@@ -2391,7 +2398,8 @@ function loop(now){requestAnimationFrame(loop);const dt=Math.min((now-last)/1000
 const BLOOM=(()=>{if(!HIQ||!renderer.getDrawingBufferSize||!THREE.WebGLRenderTarget)return null;try{
   const sz=renderer.getDrawingBufferSize(new THREE.Vector2()),gl2=renderer.capabilities&&renderer.capabilities.isWebGL2&&THREE.WebGLMultisampleRenderTarget;
   const opt0={minFilter:THREE.LinearFilter,magFilter:THREE.LinearFilter,format:THREE.RGBAFormat};
-  const main=gl2?new THREE.WebGLMultisampleRenderTarget(sz.x,sz.y,opt0):new THREE.WebGLRenderTarget(sz.x,sz.y,opt0);if(gl2)main.samples=4;
+  // profundidad de 24 bits (con stencil): con la de 16 bits el mar asomaba entre los montes a lo lejos
+  const optM=Object.assign({stencilBuffer:true},opt0),main=gl2?new THREE.WebGLMultisampleRenderTarget(sz.x,sz.y,optM):new THREE.WebGLRenderTarget(sz.x,sz.y,optM);if(gl2)main.samples=4;
   const q=()=>new THREE.WebGLRenderTarget(Math.max(1,sz.x>>2),Math.max(1,sz.y>>2),Object.assign({depthBuffer:false},opt0)),A=q(),B=q();
   const cam=new THREE.OrthographicCamera(-1,1,1,-1,0,1),scn=new THREE.Scene(),quad=new THREE.Mesh(new THREE.PlaneGeometry(2,2));quad.frustumCulled=false;scn.add(quad);
   const vs='varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}';
