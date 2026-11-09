@@ -222,7 +222,7 @@ body.lt #ped{right:auto;left:136px}body.lt #btns{left:auto!important;right:60px!
     <label class="inv">Contador de FPS <select id="fpsSel"><option value="n">No</option><option value="s">Sí</option></select></label>
     <label class="inv"><input type="checkbox" id="inv" checked> Mando de piloto: tirar hacia ti sube el morro</label>
     <button class="btn alt" id="bLog" style="margin:0 0 12px">Cuaderno de vuelo</button>
-    <p class="hint" style="font-size:12px">Modelos 3D del C.15/F-18 y C.16/EF2000: proyecto FlightGear (FGMEMBERS/f18 y FGMEMBERS/EF2000), licencia GPL-2, adaptados.</p>
+    <p class="hint" style="font-size:12px">Modelos 3D del C.15/F-18 y C.16/EF2000 (FGMEMBERS/f18 y FGMEMBERS/EF2000, GPL-2), C-101 Aviojet (FGMEMBERS/C-101, GPL-3) y PC-21 (FGMEMBERS/PC-21, GPL-3): proyecto FlightGear, adaptados.</p>
     <p class="hint">Arrastra el dedo para dirigir, barra derecha para potencia. Teclado: WASD o flechas, R/F potencia, espacio cañón, M misil, B bengalas, G tren, X acción, O dron, V vista, Q/E pedales, U/J compensador.</p>
   </div>
 </div>
@@ -731,6 +731,10 @@ const GLM={
    rd:[[3.9,-.06,.7,.8]],slots:{tip:[[6.03,-.13,.1]],out:[[2.95,-.72,-.25]],mid:[[2.27,-.72,-.25]],fus:[[.8,-1.2,-1.6],[.8,-1.2,1.4]],ctr:[[0,-1.35,.4]]}},
  sh:{u:'models/f18.json',s:1.17,oy:-.46,oz:-2.2,noz:[.67,6.0],cock:[0,.83,-6.18],dec:[.66,.15,-4],ck:/^(cube|cylinder|sphere|Stick|Canopy)/i,
    rd:null,slots:{tip:[[6.53,.06,.0]],out:[[3.2,-.57,-.4]],mid:[[2.46,-.57,-.4]],inn:[[1.7,-.6,-.4]],fus:[[.85,-1.1,-1.8],[.85,-1.1,1.5]],ctr:[[0,-1.25,.3]]}},
+ c101:{u:'models/c101.json',s:1,oy:-.66,oz:.4,noz:[0,4.6],cock:[0,-.08,-2.9],ck:/^(Compuerta|Cristal|Interior|Panel|Parasol)/,noDec:1,hinge:1,paTex:'models/c101_pa.jpg',
+   gr:/^(Rueda|Tren|CompTren)/,map:[[/^Aleron/,'ail'],[/^Flap_/,'flp'],[/^Elevador/,'stab'],[/^Timon/,'rud'],[/^Spoiler_01/,'sb']],rd:null,slots:{}},
+ pc21:{u:'models/pc21.json',s:1.1,oy:-1.1,oz:-.3,noz:[0,4],cock:[0,.55,-1.95],ck:/^(canopy|arch|archi|rubber)$/,noDec:1,hinge:1,prop:[0,.75,-4.3],
+   gr:/(tyre|wheel|gear|strut|scissor|hubcap|^[lr]b?door|taxibox)/i,map:[[/^[lr]aileron$/,'ail'],[/^[lr]flap$/,'flp'],[/^[lr]elevator$/,'stab'],[/^rudder$/,'rud'],[/^airbrake$/,'sb']],rd:null,slots:{}},
  ef:{u:'models/ef.json',s:1,oy:-.46,oz:-10.6,noz:[.5,4.0],cock:[0,.64,-6.2],dec:[.55,-.1,-3.4],ck:/Windshield|Canopy/i,
    rd:[[3.7,-.66,.2,.75]],slots:{out:[[4.3,-.95,.9]],mid:[[3.3,-.95,.3]],inn:[[2.3,-.95,-.3]],fus:[[.7,-1.25,-2.2],[.7,-1.25,.8]],ctr:[[0,-1.4,-.5]]}}};
 const GLC={};
@@ -741,17 +745,20 @@ function upgradePlane(P,t,op){op=op||{};const c=GLM[t],src=c&&GLC[c.u];if(!src||
   const keep=new Set();P.fl.forEach(f=>f.traverse(o=>keep.add(o)));
   g.children.slice().forEach(ch=>{if(keep.has(ch))return;if(ch===P.gear){ch.children.forEach(k=>k.visible=false);return;}ch.visible=false;});
   const W=new THREE.Group(),M=src.clone(true);W.position.set(0,c.oy,c.oz);M.rotation.y=-Math.PI/2;M.scale.setScalar(c.s);W.add(M);g.add(W);
+  if(c.paTex&&P.pa){if(!GLC.pa)GLC.pa=new THREE.TextureLoader().load(c.paTex,x=>{x.flipY=false;x.encoding=THREE.LinearEncoding;x.anisotropy=4;x.needsUpdate=true;});GLC.pa.flipY=false;let main=null,cnt=new Map();M.traverse(o=>{if(o.isMesh&&o.material.map)cnt.set(o.material.map,(cnt.get(o.material.map)||0)+1);});cnt.forEach((v,k)=>{if(!main||v>cnt.get(main))main=k;});
+    const mm=new Map();M.traverse(o=>{if(o.isMesh&&o.material.map===main){let m=mm.get(o.material);if(!m){m=o.material.clone();m.map=GLC.pa;mm.set(o.material,m);}o.material=m;}});}
+  P.noDec=!!c.noDec;if(c.prop){const pv=new THREE.Group();pv.position.set(c.prop[0],c.prop[1]+c.oy,c.prop[2]+c.oz);g.add(pv);g.updateMatrixWorld(true);M.updateMatrixWorld(true);M.children.slice().forEach(n=>{if(/^(propeller|spinner)$/.test(n.name))pv.attach(n);});if(!op.lite){P.prop=pv;if(P.disc){P.disc.visible=true;P.disc.position.copy(pv.position);}}}
   if(t==='sh'||op.tint)M.traverse(o=>{if(o.isMesh&&!o.material.transparent){o.material=o.material.clone();if(op.tint)o.material.color.multiply(op.tint);else if(o.material.map)o.material.color.setRGB(.86,.9,.95);}});
-  if(op.lite){g.updateMatrixWorld(true);M.children.slice().forEach(n=>{if(/wheel|strut|susp|geardoor|door_|^(left|right|front)door/i.test(n.name||'')&&!/fuel/i.test(n.name)){if(P.gear)P.gear.attach(n);else n.visible=false;}});
+  if(op.lite){g.updateMatrixWorld(true);M.children.slice().forEach(n=>{if((c.gr||/wheel|strut|susp|geardoor|door_|^(left|right|front)door/i).test(n.name||'')&&!/fuel/i.test(n.name)){if(P.gear)P.gear.attach(n);else n.visible=false;}});
     P.fl.forEach((f,i)=>{f.position.x=(P.fl.length>1?(i?1:-1)*c.noz[0]:0);f.position.z=c.noz[1]+1.5;});if(c.rd&&!op.noRd)c.rd.forEach(([x,y,z,r])=>[-1,1].forEach(s=>{const o=roundel(r);o.position.set(s*x,y,z);g.add(o);}));return true;}
   g.updateMatrixWorld(true);const fm={ail:[],flp:[],stab:[],can:[],rud:[],sb:[]},ck=[],gearP=[],bb=new THREE.Box3();
   M.children.slice().forEach(n=>{const nm=n.name||'';
     if(c.ck.test(nm)){ck.push(n);return;}
-    if(/wheel|strut|susp|geardoor|^(left|right|front)door|door_/i.test(nm)&&!/fuel/i.test(nm)){gearP.push(n);return;}
-    let k=/aileron|flaperonouter/i.test(nm)?'ail':/flaps|flaperoninner/i.test(nm)?'flp':/elevator/i.test(nm)?'stab':/^canard[lr]$/i.test(nm)?'can':/rudder/i.test(nm)?'rud':/speedbrake/i.test(nm)?'sb':null;
+    if((c.gr||/wheel|strut|susp|geardoor|^(left|right|front)door|door_/i).test(nm)&&!/fuel/i.test(nm)){gearP.push(n);return;}
+    let k=c.map?(c.map.find(q=>q[0].test(nm))||[])[1]||null:/aileron|flaperonouter/i.test(nm)?'ail':/flaps|flaperoninner/i.test(nm)?'flp':/elevator/i.test(nm)?'stab':/^canard[lr]$/i.test(nm)?'can':/rudder/i.test(nm)?'rud':/speedbrake/i.test(nm)?'sb':null;
     if(!k)return;bb.setFromObject(n);const inv=new THREE.Matrix4().copy(M.matrixWorld).invert();const lo=bb.min.clone().applyMatrix4(inv),hi=bb.max.clone().applyMatrix4(inv);
     const mn=lo.clone().min(hi),mx=lo.clone().max(hi),cz=(mn.z+mx.z)/2,piv=new THREE.Group();
-    piv.position.set(k==='stab'||k==='can'?(mn.x+mx.x)/2:mn.x,(mn.y+mx.y)/2,cz);M.add(piv);piv.updateMatrixWorld(true);piv.attach(n);fm[k].push({p:piv,side:cz<0?1:-1});});
+    piv.position.set((k==='stab'&&!c.hinge)||k==='can'?(mn.x+mx.x)/2:mn.x,(mn.y+mx.y)/2,cz);M.add(piv);piv.updateMatrixWorld(true);piv.attach(n);fm[k].push({p:piv,side:cz<0?1:-1});});
   if(P.gear)gearP.forEach(n=>P.gear.attach(n));
   P.fm=fm;P.ckList=ck;P.glW=W;renderer.localClippingEnabled=true;P.clipPl=[0,1,2,3,4].map(()=>new THREE.Plane());const cm=new Map();
   M.traverse(o=>{if(!o.isMesh)return;let m=cm.get(o.material);if(!m){m=o.material.clone();m.clippingPlanes=P.clipPl;m.clipIntersection=true;cm.set(o.material,m);}o.material=m;});P.cock.set(c.cock[0],c.cock[1],c.cock[2]);P.slots=c.slots;P.decP=c.dec;
@@ -893,7 +900,7 @@ function lightPts(parent,pts,color,size,keep){const g=new THREE.BufferGeometry()
   bases.forEach(b=>{const e=b.deckY+.2,RE=[],CL=[],TH=[],EN=[],AL=[];for(let z=-1500;z<=1500;z+=60)RE.push([-23,e,z],[23,e,z]);for(let z=-1470;z<=1470;z+=30)CL.push([0,e,z]);for(let x=-22;x<=22;x+=4){TH.push([x,e,1500]);EN.push([x,e,-1500]);}
     for(let z=1530;z<=1900;z+=30)for(let x=-8;x<=8;x+=4)AL.push([x,e+.6,z]);lightPts(b.g,RE,0xfff6dd,5);lightPts(b.g,CL,0xffffff,3);lightPts(b.g,TH,0x30ff60,6);lightPts(b.g,EN,0xff3030,6);lightPts(b.g,AL,0xffffff,5);});})();
 /* ---------- Fase 3 · 1: cubiertas con vida ---------- */
-const PARKED=[],PKT={makeF18:'f18',makeEF:'ef',makeSH:'sh'};function parkedPlane(make,o){const p=make(o||{});const q={p,make};PARKED.push(q);{const t=PKT[make.name];q.t=t;if(t&&GLC[GLM[t].u])q.up=upgradePlane(p,t,{lite:1});}(p.fl||[]).forEach(f=>f.parent&&f.parent.remove(f));if(p.gear)p.gear.visible=true;if(p.hook)p.hook.visible=false;if(p.cs&&p.cs.fold)p.cs.fold();p.g.position.y=p.gearH||2.5;return p.g;}
+const PARKED=[],PKT={makeF18:'f18',makeEF:'ef',makeSH:'sh',makeC101:'c101',makePC21:'pc21'};function parkedPlane(make,o){const p=make(o||{});const q={p,make};PARKED.push(q);{const t=PKT[make.name];q.t=t;if(t&&GLC[GLM[t].u])q.up=upgradePlane(p,t,{lite:1});}(p.fl||[]).forEach(f=>f.parent&&f.parent.remove(f));if(p.gear)p.gear.visible=true;if(p.hook)p.hook.visible=false;if(p.cs&&p.cs.fold)p.cs.fold();p.g.position.y=p.gearH||2.5;return p.g;}
 function makeHelo(c){const g=new THREE.Group(),m=mat(c||0x6c757b),dk=mat(0x24282c),gl=mat(0x10202c);
   g.add(fus([[-4.2,0],[-3.9,.5],[-3.3,.95],[-2,1.15],[1,1.15],[2.4,.85],[3.4,.4]],m,.95,1.1));
   const nose=box(1.5,.9,1.4,gl,0,.35,-3.2);g.add(nose);
@@ -1163,7 +1170,7 @@ const TUT0=[
 function showTut(silent){const st0=TUT[tutStep];if(!st0)return;const st={t:st0.t.replace('{TK}',opt.tk==='mrtt'?'A330 MRTT':'A400M').replace('{APP}',T?T.app:'').replace('{TIRA}',invert?'tira suave de la palanca (dedo hacia abajo)':'arrastra el dedo suavemente hacia arriba')};$('obj').textContent='Paso '+(tutStep+1)+'/'+TUT.length+': '+st.t;$('obj').style.opacity=1;if(!silent)speak(st.t);}
 function tutUpdate(dt){tutT+=dt;const st=TUT[tutStep];if(st&&tutT>(st.min||1.5)&&st.c()){tutStep++;tutT=0;if(TUT[tutStep])showTut();else if(opt.les)lesDone();else{$('obj').textContent='¡Tutorial completado!';speak('Tutorial completado. Buen aterrizaje.');}}}
 let opt={},tutStep=0,tutT=0;function start(m,t,o){opt=o||{};commAuto=opt.tut?true:$('commSel').value==='a';commMode=opt.tut?'a':$('commSel').value;$('radio').innerHTML='';if(window.speechSynthesis){try{speechSynthesis.cancel();const u0=new SpeechSynthesisUtterance(' ');u0.volume=0;speechSynthesis.speak(u0);}catch(e){}}$('rmenu').classList.add('hide');initAudio();mode=m;type=t;T=TYPES[t];clearWorld();resetShips();dead=false;
-  P=T.make(t==='c101'||t==='pc21'?{pa:opt.pa}:{});plane=P.g;detailPlane(P,t);P.pa=!!opt.pa;finishPlane(P,t);upgradePlane(P,t);finMarks(P,t);{const DEC={f18:'12-01',ef:'14-01',av8:'01-914',sh:'NAVY 200',c101:opt.pa?'ÁGUILA 1':'E.25-01',f5:'AE.9-01',pc21:'E.27-01',hj:'AE.10-01'},R0={f18:1.0,ef:.95,av8:1.1,sh:1.12,c101:.82,f5:.95,pc21:.75,hj:.92}[t];[-1,1].forEach(sd=>{const d=new THREE.Mesh(new THREE.PlaneGeometry(1.8,.6),numMat(DEC[t]));if(P.decP)d.position.set(sd*P.decP[0],P.decP[1],P.decP[2]);else d.position.set(sd*R0,.15,{c101:.6,pc21:.9,f5:-.6,hj:3.3}[t]||-3.2);d.rotation.y=sd*Math.PI/2;plane.add(d);});}{const pm=cyl(.07,.09,2.2,mat(0x9aa0a6)),pv=PROBE[t];pm.position.set(pv[0],pv[1],pv[2]+1.1);pm.visible=false;plane.add(pm);P.probeM=pm;}navL=[];{const sp={sh:7.7,f18:6.5,ef:5.7,av8:4.9,c101:5.35,f5:4.05,pc21:4.65,hj:4.7}[t];navL.push(lightPts(plane,[[-sp,0,2.5]],0xff2a2a,7,1),lightPts(plane,[[sp,0,2.5]],0x30ff50,7,1),lightPts(plane,[[0,2.5,6.5]],0xffffff,9,1));}plane.traverse(o=>{if(o.isMesh)o.castShadow=true;});scene.add(plane);ship=m==='naval'?(T.ship==='lincoln'?lincoln:jc1):m==='base'?bases.find(b=>b.name===opt.base):null;mslCam.m=null;mslCam.hold=0;report=[];tgtIdx=0;claexT=0;
+  P=T.make(t==='c101'||t==='pc21'?{pa:opt.pa}:{});plane=P.g;detailPlane(P,t);P.pa=!!opt.pa;finishPlane(P,t);upgradePlane(P,t);finMarks(P,t);{const DEC={f18:'12-01',ef:'14-01',av8:'01-914',sh:'NAVY 200',c101:opt.pa?'ÁGUILA 1':'E.25-01',f5:'AE.9-01',pc21:'E.27-01',hj:'AE.10-01'},R0={f18:1.0,ef:.95,av8:1.1,sh:1.12,c101:.82,f5:.95,pc21:.75,hj:.92}[t];if(!P.noDec)[-1,1].forEach(sd=>{const d=new THREE.Mesh(new THREE.PlaneGeometry(1.8,.6),numMat(DEC[t]));if(P.decP)d.position.set(sd*P.decP[0],P.decP[1],P.decP[2]);else d.position.set(sd*R0,.15,{c101:.6,pc21:.9,f5:-.6,hj:3.3}[t]||-3.2);d.rotation.y=sd*Math.PI/2;plane.add(d);});}{const pm=cyl(.07,.09,2.2,mat(0x9aa0a6)),pv=PROBE[t];pm.position.set(pv[0],pv[1],pv[2]+1.1);pm.visible=false;plane.add(pm);P.probeM=pm;}navL=[];{const sp={sh:7.7,f18:6.5,ef:5.7,av8:4.9,c101:5.35,f5:4.05,pc21:4.65,hj:4.7}[t];navL.push(lightPts(plane,[[-sp,0,2.5]],0xff2a2a,7,1),lightPts(plane,[[sp,0,2.5]],0x30ff50,7,1),lightPts(plane,[[0,2.5,6.5]],0xffffff,9,1));}plane.traverse(o=>{if(o.isMesh)o.castShadow=true;});scene.add(plane);ship=m==='naval'?(T.ship==='lincoln'?lincoln:jc1):m==='base'?bases.find(b=>b.name===opt.base):null;mslCam.m=null;mslCam.hold=0;report=[];tgtIdx=0;claexT=0;
   hover=false;stolT=0;fuel=1;bingo=false;empty=false;health=100;buildWpn(m,t);addStores(t);paOn=false;flares=T.flares;ammo=T.gun;firing=false;fireCool=0;kills=0;flareT=0;
   lock.t=null;lock.time=0;lock.locked=false;ringIdx=0;elapsed=0;t0=performance.now();view='ext';hv.set(0,0,0);vel.set(0,0,0);prevVel.set(0,0,0);gFilt=1;trim=0;rud=0;
   setGear(m==='naval'||m==='base');
@@ -2183,7 +2190,7 @@ const ck6=(()=>{const g=cockpitG,ad=(o,par)=>{o.frustumCulled=false;o.renderOrde
 const _cpN=[[0,-1,0],[0,0,-1],[0,0,1],[-1,0,0],[1,0,0]];
 function ckClip(on){const L=P.clipPl;if(!L)return;const c=P.cock;if(!on){L.forEach(q=>q.set(Y,1e6));return;}plane.updateMatrixWorld();
   const pts=[[0,c.y-.32,0],[0,0,c.z-1.6],[0,0,c.z+1.3],[-.85,0,0],[.85,0,0]];L.forEach((q,i)=>{const n=_cpN[i],pt=pts[i];q.setFromNormalAndCoplanarPoint(V().set(n[0],n[1],n[2]),V().set(pt[0],pt[1],pt[2]));q.applyMatrix4(plane.matrixWorld);});}
-function ckHide(on){if(!P||!P.g)return;ckClip(on);if(P.ckList)P.ckList.forEach(o=>o.visible=!on);for(let i=1;i<=2;i++){const c=P.g.children[i];if(c)c.visible=!on;}}
+function ckHide(on){if(!P||!P.g)return;ckClip(on);if(P.ckList)P.ckList.forEach(o=>o.visible=!on);if(!P.glW)for(let i=1;i<=2;i++){const c=P.g.children[i];if(c)c.visible=!on;}}
 function updCockpit2(dt){const inC=cockpitG.visible&&view==='cock'&&!!plane;if(P&&P.g)ckHide(inC);if(inC)plane.visible=true;if(!cockpitG.visible||!T)return;setCockpitType(type);const night=curTOD==='n'?1:curTOD==='a'?.45:0;ck2.pm.emissiveIntensity=night*.9;
   const on=(m,v,blink)=>{m.material.color.setHex(v&&(!blink||Math.sin(wt*8)>0)?m.on:0x111111);};
   ck2.lt.gear.forEach(m=>on(m,gearDown&&!dmg.gear));ck2.ghw.material.color.setHex(gearDown?0x553333:0x553333);
