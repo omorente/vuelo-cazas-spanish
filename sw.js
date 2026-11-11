@@ -1,4 +1,4 @@
-const V='vuelo-3c14a91a77',F=["./", "index.html", "three.min.js", "GLTFLoader.js", "models/c101.json", "models/c101_pa.jpg", "models/ef.json", "models/f18.json", "models/pc21.json", "manifest.webmanifest", "icon-192.png", "icon-512.png", "icon-maskable-512.png", "apple-touch-icon.png"];
+const V='vuelo-444622186c',F=["./", "index.html", "three.min.js", "GLTFLoader.js", "models/c101.json", "models/c101_pa.jpg", "models/ef.json", "models/f18.json", "models/pc21.json", "manifest.webmanifest", "icon-192.png", "icon-512.png", "icon-maskable-512.png", "apple-touch-icon.png"];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(F)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()));});
 self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;
