@@ -136,13 +136,25 @@ body.lt #ped{right:auto;left:136px}body.lt #btns{left:auto!important;right:60px!
   #trimBox{bottom:calc(env(safe-area-inset-bottom,0px) + 62px)!important}
   body.noped #btns,body.noped #lev,body.noped #trimBox{bottom:calc(env(safe-area-inset-bottom,0px) + 16px)!important}}
 #tiltC{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 8px);font:inherit;font-weight:800;font-size:12px;color:#fff;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.5);border-radius:14px;padding:4px 10px;z-index:4}
+/* Fase 10 · 2: ergonomía */
+body.cmb #lev,body.cmb #trimBox{display:none!important}
+body.cmb #btns{grid-template-columns:repeat(2,64px)!important;gap:10px!important;right:78px!important;left:auto!important;bottom:calc(env(safe-area-inset-bottom,0px) + 78px)!important}
+body.cmb.lt #btns{left:78px!important;right:auto!important}
+body.cmb #btns .rb{width:64px!important;height:64px!important}
+body.cmb #bGun{order:1}body.cmb #bMsl{order:2}body.cmb #bAct{order:3}body.cmb #bFlr{order:4}body.cmb #bDrn{order:5}body.cmb #bRad{order:6}body.cmb #bGear{order:7}
+body.cmb #bGun,body.cmb #bMsl{border-color:#F1BF00;background:rgba(60,40,0,.5)}
+@media (orientation:landscape) and (max-height:480px){body.cmb #btns{grid-template-columns:repeat(2,54px)!important;gap:6px!important}body.cmb #btns .rb{width:54px!important;height:54px!important}}
+@media (orientation:portrait){#top{gap:4px!important}#top .tb{padding:6px 7px!important;font-size:13px!important}}
+#keysH{position:fixed;inset:6% 8%;z-index:60;background:rgba(8,14,22,.94);border:1px solid rgba(255,255,255,.35);border-radius:14px;color:#fff;padding:16px 22px;overflow:auto;font-size:15px;line-height:1.5}
+#keysH h3{margin:0 0 8px;font-size:20px}#keysH b{color:#F1BF00}#keysH div{columns:2;column-gap:28px}#keysH p{margin:0 0 4px;break-inside:avoid}
 </style>
 </head>
 <body>
 <div id="zone"></div>
 <canvas id="hudc"></canvas>
 <div id="hit"></div><div id="gloc"></div>
-<div id="top" class="hide"><button class="tb" id="bExit">Salir</button><button class="tb" id="bView">Vista</button><button class="tb" id="bSnd">Sonido</button><button class="tb" id="bMap">Mapa</button><button class="tb" id="bEj">Eyectar</button></div>
+<div id="top" class="hide"><button class="tb" id="bExit">Salir</button><button class="tb" id="bView">Vista</button><button class="tb" id="bSnd">Sonido</button><button class="tb" id="bMap">Mapa</button><button class="tb" id="bFold">Mandos</button><button class="tb" id="bEj">Eyectar</button></div>
+<div id="keysH" class="hide"><h3>Teclas y ratón (F1 para cerrar)</h3><div><p><b>Flechas / WASD</b> palanca (progresiva)</p><p><b>Q / E</b> pedales</p><p><b>R / F</b> más / menos potencia</p><p><b>Rueda del ratón</b> potencia</p><p><b>1 … 9</b> potencia: 1 ralentí, 5 crucero, 9 militar</p><p><b>0</b> postcombustión</p><p><b>Espacio</b> cañón</p><p><b>M</b> misil o bomba</p><p><b>Tabulador / X</b> cambiar de arma (o acción)</p><p><b>B</b> bengalas</p><p><b>G</b> tren</p><p><b>L</b> flaps</p><p><b>K</b> aerofreno</p><p><b>U / J</b> compensador</p><p><b>, / .</b> toberas del Harrier: 0°, 50°, 90°, 98°</p><p><b>N / H</b> toberas de 10 en 10</p><p><b>V</b> vista</p><p><b>O</b> dron</p><p><b>P</b> eyectar (dos veces)</p><p><b>Ratón</b> (menú: Mando → Ratón): mover = palanca, clic izquierdo = cañón, clic derecho = misil</p></div></div>
 <canvas id="mapc" class="hide"></canvas>
 <div id="obj" class="hide"></div>
 <div id="thr" class="hide"><div id="thrFill"></div><div id="thrPC">PC</div><div id="thrMil">MIL</div><div id="thrIdle">IDLE</div><div id="thrH"><span id="thrLbl">0%</span></div></div>
@@ -206,7 +218,7 @@ body.lt #ped{right:auto;left:136px}body.lt #btns{left:auto!important;right:60px!
     <button class="pick" data-m="p-ta2"><b>Ala 23 Talavera: Saeta II (Hürjet)</b><span>AE.10, el supersónico biplaza que sustituirá al F-5 (llega desde 2028).</span></button>
     <label class="inv"><input type="checkbox" id="lt" checked> Acelerador a la izquierda, palanca a la derecha</label>
     <label class="inv">Sensibilidad del mando <select id="sens"><option value="x">Mínima</option><option value="m">Muy suave</option><option value="s">Suave</option><option value="n">Normal</option><option value="r">Rápida</option></select></label>
-    <label class="inv">Mando <select id="ctlSel"><option value="d">Dedo (palanca en pantalla)</option><option value="t">Inclinar el móvil</option></select></label>
+    <label class="inv">Mando <select id="ctlSel"><option value="d">Dedo (palanca en pantalla)</option><option value="t">Inclinar el móvil</option><option value="m">Ratón (PC)</option></select></label>
     <label class="inv">Pedales <select id="pedSel"><option value="m">En pantalla</option><option value="a">Automáticos (más fácil)</option></select></label>
     <label class="inv">Comunicaciones <select id="commSel"><option value="a">Automáticas</option><option value="m">Manuales (tú hablas)</option><option value="i">IA: conversación libre</option></select></label>
     <label class="inv">Hora <select id="todSel"><option value="d">Día</option><option value="a">Atardecer</option><option value="n">Noche</option></select></label>
@@ -1194,8 +1206,19 @@ function logLine(html,cls,ttl){const box=$('radio'),last=box.lastElementChild;if
   const d=document.createElement('div');d.className='rl'+(cls?' '+cls:'');d.dataset.k=html;d.innerHTML=html;box.appendChild(d);const mx=2;while(box.children.length>mx)box.firstChild.remove();d._t=setTimeout(()=>fadeL(d),ttl);}
 let esVoice=null;function pickVoice(){const v=speechSynthesis.getVoices().filter(x=>/^es/i.test(x.lang));esVoice=v.find(x=>/es[-_]ES/i.test(x.lang)&&x.localService)||v.find(x=>x.localService)||null;}
 if(window.speechSynthesis){try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}catch(e){}}
-function speak(txt,pilot){if(muted||!window.speechSynthesis)return;try{speechSynthesis.resume();const u=new SpeechSynthesisUtterance(txt.replace(/\(.*?\)/g,''));u.lang='es-ES';if(esVoice)u.voice=esVoice;u.pitch=pilot?.8:1.05;u.rate=1.08;u.volume=1;
-  u.onerror=ev=>{if(u.voice&&!/interrupt|cancel/.test(ev.error)){esVoice=null;const u2=new SpeechSynthesisUtterance(u.text);u2.lang='es-ES';speechSynthesis.speak(u2);}};speechSynthesis.speak(u);}catch(e){}}
+// Voz: cola propia para que no se quede hablando de cosas que ya pasaron. Como mucho una frase en espera; las viejas se descartan y los avisos urgentes cortan a los demás
+const VQ=[];let vCur=null;
+function speak(txt,pilot){if(muted||!window.speechSynthesis)return;const t=String(txt).replace(/\(.*?\)/g,'').trim();if(!t)return;if((vCur&&vCur.t===t)||VQ.some(q=>q.t===t))return;
+  const hi=/eyect|wave off|misil|bolter|potencia|atenci|sube|fuego amigo|mayday/i.test(t);
+  if(hi){VQ.length=0;if(vCur&&!vCur.hi){const c=vCur;vCur=null;try{window.speechSynthesis.cancel()}catch(e){}}}
+  VQ.push({t,pilot,hi,at:performance.now(),ttl:hi?8000:t.length>70?16000:5000});while(VQ.length>2)VQ.shift();vNext();}
+function vNext(){const now=performance.now();if(vCur){if(now-vCur.s<Math.max(6000,vCur.t.length*110))return;vCur=null;try{window.speechSynthesis.cancel()}catch(e){}}
+  let q=null;while(VQ.length){const c=VQ.shift();if(now-c.at<c.ttl){q=c;break;}}if(!q)return;
+  try{speechSynthesis.resume();const u=new SpeechSynthesisUtterance(q.t);u.lang='es-ES';if(esVoice)u.voice=esVoice;u.pitch=q.pilot?.8:1.05;u.rate=1.15;u.volume=1;q.s=now;vCur=q;
+    const done=()=>{if(vCur===q){vCur=null;vNext();}};u.onend=done;
+    u.onerror=ev=>{if(vCur!==q)return;if(u.voice&&!/interrupt|cancel/.test(ev.error)){esVoice=null;vCur=null;q.at=performance.now();VQ.unshift(q);vNext();}else done();};
+    speechSynthesis.speak(u);}catch(e){vCur=null;}}
+let vTk=0;
 function radio(who,txt,say){const pilot=!!plane&&who===CS();logLine('<b>'+escH(who)+':</b> '+escH(txt),pilot?'pl':'',7000);if(say!==false)speak(txt,pilot);
   if(!pilot){lastCtl=[who,txt];if(/despeg|catapulta lista|cubierta libre|lanza|salida autorizada/i.test(txt)||(state==='deck'&&/autoriz/i.test(txt)&&!/no autoriz|negativ/i.test(txt)))comm.toClear=true;if(/autoriz|entrada autorizada/i.test(txt)&&/aterriz|toma|apont|entrada|punto 2|al punto/i.test(txt))comm.clear=true;if(/Recibido, bola/.test(txt))comm.ballAck=true;if(commAuto&&/autorizad/i.test(txt))setTimeout(()=>{if(state==='fly'||state==='deck')radio(CS(),'Recibido, autorizado. '+CS()+'.');},2200);}}
 function startRadio(){aiTurns.length=0;if(!commAuto){toast(commMode==='i'?(aiS?'Modo IA: pulsa Radio y habla con la torre con normalidad':'IA no disponible aquí: uso respuestas fijas'):'Manual: pulsa Radio y habla normal, p. ej. "Torre, '+CS()+', listo para despegar"',4);return;}if(mode==='naval')radio(T.hover?'Juan Carlos I':'Catapulta',T.hover?'Cubierta libre, '+CS()+' autorizado a despegar.':'Avión enganchado en la catapulta 1. Potencia máxima y lanza.');
@@ -1252,7 +1275,7 @@ const TUT0=[
  {t:'Alas niveladas, baja suave y toca. Después potencia al mínimo para frenar.',c:()=>state==='deck'}];let TUT=TUT0;
 function showTut(silent){const st0=TUT[tutStep];if(!st0)return;const st={t:st0.t.replace('{TK}',opt.tk==='mrtt'?'A330 MRTT':'A400M').replace('{APP}',T?T.app:'').replace('{TIRA}',invert?'tira suave de la palanca (dedo hacia abajo)':'arrastra el dedo suavemente hacia arriba')};$('obj').textContent='Paso '+(tutStep+1)+'/'+TUT.length+': '+st.t;$('obj').style.opacity=1;if(!silent)speak(st.t);}
 function tutUpdate(dt){tutT+=dt;const st=TUT[tutStep];if(st&&tutT>(st.min||1.5)&&st.c()){tutStep++;tutT=0;if(TUT[tutStep])showTut();else if(opt.les)lesDone();else{$('obj').textContent='¡Tutorial completado!';speak('Tutorial completado. Buen aterrizaje.');}}}
-let opt={},tutStep=0,tutT=0;function start(m,t,o){opt=o||{};commAuto=opt.tut?true:$('commSel').value==='a';commMode=opt.tut?'a':$('commSel').value;$('radio').innerHTML='';if(window.speechSynthesis){try{speechSynthesis.cancel();const u0=new SpeechSynthesisUtterance(' ');u0.volume=0;speechSynthesis.speak(u0);}catch(e){}}$('rmenu').classList.add('hide');initAudio();mode=m;type=t;T=TYPES[t];clearWorld();resetShips();dead=false;
+let opt={},tutStep=0,tutT=0,f1Hint=false;function start(m,t,o){opt=o||{};foldMan=null;mslLbl='';if(!f1Hint&&window.matchMedia&&matchMedia('(pointer:fine)').matches){f1Hint=true;setTimeout(()=>toast('Pulsa F1 para ver las teclas',4),5000);}commAuto=opt.tut?true:$('commSel').value==='a';commMode=opt.tut?'a':$('commSel').value;$('radio').innerHTML='';if(window.speechSynthesis){try{speechSynthesis.cancel();VQ.length=0;vCur=null;const u0=new SpeechSynthesisUtterance(' ');u0.volume=0;speechSynthesis.speak(u0);}catch(e){}}$('rmenu').classList.add('hide');initAudio();mode=m;type=t;T=TYPES[t];clearWorld();resetShips();dead=false;
   P=T.make(t==='c101'||t==='pc21'?{pa:opt.pa}:{});plane=P.g;detailPlane(P,t);P.pa=!!opt.pa;finishPlane(P,t);upgradePlane(P,t);finMarks(P,t);{const DEC={f18:'12-01',ef:'14-01',av8:'01-914',sh:'NAVY 200',c101:opt.pa?'ÁGUILA 1':'E.25-01',f5:'AE.9-01',pc21:'792-01',hj:'AE.10-01'},R0={f18:1.0,ef:.95,av8:1.1,sh:1.12,c101:.82,f5:.95,pc21:.75,hj:.92}[t];if(!P.noDec)[-1,1].forEach(sd=>{const d=new THREE.Mesh(new THREE.PlaneGeometry(1.8,.6),numMat(DEC[t]));if(P.decP)d.position.set(sd*P.decP[0],P.decP[1],P.decP[2]);else d.position.set(sd*R0,.15,{c101:.6,pc21:.9,f5:-.6,hj:3.3}[t]||-3.2);d.rotation.y=sd*Math.PI/2;plane.add(d);});}{const pm=cyl(.07,.09,2.2,mat(0x9aa0a6)),pv=PROBE[t];pm.position.set(pv[0],pv[1],pv[2]+1.1);pm.visible=false;plane.add(pm);P.probeM=pm;}navL=[];{const sp={sh:7.7,f18:6.5,ef:5.7,av8:4.9,c101:5.35,f5:4.05,pc21:4.65,hj:4.7}[t];navL.push(lightPts(plane,[[-sp,0,2.5]],0xff2a2a,7,1),lightPts(plane,[[sp,0,2.5]],0x30ff50,7,1),lightPts(plane,[[0,2.5,6.5]],0xffffff,9,1));}plane.traverse(o=>{if(o.isMesh)o.castShadow=true;});scene.add(plane);ship=m==='naval'?(T.ship==='lincoln'?lincoln:jc1):m==='base'?bases.find(b=>b.name===opt.base):null;mslCam.m=null;mslCam.hold=0;report=[];tgtIdx=0;claexT=0;
   hover=false;stolT=0;fuel=1;bingo=false;empty=false;health=100;buildWpn(m,t);addStores(t);paOn=false;flares=T.flares;ammo=T.gun;firing=false;fireCool=0;kills=0;flareT=0;
   lock.t=null;lock.time=0;lock.locked=false;ringIdx=0;elapsed=0;t0=performance.now();view='ext';hv.set(0,0,0);vel.set(0,0,0);prevVel.set(0,0,0);gFilt=1;trim=0;rud=0;
@@ -1361,7 +1384,7 @@ function lesInit(){const L=LES[opt.les];aidNow='i';lesCo.t=4;lesCo.last='';$('ob
   speed=a.kt/1.944;vel.copy(fwdOf(plane.quaternion)).multiplyScalar(speed);if(s.vel)vel.add(s.vel);prevVel.copy(vel);throttle=a.th;state='fly';setPhase('ret');setAction(null);
   camera.position.copy(plane.position).add(V().set(0,6,26).applyQuaternion(plane.quaternion));}
 {const _st=start;start=function(m,t,o){TUT=o&&o.les?LES[o.les].steps:TUT0;_st(m,t,o);if(opt.les)lesInit();};}
-function goMenu(){$('tiltC').classList.add('hide');mapOn=false;mc.classList.add('hide');if(rp){rp=null;$('rpBar').classList.add('hide');rpM.forEach(m=>m.visible=false);}$('gloc').style.opacity=0;state='menu';hideMarks();firing=false;['top','obj','thr','btns','ped','radio','lev','trimBox','rmenu','msg','pickPlane'].forEach(i=>$(i).classList.add('hide'));if(window.speechSynthesis)speechSynthesis.cancel();$('menu').classList.remove('hide');}
+function goMenu(){document.body.classList.remove('cmb');base.style.display=knob.style.display='none';$('keysH').classList.add('hide');$('tiltC').classList.add('hide');mapOn=false;mc.classList.add('hide');if(rp){rp=null;$('rpBar').classList.add('hide');rpM.forEach(m=>m.visible=false);}$('gloc').style.opacity=0;state='menu';hideMarks();firing=false;['top','obj','thr','btns','ped','radio','lev','trimBox','rmenu','msg','pickPlane'].forEach(i=>$(i).classList.add('hide'));if(window.speechSynthesis)speechSynthesis.cancel();VQ.length=0;vCur=null;$('menu').classList.remove('hide');}
 let lastGrade='';const ap={};
 function apReset(keepB){const b=keepB?ap.bolters||0:0;Object.assign(ap,{bolters:b,segs:{X:[0,0],IM:[0,0],IC:[0,0],AR:[0,0]},la:[0,0],sp:[0,0]});}
 function apSample(){if(!ship||ship.kind==='jc1'||hover)return;const A=approach();if(A.along<40||A.along>2000)return;
@@ -1513,7 +1536,7 @@ let hy=0,hp=0,lid=null,lx0=0,ly0=0,hy0=0,hp0=0,HEADKEEP=false,FOVC=72,lookHint=f
   $('fovSel').onchange=()=>{FOVC=+$('fovSel').value;try{localStorage.setItem('fov',FOVC);}catch(e){}setCamFov();};$('headSel').onchange=()=>{HEADKEEP=$('headSel').value==='k';try{localStorage.setItem('head',HEADKEEP?'k':'r');}catch(e){}};})();
 function setCamFov(){camera.fov=view!=='ext'?FOVC:65;camera.near=view!=='ext'?.12:.5;camera.updateProjectionMatrix();}
 $('bView').onclick=()=>{if(mslCam.m||mslCam.hold>0){mslCam.m=null;mslCam.hold=0;return;}view={ext:'cock',cock:'look',look:'ext'}[view];setCamFov();hy=hp=0;if(view==='cock'&&!lookHint){lookHint=true;setTimeout(()=>toast('Arrastra en la parte de arriba de la pantalla para girar la cabeza',4),1600);}toast({ext:'Vista exterior',cock:'Vista cabina',look:'Cabina: mirando al barco o al blanco'}[view],1.5);};
-$('bSnd').onclick=()=>{muted=!muted;$('bSnd').textContent=muted?'Sin sonido':'Sonido';};
+$('bSnd').onclick=()=>{muted=!muted;if(muted&&window.speechSynthesis){VQ.length=0;vCur=null;try{window.speechSynthesis.cancel()}catch(e){}}$('bSnd').textContent=muted?'Sin sonido':'Sonido';};
 (()=>{let v=null;try{v=localStorage.getItem('lt');}catch(e){}const on=v!=='0';$('lt').checked=on;document.body.classList.toggle('lt',on);})();
 let EXPO=1.8,SENS=.55,trim=0,rud=0;const SL={x:[.3,2.3],m:[.4,2],s:[.55,1.8],n:[.8,1.5],r:[1.1,1.3]};function applySens(k){[SENS,EXPO]=SL[k]||SL.s;}
 (()=>{let v='m';try{v=localStorage.getItem('sens')||'m';}catch(e){}$('sens').value=v;applySens(v);})();
@@ -1676,7 +1699,7 @@ function hitPlayer(d){if(dead||ejected)return;d*=TL().dmgK;sfx('hit');vib(d>=50?
 /* ---------- Controles ---------- */
 let sid=null,sx=0,sy=0;const R=65,zone=$('zone'),base=$('base'),knob=$('knob');
 const curve=v=>Math.sign(v)*Math.pow(Math.min(Math.abs(v),1),EXPO);
-zone.addEventListener('pointerdown',e=>{if(lid===null&&e.clientY<innerHeight*.38&&(state==='fly'||state==='deck')){lid=e.pointerId;lx0=e.clientX;ly0=e.clientY;hy0=hy;hp0=hp;zone.setPointerCapture(lid);return;}if(sid!==null||!(state==='fly'||state==='deck'))return;sid=e.pointerId;sx=e.clientX;sy=e.clientY;zone.setPointerCapture(sid);
+zone.addEventListener('pointerdown',e=>{if(CTL==='m'&&e.pointerType==='mouse'&&(state==='fly'||state==='deck')){if(e.button===0)firing=true;else if(e.button===2)fireMissile();return;}if(lid===null&&e.clientY<innerHeight*.38&&(state==='fly'||state==='deck')){lid=e.pointerId;lx0=e.clientX;ly0=e.clientY;hy0=hy;hp0=hp;zone.setPointerCapture(lid);return;}if(sid!==null||!(state==='fly'||state==='deck'))return;sid=e.pointerId;sx=e.clientX;sy=e.clientY;zone.setPointerCapture(sid);
   base.style.left=knob.style.left=sx+'px';base.style.top=knob.style.top=sy+'px';base.style.display=knob.style.display='block';});
 zone.addEventListener('pointermove',e=>{if(e.pointerId===lid){hy=clamp(hy0-(e.clientX-lx0)/(innerWidth*.4)*3.2,-Math.PI,Math.PI);hp=clamp(hp0-(e.clientY-ly0)/(innerHeight*.4)*1.4,-.8,1.5);return;}if(e.pointerId!==sid)return;let dx=e.clientX-sx,dy=e.clientY-sy;const d=Math.hypot(dx,dy);if(d>R){dx*=R/d;dy*=R/d;}
   knob.style.left=sx+dx+'px';knob.style.top=sy+dy+'px';input.roll=curve(dx/R);input.pitch=curve((invert?dy:-dy)/R);});
@@ -1695,7 +1718,7 @@ $('tiltC').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagati
 const endStick=e=>{if(e.pointerId===lid){lid=null;return;}if(e.pointerId!==sid)return;sid=null;input.roll=input.pitch=0;base.style.display=knob.style.display='none';};
 zone.addEventListener('pointerup',endStick);zone.addEventListener('pointercancel',endStick);
 const thr=$('thr');let tid=null;
-function setThr(e){const r=thr.getBoundingClientRect();throttle=clamp(1-(e.clientY-r.top)/r.height,0,1);}
+function setThr(e){const r=thr.getBoundingClientRect();let v=clamp(1-(e.clientY-r.top)/r.height,0,1);for(const d of [0,.6,.85,1])if(Math.abs(v-d)<.025)v=d;throttle=v;}
 thr.addEventListener('pointerdown',e=>{tid=e.pointerId;thr.setPointerCapture(tid);setThr(e);});
 thr.addEventListener('pointermove',e=>{if(e.pointerId===tid)setThr(e);});
 ['pointerup','pointercancel'].forEach(ev=>thr.addEventListener(ev,()=>tid=null));
@@ -1749,7 +1772,7 @@ function phrases(){const L=[];
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null;
 function stopRec(){if(rec){try{rec.abort();}catch(e){}rec=null;}$('bRad').classList.remove('on');}
 function listen(){if(!SR){toast('Este navegador no permite hablar por micrófono aquí. Usa las frases.',3);return;}
-  try{if(window.speechSynthesis)speechSynthesis.cancel();stopRec();rec=new SR();rec.lang='es-ES';rec.interimResults=false;rec.maxAlternatives=3;
+  try{if(window.speechSynthesis)speechSynthesis.cancel();VQ.length=0;vCur=null;stopRec();rec=new SR();rec.lang='es-ES';rec.interimResults=false;rec.maxAlternatives=3;
     rec.onresult=e=>{const alts=[...e.results[0]].map(r=>r.transcript);$('rmenu').classList.add('hide');handleSpeech(alts);};
     rec.onerror=e=>{toast(/allowed/.test(e.error)?'Micrófono bloqueado. Usa las frases o da permiso al micrófono.':'No te he oído. Pulsa Radio y repite.',3);stopRec();};
     rec.onend=()=>{$('bRad').classList.remove('on');rec=null;};rec.start();$('bRad').classList.add('on');toast('Escuchando… habla ahora',2);}
@@ -1815,7 +1838,10 @@ function openRadio(){const m=$('rmenu');if(!m.classList.contains('hide')){m.clas
   m.classList.remove('hide');clearTimeout(m._t);m._t=setTimeout(()=>m.classList.add('hide'),8000);listen();}
 tap('bRad',openRadio);
 tap('bMsl',fireMissile);tap('bFlr',dropFlares);tap('bGear',toggleGear);tap('bAct',act);tap('bDrn',cycleDrone);
-addEventListener('keydown',e=>{const k=e.key.toLowerCase();keys[k]=true;if(k===' '){firing=true;e.preventDefault();}if(e.repeat)return;
+addEventListener('keydown',e=>{const k=e.key.toLowerCase();keys[k]=true;if(k===' '){firing=true;e.preventDefault();}if(k==='tab'||k==='f1')e.preventDefault();if(e.repeat)return;
+  if(k==='f1'){$('keysH').classList.toggle('hide');return;}const flyK=state==='fly'||state==='deck';
+  if(flyK&&/^[0-9]$/.test(k)){throttle=k==='0'?1:(+k-1)/8*.85;toast(k==='0'?'Postcombustión':'Potencia '+Math.round(throttle*100)+' %',.8);}
+  if(k==='tab'&&flyK)act();if(flyK&&T&&T.hover&&(k===','||k==='.')){const NP=[0,50,90,98],v=k==='.'?NP.find(q=>q>noz+1):NP.slice().reverse().find(q=>q<noz-1);if(v!=null){setNoz(v);toast('Toberas '+v+'°',.8);}}
   if(k==='m')fireMissile();if(k==='b')dropFlares();if(k==='g')toggleGear();if(k==='x')act();if(k==='o')cycleDrone();if(k==='v')$('bView').onclick();if(k==='u')trimBy(.05);if(k==='l')cycleFlaps();if(k==='p')ejectAsk();if(k==='n'&&T&&T.hover)setNoz(noz+10);if(k==='h'&&T&&T.hover)setNoz(noz-10);if(k==='k')toggleAB();if(k==='j')trimBy(-.05);});
 addEventListener('keyup',e=>{const k=e.key.toLowerCase();keys[k]=false;if(k===' ')firing=false;});
 
@@ -1853,9 +1879,9 @@ function atcApp(){if(!ship)return false;const A=approach();return A.along>150&&A
 function targetSpeed(th){const k=[1,.93,.86][flaps];if(gearDown)return (40+th*120)*k;let s=T.min+Math.min(th,.85)/.85*(T.mil-T.min);if(T.ab&&th>.85)s+=(th-.85)/.15*(T.max-T.mil);return s*k;}
 function fly(dt){
   let pi=input.pitch,ro=input.roll,yaw=rud;const ku=keys['arrowup']||keys['w'],kd=keys['arrowdown']||keys['s'];
-  if(ku||kd)pi=(ku?1:-1)*(invert?-1:1);if(keys['arrowleft']||keys['a'])ro=-1;if(keys['arrowright']||keys['d'])ro=1;
+  if(ku||kd||Math.abs(KS.p)>.02)pi=KS.p;if(keys['arrowleft']||keys['a']||keys['arrowright']||keys['d']||Math.abs(KS.r)>.02)ro=KS.r;
   if(keys['r'])throttle=Math.min(1,throttle+dt*.6);if(keys['f'])throttle=Math.max(0,throttle-dt*.6);
-  pi=clamp(pi*SENS+trim,-1,1);ro*=SENS;if(keys['q'])yaw=-1;if(keys['e'])yaw=1;if(glocT>0||ejected){pi=0;ro=0;yaw=0;}
+  pi=clamp(pi*SENS+trim,-1,1);ro*=SENS;if(keys['q']||keys['e']||Math.abs(KS.y)>.02)yaw=KS.y;if(glocT>0||ejected){pi=0;ro=0;yaw=0;}
   fuel=Math.max(0,fuel-dt*(hover?.0035:(.0004+throttle*.0012+(T.ab&&throttle>.85?.003:0))));if(dmg.leak)fuel=Math.max(0,fuel-dt*.004);if(TL().fuelK<1)fuel=Math.min(1,fuel+dt*(1-TL().fuelK)*(hover?.0035:(.0004+throttle*.0012)));
   if(fuel<.2&&!bingo){bingo=true;toast('BINGO: poco combustible, vuelve',3);}if(fuel===0&&!empty){empty=true;toast('Sin combustible',3);}
   const th=fuel>0?throttle:0,q=plane.quaternion;if(atcOn())throttle=clamp(throttle+(T.app-kt(speed))*.012*dt,.05,.85);prevPos.copy(plane.position);
@@ -2417,7 +2443,7 @@ function drawHUD(){const UI=1.2,c=hx,W=innerWidth/UI,H=innerHeight/UI;c.setTrans
   c.font='600 13px '+FONT;c.textAlign='center';
   for(let dg=Math.ceil((hdg-35)/5)*5;dg<=hdg+35;dg+=5){const x=cx+(dg-hdg)*3.2,m=((dg%360)+360)%360;c.beginPath();c.moveTo(x,ty);c.lineTo(x,ty+(m%10?5:9));c.stroke();if(m%10===0)c.fillText(String(m/10).padStart(2,'0'),x,ty-9);}
   c.beginPath();c.moveTo(cx,ty+12);c.lineTo(cx-5,ty+19);c.lineTo(cx+5,ty+19);c.closePath();c.fill();c.fillText(String(Math.round(hdg)%360).padStart(3,'0'),cx,ty+30);
-  const LT=document.body.classList.contains('lt'),PT=H>=500,L0=PT?10:(LT?112:12),R0=PT?10:(LT?12:112),my=H*(PT?.2:.3),big='800 20px '+FONT,sm='600 14px '+FONT;
+  const LT=document.body.classList.contains('lt'),PT=H>=500,CM=document.body.classList.contains('cmb'),L0=PT?10:(LT?(CM?188:112):12),R0=PT?10:(LT?12:(CM?188:112)),my=H*(PT?.2:.3),big='800 20px '+FONT,sm='600 14px '+FONT;
   
   c.font=big;c.strokeRect(L0,my-15,66,30);c.textAlign='right';c.fillText(kt(speed),L0+60,my);
   if(gearDown&&state==='fly'&&!hover){const df=kt(speed)-T.app;c.textAlign='left';c.font='800 22px '+FONT;c.fillStyle=Math.abs(df)<=8?GR:'#F1BF00';c.fillText(df>8?'▼':df<-8?'▲':'●',L0+72,my);c.font=sm;c.fillText('APROX '+T.app,L0+2,my-46);c.fillStyle=GR;c.font=big;}
@@ -2593,7 +2619,20 @@ function gpUpdate(dt){if(GP.i<0||!navigator.getGamepads)return;const g=navigator
   GP.prev=B;}
 function flGround(){if(!P||!plane||state!=='deck'||!T)return;const th=fuel>0?throttle:0,ab=T.ab&&th>.85;P.fl.forEach(f=>{if(ab){f.scale.set(1,1,1);f.material.opacity=.8;f.material.color.setHex(0xffa040);}else{f.scale.set(.75,.2+th*.3,.75);f.material.opacity=th*.07;f.material.color.setHex(0xa8c0ff);}if(f.children[0])f.children[0].material.opacity=ab?.9:0;if(f.children[1])f.children[1].material.opacity=ab?.8:0;});}
 function updCSH(dt){CSH.off.value.x+=dt*(.00025+windKt*.00002);CSH.off.value.y+=dt*.00012;CSH.k.value=curTOD==='n'?.08:WXNOW==='r'?0:.3;}
-function fx3(dt){updCSH(dt);flGround();gpUpdate(dt);updFml();tiltUpdate();updLOD();updFPS(dt);snapShadow();updDeckLife(dt);updPlaneCS(dt);updCockpit(dt);updCockpit2(dt);updTrails(dt);updWx(dt);updSea();updStores();updTrainer(dt);}
+const KS={p:0,r:0,y:0};
+function ksUpd(dt){const tw=(cur,tg)=>{const rt=(tg===0?5:Math.sign(tg)!==Math.sign(cur)&&cur!==0?7:2.4)*dt;return Math.abs(tg-cur)<=rt?tg:cur+Math.sign(tg-cur)*rt;};
+  const ku=keys['arrowup']||keys['w'],kd=keys['arrowdown']||keys['s'],kl=keys['arrowleft']||keys['a'],kr=keys['arrowright']||keys['d'];
+  KS.p=tw(KS.p,(ku?1:kd?-1:0)*(invert?-1:1));KS.r=tw(KS.r,kl?-1:kr?1:0);KS.y=tw(KS.y,keys['q']?-1:keys['e']?1:0);}
+addEventListener('wheel',e=>{if(state==='fly'||state==='deck'){throttle=clamp(throttle-Math.sign(e.deltaY)*.04,0,1);e.preventDefault();}},{passive:false});
+addEventListener('mousemove',e=>{if(CTL!=='m'||sid!==null||!(state==='fly'||state==='deck'))return;const R0=Math.min(innerWidth,innerHeight)*.36,cx=innerWidth/2,cy=innerHeight/2,dx=clamp((e.clientX-cx)/R0,-1,1),dy=clamp((e.clientY-cy)/R0,-1,1);
+  input.roll=curve(dx);input.pitch=curve(invert?dy:-dy);base.style.left=cx+'px';base.style.top=cy+'px';knob.style.left=e.clientX+'px';knob.style.top=e.clientY+'px';base.style.display=knob.style.display='block';});
+addEventListener('contextmenu',e=>{if(CTL==='m'&&(state==='fly'||state==='deck'))e.preventDefault();});
+addEventListener('mouseup',e=>{if(CTL==='m'&&e.button===0)firing=false;});
+let foldMan=null,mslLbl='';
+function ergoUpd(){const fl=state==='fly'||state==='deck',auto=state==='fly'&&!gearDown&&phase!=='ret'&&!(T&&T.hover),on=fl&&(foldMan===null?auto:foldMan);if(document.body.classList.contains('cmb')!==on)document.body.classList.toggle('cmb',on);
+  const W=wpn&&wpn[wi],l=W?W.s+' · '+W.c:'Misil';if(l!==mslLbl&&fl){mslLbl=l;setBtn('bMsl','msl',l);}}
+$('bFold').onclick=()=>{foldMan=!document.body.classList.contains('cmb');toast(foldMan?'Mandos de combate':'Todos los mandos',1.2);};
+function fx3(dt){ksUpd(dt);ergoUpd();vTk+=dt;if(vTk>1){vTk=0;if(vCur||VQ.length)vNext();}updCSH(dt);flGround();gpUpdate(dt);updFml();tiltUpdate();updLOD();updFPS(dt);snapShadow();updDeckLife(dt);updPlaneCS(dt);updCockpit(dt);updCockpit2(dt);updTrails(dt);updWx(dt);updSea();updStores();updTrainer(dt);}
 requestAnimationFrame(loop);
 addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();sizeHUD();});
 </script>
