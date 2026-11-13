@@ -660,7 +660,7 @@ function makeHarrier(){const g=new THREE.Group(),c=mat(0x6f7a82),c2=mat(0x5f6970
   [-1,1].forEach(s=>{const st=new THREE.Mesh(new THREE.BoxGeometry(.06,.35,2.4),c2);st.position.set(s*.55,-.95,-.3);g.add(st);
     const gp=fus([[-1.9,0],[-1.5,.2],[0,.24],[1.4,.2],[1.9,0]],c2,1,1,{nose:0});gp.position.set(s*.5,-1.02,-.3);g.add(gp);const mz=cyl(.04,.04,.5,dk,6);mz.position.set(s*.5,-1.02,-2.2);g.add(mz);});
   {const pr=cyl(.09,.09,2.4,c2,8);pr.position.set(-1.28,.95,-2.4);g.add(pr);const rw=cyl(.11,.04,1,c2,8);rw.position.set(0,.3,7.2);g.add(rw);}
-  return {cs:{fins:[t],wings,wing:[[4.3,2.25],[.5,3.15]],ail:[3,3.0001],flp:[1,1.0001],sb:[0,-1.0,1.4]},fm,g,fl:[],noz,gear:gearSet(g,[[0,-3.3],[0,1.7],[3.62,2],[-3.62,2]],2.3),hook:null,gearH:2.3,cock:new THREE.Vector3(0,1.38,-4.6),decP:[.86,.25,3.6],slots:{out:[[3.6,-.3,1.55]],mid:[[2.75,-.32,1.1]],inn:[[1.85,-.34,.8]],ctr:[[0,-1.15,.2]]}};}
+  return {cs:{fins:[t],wings,wing:[[4.3,2.25],[.5,3.15]],ail:[3,3.0001],flp:[1,1.0001],sb:[0,-1.0,1.4]},fm,g,fl:[],noz,gear:gearSet(g,[[0,-3.3],[0,1.7],[3.62,2],[-3.62,2]],1.75),hook:null,gearH:1.75,cock:new THREE.Vector3(0,1.38,-4.6),decP:[.86,.25,3.6],slots:{out:[[3.6,-.3,1.55]],mid:[[2.75,-.32,1.1]],inn:[[1.85,-.34,.8]],ctr:[[0,-1.15,.2]]}};}
 function makeF18(){const g=new THREE.Group(),grey=mat(0x8c969e),dark=mat(0x3a4148),fl=[],fins=[];
   g.add(fus([[-10.2,0],[-9.7,.22],[-8.8,.5],[-7.4,.78],[-5.8,.95],[-4,1.06],[-2,1.14],[0,1.18],[3,1.18],[5.5,1.08],[7,.92],[7.6,.82]],grey,1.15,.86));canopy(g,-4.6,.8);
   [-.7,.7].forEach(x=>{const e=cyl(.6,.55,1.2,dark);e.position.set(x,0,6.4);g.add(e);const f=flame(x,7);g.add(f);fl.push(f);});
@@ -785,6 +785,10 @@ const GLM={
    gr:/^(Rueda|Tren|CompTren)/,map:[[/^Aleron/,'ail'],[/^Flap_/,'flp'],[/^Elevador/,'stab'],[/^Timon/,'rud'],[/^Spoiler_01/,'sb']],rd:null,slots:{}},
  pc21:{u:'models/pc21.json',s:1.1,oy:-1.1,oz:-.3,noz:[0,4],cock:[0,.55,-1.95],ck:/^(canopy|arch|archi|rubber)$/,dec:[.42,.12,1.3],hinge:1,prop:[0,.75,-4.3],
    gr:/(tyre|wheel|gear|strut|scissor|hubcap|^[lr]b?door|taxibox)/i,map:[[/^[lr]aileron$/,'ail'],[/^[lr]flap$/,'flp'],[/^[lr]elevator$/,'stab'],[/^rudder$/,'rud'],[/^airbrake$/,'sb']],rd:null,slots:{}},
+ av8:{u:'models/av8.json',s:1,oy:0,oz:0,noz:[0,0],cock:[0,1.3,-3.75],dec:[.78,-.12,-4.3],ck:/^Canopy/,rd:null,nozN:/^nozzle_/,
+   slots:{out:[[3.3,-.12,1.4]],mid:[[2.2,.12,.77]],inn:[[1.5,.28,.3]],ctr:[[0,-1.1,.2]]}},
+ f5:{u:'models/f5.json',s:1,oy:0,oz:0,noz:[.31,6.85],cock:[0,.88,-3.3],dec:[.56,-.1,-3.95],ck:/^Canopy/,rd:null,
+   slots:{tip:[[3.95,-.14,.7]],mid:[[2.65,-.62,.52]],inn:[[1.7,-.62,.21]],ctr:[[0,-1.0,.4]]}},
  ef:{u:'models/ef.json',s:1,oy:-.46,oz:-10.6,noz:[.5,4.0],cock:[0,.64,-6.2],dec:[.55,-.1,-3.4],ck:/Windshield|Canopy/i,
    rd:[[3.7,-.66,.2,.75]],slots:{out:[[4.3,-.95,.9]],mid:[[3.3,-.95,.3]],inn:[[2.3,-.95,-.3]],fus:[[.7,-1.25,-2.2],[.7,-1.25,.8]],ctr:[[0,-1.4,-.5]]}}};
 const GLC={};
@@ -810,6 +814,7 @@ function upgradePlane(P,t,op){op=op||{};const c=GLM[t],src=c&&GLC[c.u];if(!src||
     const mn=lo.clone().min(hi),mx=lo.clone().max(hi),cz=(mn.z+mx.z)/2,piv=new THREE.Group();
     piv.position.set((k==='stab'&&!c.hinge)||k==='can'?(mn.x+mx.x)/2:mn.x,(mn.y+mx.y)/2,cz);M.add(piv);piv.updateMatrixWorld(true);piv.attach(n);fm[k].push({p:piv,side:cz<0?1:-1});});
   if(P.gear)gearP.forEach(n=>P.gear.attach(n));
+  if(c.nozN){const nz=[],wp=new THREE.Vector3();M.children.slice().forEach(n=>{if(!c.nozN.test(n.name||''))return;const pv=new THREE.Group();n.getWorldPosition(wp);pv.position.copy(g.worldToLocal(wp));g.add(pv);pv.updateMatrixWorld(true);pv.attach(n);nz.push(pv);});if(nz.length)P.noz=nz;}
   P.fm=fm;P.ckList=ck;P.glW=W;renderer.localClippingEnabled=true;P.clipPl=[0,1,2,3,4].map(()=>new THREE.Plane());const cm=new Map();
   M.traverse(o=>{if(!o.isMesh)return;let m=cm.get(o.material);if(!m){m=o.material.clone();m.clippingPlanes=P.clipPl;m.clipIntersection=true;cm.set(o.material,m);}o.material=m;});P.cock.set(c.cock[0],c.cock[1],c.cock[2]);P.slots=c.slots;P.decP=c.dec;
   P.fl.forEach((f,i)=>{f.position.x=(P.fl.length>1?(i?1:-1)*c.noz[0]:0);f.position.z=c.noz[1]+1.5;});
@@ -853,7 +858,7 @@ function makeF5(){const g=new THREE.Group(),c=mat(0x9ba3a9),dk=mat(0x353b40),fl=
     const tk=fus([[-2.3,0],[-1.7,.27],[0,.33],[1.5,.27],[2.5,0]],mat(0x8d959b),1,1,{nose:0});tk.position.set(0,-1.02,.4);g.add(tk);g.add(box(.1,.35,1.4,c,0,-.7,.4));
     [-1,1].forEach(s=>{const gp=cyl(.045,.045,.4,dk,6);gp.position.set(s*.22,.3,-5.2);g.add(gp);g.add(box(.03,.62,.8,c,s*.68,.02,-2.2));const lip=new THREE.Mesh(new THREE.TorusGeometry(.38,.035,6,14),dk);lip.position.set(s*1,.02,-2.1);g.add(lip);
       const nr=new THREE.Mesh(new THREE.TorusGeometry(.33,.04,6,14),mat(0x6a6058));nr.position.set(s*.33,0,7);g.add(nr);});}
-  return {g,fl,gear:gearSet(g,[[0,-4.3],[1.2,1.2],[-1.2,1.2]],2.6),hook:null,gearH:2.6,cock:new THREE.Vector3(0,.95,-4.3),
+  return {g,fl,gear:gearSet(g,[[0,-4.3],[1.2,1.2],[-1.2,1.2]],1.5),hook:null,gearH:1.5,cock:new THREE.Vector3(0,.95,-4.3),
     cs:{stab,fins:[t],wing:[[3.9,1.6],[.8,2.6]],wy:-.15,sb:[0,-.72,-1.5],ail:[2.3,3.7],flp:[.9,2.2]}};}
 function makeHJ(){const g=new THREE.Group(),c=mat(0x8d969d),dk=mat(0x353b40),fl=[];
   g.add(fus([[-7.4,0],[-7.1,.14],[-6.2,.36],[-5,.56],[-3.6,.7],[-2,.8],[0,.86],[2.5,.82],[4.6,.7],[5.8,.55],[6.3,.5]],c,1.15,.9));canopy(g,-3.1,.74,1);g.children[1].scale.z=2.6;{const h2=g.children[2].clone();h2.position.z+=1.5;h2.position.y+=.14;g.add(h2);}
@@ -995,7 +1000,7 @@ function lightPts(parent,pts,color,size,keep){const g=new THREE.BufferGeometry()
   bases.forEach(b=>{const e=b.deckY+.2,RE=[],CL=[],TH=[],EN=[],AL=[];for(let z=-1500;z<=1500;z+=60)RE.push([-23,e,z],[23,e,z]);for(let z=-1470;z<=1470;z+=30)CL.push([0,e,z]);for(let x=-22;x<=22;x+=4){TH.push([x,e,1500]);EN.push([x,e,-1500]);}
     for(let z=1530;z<=1900;z+=30)for(let x=-8;x<=8;x+=4)AL.push([x,e+.6,z]);lightPts(b.g,RE,0xfff6dd,5);lightPts(b.g,CL,0xffffff,3);lightPts(b.g,TH,0x30ff60,6);lightPts(b.g,EN,0xff3030,6);lightPts(b.g,AL,0xffffff,5);});})();
 /* ---------- Fase 3 · 1: cubiertas con vida ---------- */
-const PARKED=[],PKT={makeF18:'f18',makeEF:'ef',makeSH:'sh',makeC101:'c101',makePC21:'pc21'};function parkedPlane(make,o){const p=make(o||{});const q={p,make};PARKED.push(q);{const t=PKT[make.name];q.t=t;if(t&&GLC[GLM[t].u])q.up=upgradePlane(p,t,{lite:1});}(p.fl||[]).forEach(f=>f.parent&&f.parent.remove(f));if(p.gear)p.gear.visible=true;if(p.hook)p.hook.visible=false;if(p.cs&&p.cs.fold)p.cs.fold();p.g.position.y=p.gearH||2.5;return p.g;}
+const PARKED=[],PKT={makeF18:'f18',makeEF:'ef',makeSH:'sh',makeC101:'c101',makePC21:'pc21',makeHarrier:'av8',makeF5:'f5'};function parkedPlane(make,o){const p=make(o||{});const q={p,make};PARKED.push(q);{const t=PKT[make.name];q.t=t;if(t&&GLC[GLM[t].u])q.up=upgradePlane(p,t,{lite:1});}(p.fl||[]).forEach(f=>f.parent&&f.parent.remove(f));if(p.gear)p.gear.visible=true;if(p.hook)p.hook.visible=false;if(p.cs&&p.cs.fold)p.cs.fold();p.g.position.y=p.gearH||2.5;return p.g;}
 function makeHelo(c){const g=new THREE.Group(),m=mat(c||0x6c757b),dk=mat(0x24282c),gl=mat(0x10202c);
   g.add(fus([[-4.2,0],[-3.9,.5],[-3.3,.95],[-2,1.15],[1,1.15],[2.4,.85],[3.4,.4]],m,.95,1.1));
   const nose=box(1.5,.9,1.4,gl,0,.35,-3.2);g.add(nose);
@@ -1248,9 +1253,10 @@ function lensUpdate(){const L=lincoln.lens;let dev=0,show=false;if(ship===lincol
   L.ball.position.y=show?clamp(dev,-1.5,1.5)*1.2:0;L.ball.material.color.setHex(show&&dev<-1?0xff2020:0xffb000);const wo=waveoff>0&&Math.sin(wt*12)>0;L.waves.forEach(w=>w.visible=wo);}
 function papiUpdate(){if(mode!=='base'||!plane)return;ship.papi.forEach(m=>{const wp=m.getWorldPosition(V()),d=Math.hypot(plane.position.x-wp.x,plane.position.z-wp.z),ang=Math.atan2(plane.position.y-wp.y,d)*R2D;m.material.color.setHex(ang>m.th?0xffffff:0xff2020);});}
 const ORD={follow:'Dron: en formación contigo',attack:'Dron: ataca al enemigo más cercano',watch:'Dron: vigila esta zona y marca contactos'};
+function droneSay(t,d){toast('Dron: '+t,d||2);radio('Dron',t);}
 function cycleDrone(){if(!drone||state==='menu')return;drone.order={follow:'attack',attack:'watch',watch:'follow'}[drone.order];
-  if(drone.order==='watch')drone.c.copy(plane.position).setY(Math.max(plane.position.y,1500));if(drone.order==='attack'&&drone.msl<=0){drone.order='watch';drone.c.copy(plane.position).setY(1500);toast('Dron sin misiles: solo puede seguir o vigilar',2);}
-  else toast(ORD[drone.order],2);setDroneBtn();}
+  if(drone.order==='watch')drone.c.copy(plane.position).setY(Math.max(plane.position.y,1500));if(drone.order==='attack'&&drone.msl<=0){drone.order='watch';drone.c.copy(plane.position).setY(1500);droneSay('Sin misiles. Vigilo esta zona y marco contactos.',2.5);}
+  else droneSay({follow:'Recibido, en formación a su derecha.',attack:'Recibido, voy a por el enemigo más cercano.',watch:'Recibido, vigilo esta zona y marco contactos.'}[drone.order],2.5);setDroneBtn();}
 
 /* ---------- Inicio ---------- */
 function clearWorld(){if(wing2){scene.remove(wing2.g);wing2=null;}wing2T.alive=false;if(tanker){scene.remove(tanker.g);tanker.hose.forEach(h=>scene.remove(h));tanker.dro.forEach(d=>scene.remove(d));tanker=null;}bombs.forEach(b=>scene.remove(b.m));bombs.length=0;friends.forEach(f=>scene.remove(f));friends.length=0;enemies.forEach(o=>scene.remove(o.g));enemies.length=0;[...bullets,...msls].forEach(o=>scene.remove(o.m));bullets.length=msls.length=0;
@@ -1687,11 +1693,13 @@ function claexCheck(){if(mode!=='claex'||state==='over'||state==='end')return;co
   if(!alive&&tgtIdx>=3)endGame('Pruebas completadas',()=>report.join('\n'),2.5);else if(left===0&&!fl&&alive)endGame('Pruebas terminadas',()=>'Sin misiles.\n'+report.join('\n'),2.5);}
 function dropFlares(){if(state!=='fly'||mode==='rings'||mode==='claex'||mode==='base'||opt.practice)return;if(flares<=0){toast('Sin bengalas',1);return;}flares-=3;flareT=1.6;sfx('flare');
   for(let i=0;i<3;i++)emit(fire,plane.position,vel.clone().multiplyScalar(.3).add(V().set((Math.random()-.5)*30,-12,(Math.random()-.5)*30)),2.2,1.4,.5,0xfff0b0,1);}
-function kill(t){t.alive=false;kills++;boom(t.pos.clone(),35);scene.remove(t.g);if(lock.t===t){lock.t=null;lock.locked=false;}
+function killSay(t,by){const left=enemies.filter(e=>e.alive&&!!e.ground===!!t.ground).length,q=left?' Quedan '+left+'.':(t.ground?' No quedan objetivos.':' No quedan bandidos.'),w=wing2&&wing2.alive;
+  if(by==='wing')wingSay('Dos, '+(t.ground?'objetivo destruido.':'derribo confirmado.')+q);else if(by==='drone')droneSay((t.ground?'Objetivo destruido.':'Blanco abatido.')+q,2.5);else if(w)setTimeout(()=>{if(wing2&&wing2.alive)wingSay((t.ground?'Buen impacto.':'Buen derribo.')+q);},900);return q;}
+function kill(t,by){t.alive=false;kills++;boom(t.pos.clone(),35);scene.remove(t.g);if(lock.t===t){lock.t=null;lock.locked=false;}
   if(t.kind==='target'){tgtIdx++;if(tgtIdx<3)claexT=4;else claexCheck();return;}
-  if(t.ground){toast(t.obj?'¡Objetivo destruido!':'Destruido',1.5);agCheck();return;}toast('¡Derribado!',1.5);
+  const kq=killSay(t,by),who=by==='wing'?' (Dos)':by==='drone'?' (dron)':'';if(t.ground){toast((t.obj?'¡Objetivo destruido!':'Destruido')+who+kq,2);agCheck();return;}toast('¡Derribado!'+who+kq,2);
   if(enemies.every(e=>!e.alive)&&state!=='over'&&state!=='end'){if(mode==='free')endGame('Misión cumplida','4 derribos en '+fmt(elapsed)+'.',1.5);else{setPhase('ret');toast('Agresores derribados. Vuelve al barco',3);}}}
-function damage(t,d){if(!t.alive)return;t.hp-=d;if(t.hp<=0)kill(t);}
+function damage(t,d,by){if(!t.alive)return;t.hp-=d;if(t.hp<=0)kill(t,by);}
 function hitPlayer(d){if(dead||ejected)return;d*=TL().dmgK;sfx('hit');vib(d>=50?400:60);health=Math.max(0,health-d);$('hit').style.opacity=1;hitT=.15;const SY=['eng','hyd','gear','leak','wing'];
   if(d>=50){damageSys(SY[Math.floor(Math.random()*5)]);if(Math.random()<.5)damageSys(SY[Math.floor(Math.random()*5)]);}else if(Math.random()<.12)damageSys(SY[Math.floor(Math.random()*5)]);
   if(health<=0&&!doomed){health=0;doomed=6;dmg.eng=T.hover?1:2;dmg.hyd=1;dmg.any=1;toast('¡Avión irrecuperable! ¡EYECTA!',4);speak('Eyecta, eyecta.');}}
@@ -1921,7 +1929,7 @@ function fly(dt){
   const p=plane.position;
   for(const s of ships){const L=toLocal(s,p);if(s.island(L.x,L.z,L.y))return die('Has chocado contra la isla del '+s.name+'.');
     if(s.onDeck(L.x,L.z)&&L.y<s.surf(L.z)+P.gearH&&L.y>-5)return touchdown(s,L);}
-  if(p.y<Math.max(heightAt(p.x,p.z),2)+(hover?P.gearH:3))return die(p.y<6?'Has caído al mar.':'Te has estrellado.');
+  if(p.y<Math.max(heightAt(p.x,p.z),2)+(hover?P.gearH:Math.min(3,P.gearH+.45)))return die(p.y<6?'Has caído al mar.':'Te has estrellado.');
   const far=Math.max(Math.abs(p.x),Math.abs(p.z)),out=far>26000;$('bound').style.display=out?'block':'none';if(out)$('bound').textContent='Fuera de zona: vira rumbo '+String(Math.round(((Math.atan2(-p.x,p.z)*R2D+360)%360)/10)*10%360).padStart(3,'0');if(far>29500)return die('Has salido de la zona de operaciones.');
   if(mode==='rings'){const r=rings[ringIdx],a=prevPos.clone().sub(r.c).dot(r.n),b=p.clone().sub(r.c).dot(r.n);
     if(a<0&&b>=0&&prevPos.clone().lerp(p,a/(a-b)).distanceTo(r.c)<30){ringIdx++;paintRings();if(ringIdx>=rings.length)endGame('Circuito completado','Tiempo: '+fmt(elapsed)+'. ¿Lo mejoras?',.3);}}}
@@ -1961,7 +1969,8 @@ function wingSay(t2){radio(wingCS(),t2);}
 function spawnWing(){const m=T.make(),g=new THREE.Group();if(m.gear)m.gear.visible=false;if(m.hook)m.hook.visible=false;g.add(m.g);g.position.copy(plane.position).add(V().set(-45,0,40).applyQuaternion(plane.quaternion));g.quaternion.copy(plane.quaternion);scene.add(g);
   wing2={g,body:m.g,pos:g.position,bank:0,spd:Math.max(speed,150),vel:V(),order:'form',ir:2,rad:2,cool:0,gcool:0,hp:100,alive:true};wing2T.pos=wing2.pos;wing2T.alive=true;setTimeout(()=>{if(wing2&&wing2.alive)wingSay('Dos, en formación a tu izquierda.');},1500);}
 function updWing(dt){const w=wing2,pf=fwdOf(plane.quaternion);let des,spd,tgt=null,bd=1e9;
-  if(w.order!=='form')enemies.forEach(e=>{if(!e.alive||(e.ground&&w.order!=='attack'))return;const x=e.pos.distanceTo(w.order==='cover'?plane.position:w.pos);if((w.order==='attack'||x<6000)&&x<bd){bd=x;tgt=e;}});
+  if(w.order!=='form')enemies.forEach(e=>{if(!e.alive||(e.ground&&w.order!=='attack'))return;const x=e.pos.distanceTo(w.order==='cover'?plane.position:w.pos)+(msls.some(m=>m.owner==='player'&&m.t===e)?5000:0);if((w.order==='attack'||x<6000)&&x<bd){bd=x;tgt=e;}});
+  w.sayT=(w.sayT||0)-dt;if(tgt&&tgt!==w.lastT&&w.sayT<=0){w.lastT=tgt;w.sayT=8;const n=enemies.filter(e=>e.alive&&!!e.ground===!!tgt.ground).length;wingSay('Dos, voy a por '+(tgt.ground?'un objetivo en tierra':'un bandido')+' a '+(km=>km+(km>1?' kilómetros':' kilómetro'))(Math.max(1,Math.round(tgt.pos.distanceTo(w.pos)/1000)))+'. Hay '+n+(tgt.ground?(n>1?' objetivos.':' objetivo.'):(n>1?' bandidos.':' bandido.')));}
   if(tgt){const to=tgt.pos.clone().sub(w.pos),dist=to.length(),f0=fwdOf(w.g.quaternion),ang=f0.angleTo(to);des=tgt.pos.clone().addScaledVector(tgt.vel||V(),Math.min(dist/700,2)).sub(w.pos).normalize();spd=240;w.cool-=dt;w.gcool-=dt;
     if(!tgt.ground){if(w.rad>0&&w.cool<=0&&dist<15000&&dist>4000&&ang<.3){launchMsl(w.pos.clone().addScaledVector(f0,8),f0,w.spd,tgt,'wing',{vmax:1300,turn:2,life:40,dmg:100});w.rad--;w.cool=5;wingSay('Fox 3.');}
       else if(w.ir>0&&w.cool<=0&&dist<6000&&dist>700&&ang<.25){launchMsl(w.pos.clone().addScaledVector(f0,8),f0,w.spd,tgt,'wing',{vmax:950,turn:3.5,life:15,dmg:100});w.ir--;w.cool=4;wingSay('Fox 2.');}}
@@ -2019,12 +2028,12 @@ function updTanker(dt){const t=tanker;t.a+=t.spd/t.R*dt;t.g.position.set(t.c.x+M
   if(mode==='aar'&&t.conn<0&&fuel>=.9&&state==='fly')endGame('Repostaje completado','Has cargado combustible hasta el '+Math.round(fuel*100)+'% en '+fmt(elapsed)+'.',1.5);}
 function updDrone(dt){const d=drone,pf=fwdOf(plane.quaternion);let des,spd;
   if(d.order==='attack'){let tgt=null,bd=1e9;enemies.forEach(e=>{if(e.alive&&e.det){const x=e.pos.distanceTo(d.pos);if(x<bd){bd=x;tgt=e;}}});
-    if(!tgt){d.order='follow';setDroneBtn();toast('Dron: sin blancos, vuelve a formación',2);}
+    if(!tgt){d.order='follow';setDroneBtn();droneSay('Sin blancos detectados. Vuelvo a formación.');}
     else{des=tgt.pos.clone().sub(d.pos).normalize();spd=240;d.cool-=dt;const f0=fwdOf(d.g.quaternion);
-      if(d.msl>0&&d.cool<=0&&bd<3500&&f0.angleTo(des)<.3){launchMsl(d.pos.clone().addScaledVector(f0,6),f0,spd,tgt,'drone');d.msl--;d.cool=4;toast('Dron: misil fuera',1.5);
-        if(d.msl===0){d.order='follow';setDroneBtn();setTimeout(()=>toast('Dron sin misiles: vuelve a formación',2),1600);}}}}
+      if(d.msl>0&&d.cool<=0&&bd<3500&&f0.angleTo(des)<.3){launchMsl(d.pos.clone().addScaledVector(f0,6),f0,spd,tgt,'drone');d.msl--;d.cool=4;droneSay('Misil fuera. Me quedan '+d.msl+'.',1.5);
+        if(d.msl===0){d.order='follow';setDroneBtn();setTimeout(()=>droneSay('Sin misiles. Vuelvo a formación.'),2500);}}}}
   if(d.order==='watch'){const a=Math.atan2(d.pos.z-d.c.z,d.pos.x-d.c.x)+.35,t=V().set(d.c.x+Math.cos(a)*1500,d.c.y,d.c.z+Math.sin(a)*1500);des=t.sub(d.pos).normalize();spd=170;
-    if(!d.said&&enemies.some(e=>e.alive&&e.pos.distanceTo(d.pos)<9000&&e.pos.distanceTo(plane.position)>6000)){d.said=true;toast('Dron: contacto enemigo marcado',2);}}
+    if(!d.said&&enemies.some(e=>e.alive&&e.pos.distanceTo(d.pos)<9000&&e.pos.distanceTo(plane.position)>6000)){d.said=true;{const n=enemies.filter(e=>e.alive&&e.pos.distanceTo(d.pos)<9000).length;droneSay('Contacto: '+n+(n>1?' enemigos':' enemigo')+' cerca de mi zona. Marcados en el mapa.',2.5);}}}
   if(d.order==='follow'){const slot=plane.position.clone().add(V().set(35,0,45).applyQuaternion(plane.quaternion)),to=slot.sub(d.pos),ahead=to.dot(pf);
     des=pf.clone().add(to.clone().multiplyScalar(Math.min(to.length()/150,3)/Math.max(to.length(),1))).normalize();spd=Math.max(80,speed+clamp(ahead*.6,-60,140));}
   const gh=Math.max(heightAt(d.pos.x,d.pos.z),2);if(d.pos.y<gh+200)des.y=Math.max(des.y,.5);des.normalize();
@@ -2045,7 +2054,7 @@ function updMissiles(dt){playerT.pos=plane.position;playerT.alive=!dead&&state==
     s.spd=Math.min(s.spd+(s.vmax>1000?420:300)*dt,s.vmax);s.m.position.addScaledVector(s.dir,s.spd*dt);faceTo(s.m,s.m.position.clone().add(s.dir));s.life-=dt;
     emit(smoke,s.m.position,V(),2.5,.8,4,0xe6e6e6,.5);if(s.tel){s.tel.t+=dt;s.tel.vmax=Math.max(s.tel.vmax,s.spd);if(s.tel.tg&&s.tel.tg.alive)s.tel.minD=Math.min(s.tel.minD,s.m.position.distanceTo(s.tel.tg.pos));}
     let done=false;const list=s.owner==='enemy'?[playerT,wing2T]:enemies;
-    for(const t of list)if(t.alive&&segHit(a,s.m.position,t.pos,t.r+5)){if(t.isPlayer)hitPlayer(60);else if(t.isWing)wingHit(60);else{damage(t,(s.spec&&s.spec.dmg)||100);s.hitT=true;}done=true;break;}
+    for(const t of list)if(t.alive&&segHit(a,s.m.position,t.pos,t.r+5)){if(t.isPlayer)hitPlayer(60);else if(t.isWing)wingHit(60);else{damage(t,(s.spec&&s.spec.dmg)||100,s.owner);s.hitT=true;}done=true;break;}
     if(!done&&s.t&&s.t.flare&&s.m.position.distanceTo(s.t.pos)<25){boom(s.m.position,10);done=true;}
     if(!done&&(s.m.position.y<heightAt(s.m.position.x,s.m.position.z)-8||s.m.position.y<2)){boom(s.m.position,12);done=true;}
     if(done||s.life<=0){scene.remove(s.m);msls.splice(i,1);if(mslCam.m===s){mslCam.m=null;mslCam.hold=2.5;}if(s.tel)telDone(s,!!s.hitT);}}}
@@ -2053,7 +2062,8 @@ function updLock(dt){if(mode==='rings'||mode==='base'||opt.practice||state!=='fl
   const dir=fwdOf(plane.quaternion),W=wpn[wi],ag=W.k==='ag',rng=W.rng||12000;let best=null,ba=W.cone||.3;
   if(W.g==='cruise'){best=enemies.find(e=>e.alive&&e.obj&&e.ground&&e.pos.distanceTo(plane.position)<rng)||null;if(best&&best!==lock.t){lock.t=best;lock.time=1;}}
   else for(const t of enemies){if(!t.alive||!t.det)continue;if(ag){if(!t.ground||(W.tgt&&!W.tgt.includes(t.kind))||(W.g==='arm'&&!t.radarOn))continue;}else if(t.ground)continue;
-    const to=t.pos.clone().sub(plane.position);if(to.length()>rng)continue;const an=dir.angleTo(to);if(an<ba){ba=an;best=t;}}
+    const to=t.pos.clone().sub(plane.position);if(to.length()>rng)continue;const an=dir.angleTo(to)+(msls.some(m=>m.owner==='player'&&m.t===t)?(W.cone||.3):0);if(an<ba){ba=an;best=t;}}
+  if(!best&&W.g!=='cruise'){ba=W.cone||.3;for(const t of enemies){if(!t.alive||!t.det||(ag?!t.ground:t.ground))continue;const to=t.pos.clone().sub(plane.position);if(to.length()>rng)continue;const an=dir.angleTo(to);if(an<ba){ba=an;best=t;}}}
   if(best!==lock.t){lock.t=best;lock.time=0;}else if(best)lock.time+=dt;
   const was=lock.locked;lock.locked=!!best&&lock.time>=.8;if(lock.locked&&!was){toast('Blanco fijado',1);beep(1500);}}
 
