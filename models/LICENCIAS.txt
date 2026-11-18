@@ -1,0 +1,12 @@
+Modelos 3D de este directorio: proceden de aeronaves de FlightGear publicadas bajo la licencia GNU GPL versión 2
+(hangar FGMEMBERS, https://github.com/FGMEMBERS), convertidos de AC3D a glTF con herramientas/ac2gltf.py y con
+libreas retocadas. Se redistribuyen bajo la misma licencia GPL-2.
+
+l13.json    Let L-13 Blanik        https://github.com/FGMEMBERS/L13
+g103.json   Grob G 103 Twin Astir  https://github.com/FGMEMBERS/G103
+cl415.json  Bombardier/Canadair 415 https://github.com/FGMEMBERS/Bombardier-415 (librea original de Gary Brown; modelo de Emmanuel Baranger)
+a400.json   Airbus A400M           https://github.com/FGMEMBERS/A400M
+a321.json   Airbus A321            https://github.com/FGMEMBERS/A321
+rallye.json Morane-Saulnier Rallye MS.893 https://github.com/FGMEMBERS/Rallye-MS893 (sin interior)
+Los modelos anteriores (f18, ef, av8, f5, c101, pc21) se describen en CAMBIOS.md.
+Texto de la licencia: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
