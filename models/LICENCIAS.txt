@@ -10,3 +10,9 @@ a321.json   Airbus A321            https://github.com/FGMEMBERS/A321
 rallye.json Morane-Saulnier Rallye MS.893 https://github.com/FGMEMBERS/Rallye-MS893 (sin interior)
 Los modelos anteriores (f18, ef, av8, f5, c101, pc21) se describen en CAMBIOS.md.
 Texto de la licencia: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ka6.json    Schleicher Ka 6CR      https://github.com/FGMEMBERS/Ka6 (GPL)
+ls4.json    Rolladen-Schneider LS4 https://github.com/FGMEMBERS/LS4 (GPL-2)
+dg101.json  Glaser-Dirks DG-101G (base del DG-400; motor por código) https://github.com/FGMEMBERS/DG-101G, autor Nikolaus Kerner. El repositorio no trae archivo de licencia propio; FGMEMBERS solo aloja aviones de FlightGear con licencia GPL.
+ef_ck.json  Cabina 3D del EF2000 (cockpit, paneles, pantallas, HUP, palanca) https://github.com/FGMEMBERS/EF2000 (GPL-2), juntada con herramientas/ensamblar_ac.py
+pc21_ck.json Cabina 3D delantera del PC-21 (cabina, instrumentos, CHDD, iSFD, palanca, gases, pedales, tren) https://github.com/FGMEMBERS/PC-21 (GPL-3)
+c101_ck.json Interior de la cabina del C-101 (cubeta, panel, parasol, suelo, vigas) https://github.com/FGMEMBERS/C-101 (GPL-3), con el panel de relojes del juego encima

@@ -91,6 +91,8 @@ body.lt #ped{left:auto;right:12px}
 .rl b{color:var(--hud)}.rl.pl{border-left-color:#6ec1ff}.rl.pl b{color:#6ec1ff}.rl.t{border-left-color:var(--gold);color:var(--gold)}
 #hit{position:fixed;inset:0;pointer-events:none;background:radial-gradient(transparent 50%,rgba(200,16,46,.55));opacity:0;transition:opacity .35s}
 .overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;padding-top:calc(env(safe-area-inset-top,0px) + 20px);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 20px);background:rgba(10,20,30,.35);overflow-y:auto}
+#plan{z-index:80;background:rgba(6,14,22,.9);align-items:flex-start;overflow-y:auto}#plan .card{max-width:900px;padding:14px;margin:auto}#plan h1{font-size:20px;margin:0 0 8px}#plC{position:static!important;inset:auto!important;z-index:auto!important;flex:none;width:min(100%,50vh);aspect-ratio:1;border-radius:10px;display:block;margin:0 auto;background:#0b1620}@media(orientation:landscape){#plC{width:min(48%,calc(100vh - 80px))}}@media(orientation:portrait){#plan .card{max-width:460px}}#plObj{font-size:14px;line-height:1.35;margin:0 0 8px;font-weight:600}#plTab{width:100%;border-collapse:collapse;font-size:13px}#plTab td,#plTab th{padding:4px 5px;border-bottom:1px solid rgba(255,255,255,.1);text-align:left;vertical-align:top}#plTab th{color:var(--gold);font-size:11px;font-weight:800}#plTab tr.cur td{background:rgba(255,211,77,.12)}#plTab tr.ok td{opacity:.5}#plTab small{display:block;opacity:.65;font-size:11px}#plTh{font-size:12.5px;line-height:1.35;margin:8px 0 10px;color:#ffb3b3;white-space:pre-line}
+#fcst{z-index:80;background:rgba(6,14,22,.88)}#fcst .card{padding:14px}#fcst h1{font-size:20px;margin:0 0 8px}#fcst .card{max-width:860px}.fcRow{display:flex;gap:14px;align-items:flex-start}.fcRow>div{flex:1;min-width:0}@media(orientation:portrait){.fcRow{flex-direction:column;align-items:stretch}#fcst .card{max-width:440px}}#fcC{position:static!important;inset:auto!important;z-index:auto!important;flex:none;width:min(100%,46vh);margin:0 auto;aspect-ratio:1;border-radius:10px;display:block;background:#0b1620}@media(orientation:landscape){#fcC{width:min(46%,calc(100vh - 90px))}#fcst h1{margin-bottom:4px}}#fcLeg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;margin:8px 0 2px}#fcLeg i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px}#fcTxt{font-size:13px;line-height:1.4;margin:6px 0 10px}#bFc{font-size:11px;font-weight:800}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;max-width:440px;width:100%;backdrop-filter:blur(6px);margin:auto}
 h1{margin:0;font-size:36px;font-weight:800;line-height:1}
 .flag{display:flex;height:6px;width:72px;margin:10px 0 12px;border-radius:3px;overflow:hidden}
@@ -108,6 +110,12 @@ p{margin:0 0 12px;color:var(--muted);font-size:17px;line-height:1.35}
 #obj.tut{background:rgba(241,191,0,.9);color:#111;text-shadow:none;font-size:14px;max-width:calc(100vw - 230px)}
 .le{font-size:15px;color:var(--ink);border-top:1px solid var(--line);padding:7px 0;line-height:1.3}.le small{color:var(--muted);display:block}.le b{color:var(--gold)}
 .sec{margin:14px 0 8px;font-size:15px;font-weight:800;color:var(--gold);letter-spacing:.04em}
+.secH{display:flex;align-items:center;gap:10px;width:100%;margin:8px 0 6px;padding:12px 14px;font:inherit;font-size:15px;font-weight:800;letter-spacing:.04em;color:var(--gold);background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;cursor:pointer;text-align:left}
+.secH span{flex:1}.secH i{font-style:normal;color:var(--muted);font-weight:700}.secH:after{content:'▸';color:var(--gold);transition:transform .15s}.secH.on:after{transform:rotate(90deg)}
+.secB{padding-left:4px}
+.blkH{display:flex;align-items:center;gap:10px;width:100%;margin:16px 0 6px;padding:14px 16px;font:inherit;font-size:19px;font-weight:900;letter-spacing:.06em;color:var(--ink);background:rgba(255,255,255,.09);border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:12px;cursor:pointer;text-align:left}
+.blkH span{flex:1}.blkH i{font-style:normal;color:var(--muted);font-weight:700;font-size:15px}.blkH:after{content:'▸';color:var(--gold);transition:transform .15s}.blkH.on:after{transform:rotate(90deg)}
+.blkB{padding-left:10px;border-left:2px solid rgba(255,255,255,.08);margin-left:6px}#mSearch{width:100%;box-sizing:border-box;margin:6px 0 4px;padding:12px 14px;font:inherit;font-size:17px;color:var(--ink);background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:12px;outline:none}#mSearch:focus{border-color:var(--gold)}
 .pick{display:block;width:100%;text-align:left;font:inherit;color:var(--ink);background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:9px;cursor:pointer}
 .pick:active,.pick:focus-visible{border-color:var(--gold);outline:none}
 .pick b{display:block;font-size:20px;font-weight:800}.pick span{color:var(--muted);font-size:15px}
@@ -153,14 +161,14 @@ body.cmb #bGun,body.cmb #bMsl{border-color:#F1BF00;background:rgba(60,40,0,.5)}
 <div id="zone"></div>
 <canvas id="hudc"></canvas>
 <div id="hit"></div><div id="gloc"></div>
-<div id="top" class="hide"><button class="tb" id="bExit">Salir</button><button class="tb" id="bView">Vista</button><button class="tb" id="bSnd">Sonido</button><button class="tb" id="bMap">Mapa</button><button class="tb" id="bFold">Mandos</button><button class="tb" id="bEj">Eyectar</button></div>
+<div id="top" class="hide"><button class="tb" id="bExit">Salir</button><button class="tb" id="bView">Vista</button><button class="tb" id="bSnd">Sonido</button><button class="tb" id="bMap">Mapa</button><button class="tb" id="bPlan">Plan</button><button class="tb" id="bFold">Mandos</button><button class="tb" id="bEj">Eyectar</button></div>
 <div id="keysH" class="hide"><h3>Teclas y ratón (F1 para cerrar)</h3><div><p><b>Flechas / WASD</b> palanca (progresiva)</p><p><b>Q / E</b> pedales</p><p><b>R / F</b> más / menos potencia</p><p><b>Rueda del ratón</b> potencia</p><p><b>1 … 9</b> potencia: 1 ralentí, 5 crucero, 9 militar</p><p><b>0</b> postcombustión</p><p><b>Espacio</b> cañón</p><p><b>M</b> misil o bomba</p><p><b>Tabulador / X</b> cambiar de arma (o acción)</p><p><b>B</b> bengalas</p><p><b>G</b> tren</p><p><b>L</b> flaps</p><p><b>K</b> aerofreno</p><p><b>U / J</b> compensador</p><p><b>, / .</b> toberas del Harrier: 0°, 50°, 90°, 98°</p><p><b>N / H</b> toberas de 10 en 10</p><p><b>V</b> vista</p><p><b>O</b> dron</p><p><b>P</b> eyectar (dos veces)</p><p><b>Ratón</b> (menú: Mando → Ratón): mover = palanca, clic izquierdo = cañón, clic derecho = misil</p></div></div>
 <canvas id="mapc" class="hide"></canvas>
 <div id="obj" class="hide"></div>
 <div id="thr" class="hide"><div id="thrFill"></div><div id="thrPC">PC</div><div id="thrMil">MIL</div><div id="thrIdle">IDLE</div><div id="thrH"><span id="thrLbl">0%</span></div></div>
 <div id="btns" class="hide">
   <button class="rb" id="bAct"></button><button class="rb" id="bDrn"></button>
-  <button class="rb" id="bGear"></button>
+  <button class="rb" id="bGear"></button><button class="rb hide" id="bFc">PREV</button>
   <button class="rb" id="bFlr"></button><button class="rb" id="bMsl"></button>
   <button class="rb" id="bGun"></button><button class="rb" id="bRad"></button>
 </div>
@@ -179,19 +187,7 @@ body.cmb #bGun,body.cmb #bMsl{border-color:#F1BF00;background:rgba(60,40,0,.5)}
     <label class="inv" style="font-size:18px;color:var(--ink);font-weight:800">Nivel <select id="lvlSel"><option value="p">Principiante</option><option value="m">Medio</option><option value="a">Avanzado</option></select></label>
     <p id="lvlDesc" class="hint" style="margin-bottom:10px"></p>
     <p>Elige misión o práctica.</p>
-    <div class="sec">CAMPAÑA</div>
-    <button class="pick" data-m="camp"><b>Operación Escudo</b><span>6 misiones encadenadas con historia. Lo que hagas en una cambia la siguiente.</span></button>
-    <div class="sec">MISIONES DE COMBATE (con dron escolta XQ-58)</div>
-    <button class="pick" data-m="lincoln"><b>USS Abraham Lincoln</b><span>F/A-18E Super Hornet. Catapulta, combate y apontaje con cable.</span></button>
-    <button class="pick" data-m="jc1"><b>Juan Carlos I (L-61)</b><span>AV-8B Harrier II de la Armada. Despegue por rampa, combate y aterrizaje vertical.</span></button>
-    <button class="pick" data-m="free"><b>Combate libre</b><span>C.15 Hornet, C.16 Eurofighter o F-5M, empezando en vuelo.</span></button>
-    <button class="pick" data-m="claex"><b>CLAEX: pruebas de misiles</b><span>C.15 o C.16 contra blancos aéreos. Cámara de misil y telemetría.</span></button>
-    <div class="sec">MISIONES AIRE-TIERRA</div>
-    <button class="pick" data-m="ag-taurus"><b>Ataque de precisión con Taurus</b><span>C.15 (o C.16, en integración). Centro de mando a 30 km defendido por SAM.</span></button>
-    <button class="pick" data-m="ag-cas"><b>Apoyo a tropas (CAS)</b><span>Columna blindada avanza hacia tropas propias. Bombas guiadas por láser.</span></button>
-    <button class="pick" data-m="ag-sead"><b>Supresión de defensas (SEAD)</b><span>Destruye 3 radares SAM con misiles antirradiación.</span></button>
-    <button class="pick" data-m="ag-ship"><b>Ataque antibuque</b><span>Fragata y lanchas rápidas: Harpoon, Maverick o cohetes APKWS.</span></button>
-    <div class="sec">PRÁCTICAS SIN COMBATE</div>
+    <div class="blk">APRENDER</div>
     <div class="sec">ESCUELA DE VUELO (instructor con voz, todo manual)</div>
     <button class="pick" data-m="l-to"><b>Lección 1: despegue</b><span>C.15 en Torrejón. Flaps, potencia, rotación, tren y subida, paso a paso.</span></button>
     <button class="pick" data-m="l-ld"><b>Lección 2: aterrizaje en pista</b><span>C.15 en final a Torrejón. Senda, velocidad y toma, con correcciones en directo.</span></button>
@@ -210,17 +206,28 @@ body.cmb #bGun,body.cmb #bMsl{border-color:#F1BF00;background:rgba(60,40,0,.5)}
     <button class="pick" data-m="p-tj"><b>Base Aérea de Torrejón</b><span>C.15 Hornet del Ala 12. Despegue y aterrizaje en pista.</span></button>
     <button class="pick" data-m="p-ab"><b>Base Aérea de Albacete</b><span>C.16 Eurofighter del Ala 14. Despegue y aterrizaje en pista.</span></button>
     <button class="pick" data-m="rings"><b>Aros contrarreloj</b><span>12 aros con C.15, C.16, F-5M, Saeta II, C-101 o PC-21.</span></button>
-    <div class="sec">VUELO SIN MOTOR</div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:2px 0 8px;font-size:14px"><label>Planeador <select id="glType"><option value="blanik">Blanik L-13 EC-CCB (biplaza)</option><option value="swallow">Slingsby Swallow EC-BKS</option><option value="pirat">SZD-30 Pirat EC-DPN</option><option value="twin">Grob G 103 Twin Astir EC-GTA (biplaza)</option><option value="dg400">DG-400 EC-HDG (motovelero)</option></select></label><label>Suelta del remolque <select id="glRel"><option value="auto">La de la misión</option><option value="400">400 m</option><option value="600">600 m</option><option value="1000">1.000 m</option><option value="motor">Despegue con motor (DG-400)</option></select></label><label>Remolcador <select id="glTug"><option value="do27">Dornier Do 27</option><option value="rallye">Morane Rallye</option></select></label></div>
-    <button class="pick" data-m="p-gl8"><b>DG-400: despegue autónomo</b><span>Corral de Ayllón. Despega con tu motor, sube a 600 m, para y recoge el motor, y a planear en térmicas hasta el circuito.</span></button>
-    <button class="pick" data-m="p-gl9"><b>DG-400: rearranque en vuelo</b><span>Lejos de Corral, bajo y en descendencia: saca el motor con altura, arráncalo y vuelve a casa.</span></button>
-    <button class="pick" data-m="p-gl7"><b>Travesía Corral → La Iglesuela</b><span>Viento norte. Despegue por la 36 de Corral, térmicas, ladera del Guadarrama y onda de Gredos hasta tomar en la 04 de El Tiétar (unos 22 km).</span></button>
-    <button class="pick" data-m="p-gl1"><b>Remolque y circuito</b><span>Corral de Ayllón. Remolque con la Dornier o la Rallye, suelta a 600 m, vuelo libre y circuito de tráfico para aterrizar en la 18.</span></button>
-    <button class="pick" data-m="p-gl2"><b>Despegue a torno</b><span>Corral de Ayllón. Lanzamiento con el torno: aceleración fuerte, subida a 40° y suelta arriba a unos 350 m. Después, circuito y toma.</span></button>
-    <button class="pick" data-m="p-gl5"><b>Onda en Villacastín</b><span>Viento sureste fuerte sobre el Guadarrama. Remolque a través del rotor hasta la primera onda, suelta sobre las crestas y sube a 3.000 m sobre el campo. Lenticulares, rotor y vuelta con cuidado.</span></button>
-    <button class="pick" data-m="p-gl6"><b>Onda en La Iglesuela (El Tiétar)</b><span>Viento norte sobre Gredos. Despegue por la 04, remolque hasta la onda al sur de la sierra y sube a 3.000 m sobre el campo.</span></button>
-    <button class="pick" data-m="p-gl4"><b>Vuelo de ladera</b><span>Corral de Ayllón con viento sur de 40 km/h. Remolque hasta la cara sur de la sierra, al suroeste del campo. Aguanta 5 minutos en ladera y vuelve con cuidado del sotavento.</span></button>
-    <button class="pick" data-m="p-gl3"><b>Vuelo en térmica</b><span>Corral de Ayllón. Remolque a 600 m, busca los cúmulos, centra la térmica y sube a 1.200 m sobre el campo. Vuelta y toma en la 18. Mejor de día y despejado.</span></button>
+    <div class="sec">ESCUELAS DEL EJÉRCITO DEL AIRE</div>
+    <button class="pick" data-m="p-sj"><b>AGA San Javier: C-101 Aviojet</b><span>E.25 Mirlo de la Academia General del Aire. Despegue, circuito y toma.</span></button>
+    <button class="pick" data-m="p-sj2"><b>AGA San Javier: Pilatus PC-21</b><span>E.27, el turbohélice que sustituye al C-101 en la Academia.</span></button>
+    <button class="pick" data-m="p-pa"><b>Patrulla Águila (C-101)</b><span>Colores de la Patrulla Águila con humo rojo y amarillo (botón Humo en vuelo).</span></button>
+    <button class="pick" data-m="p-pa2"><b>Patrulla Águila (PC-21)</b><span>El PC-21 de la Academia con humo rojo y amarillo (botón Humo en vuelo).</span></button>
+    <button class="pick" data-m="p-pa3"><b>Patrulla Águila (Saeta II)</b><span>El Hürjet con colores de la Patrulla Águila y humo (botón Humo en vuelo).</span></button>
+    <button class="pick" data-m="p-ta"><b>Ala 23 Talavera la Real: F-5M</b><span>AE.9 Freedom Fighter, el reactor de la escuela de caza y ataque.</span></button>
+    <button class="pick" data-m="p-ta2"><b>Ala 23 Talavera: Saeta II (Hürjet)</b><span>AE.10, el supersónico biplaza que sustituirá al F-5 (llega desde 2028).</span></button>
+    <div class="blk">COMBATE</div>
+    <div class="sec">CAMPAÑA</div>
+    <button class="pick" data-m="camp"><b>Operación Escudo</b><span>6 misiones encadenadas con historia. Lo que hagas en una cambia la siguiente.</span></button>
+    <div class="sec">COMBATE AÉREO (con dron escolta XQ-58)</div>
+    <button class="pick" data-m="lincoln"><b>USS Abraham Lincoln</b><span>F/A-18E Super Hornet. Catapulta, combate y apontaje con cable.</span></button>
+    <button class="pick" data-m="jc1"><b>Juan Carlos I (L-61)</b><span>AV-8B Harrier II de la Armada. Despegue por rampa, combate y aterrizaje vertical.</span></button>
+    <button class="pick" data-m="free"><b>Combate libre</b><span>C.15 Hornet, C.16 Eurofighter o F-5M, empezando en vuelo.</span></button>
+    <button class="pick" data-m="claex"><b>CLAEX: pruebas de misiles</b><span>C.15 o C.16 contra blancos aéreos. Cámara de misil y telemetría.</span></button>
+    <div class="sec">AIRE-TIERRA</div>
+    <button class="pick" data-m="ag-taurus"><b>Ataque de precisión con Taurus</b><span>C.15 (o C.16, en integración). Centro de mando a 30 km defendido por SAM.</span></button>
+    <button class="pick" data-m="ag-cas"><b>Apoyo a tropas (CAS)</b><span>Columna blindada avanza hacia tropas propias. Bombas guiadas por láser.</span></button>
+    <button class="pick" data-m="ag-sead"><b>Supresión de defensas (SEAD)</b><span>Destruye 3 radares SAM con misiles antirradiación.</span></button>
+    <button class="pick" data-m="ag-ship"><b>Ataque antibuque</b><span>Fragata y lanchas rápidas: Harpoon, Maverick o cohetes APKWS.</span></button>
+    <div class="blk">MISIONES ESPECIALES</div>
     <div class="sec">PATRULLA MARÍTIMA</div>
     <button class="pick" data-m="p-mpa"><b>C-295 MPA: patrulla marítima</b><span>Despega de San Javier, identifica los barcos y caza un submarino con boyas y torpedos.</span></button>
     <div class="sec">TRANSPORTE Y DRONES</div>
@@ -232,14 +239,17 @@ body.cmb #bGun,body.cmb #bMsl{border-color:#F1BF00;background:rgba(60,40,0,.5)}
     <button class="pick" data-m="p-cl415"><b>Canadair CL-415 «Foca»</b><span>43 Grupo. Carga agua rozando el mar y apaga los 4 focos del incendio.</span></button>
     <button class="pick" data-m="p-dhc515"><b>DHC-515</b><span>El sustituto del Canadair, con cabina de pantallas. Misma misión.</span></button>
     <button class="pick" data-m="p-at802"><b>Air Tractor AT-802</b><span>Despega cargado y apaga un incendio pequeño con dos descargas.</span></button>
-    <div class="sec">ESCUELAS DEL EJÉRCITO DEL AIRE</div>
-    <button class="pick" data-m="p-sj"><b>AGA San Javier: C-101 Aviojet</b><span>E.25 Mirlo de la Academia General del Aire. Despegue, circuito y toma.</span></button>
-    <button class="pick" data-m="p-sj2"><b>AGA San Javier: Pilatus PC-21</b><span>E.27, el turbohélice que sustituye al C-101 en la Academia.</span></button>
-    <button class="pick" data-m="p-pa"><b>Patrulla Águila (C-101)</b><span>Colores de la Patrulla Águila con humo rojo y amarillo (botón Humo en vuelo).</span></button>
-    <button class="pick" data-m="p-pa2"><b>Patrulla Águila (PC-21)</b><span>El PC-21 de la Academia con humo rojo y amarillo (botón Humo en vuelo).</span></button>
-    <button class="pick" data-m="p-pa3"><b>Patrulla Águila (Saeta II)</b><span>El Hürjet con colores de la Patrulla Águila y humo (botón Humo en vuelo).</span></button>
-    <button class="pick" data-m="p-ta"><b>Ala 23 Talavera la Real: F-5M</b><span>AE.9 Freedom Fighter, el reactor de la escuela de caza y ataque.</span></button>
-    <button class="pick" data-m="p-ta2"><b>Ala 23 Talavera: Saeta II (Hürjet)</b><span>AE.10, el supersónico biplaza que sustituirá al F-5 (llega desde 2028).</span></button>
+    <div class="sec">VUELO SIN MOTOR</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:2px 0 8px;font-size:14px"><label>Planeador <select id="glType"><option value="blanik">Blanik L-13 EC-CCB (biplaza)</option><option value="swallow">Schleicher Ka 6CR EC-BKS</option><option value="pirat">Rolladen-Schneider LS4 EC-DPN</option><option value="twin">Grob G 103 Twin Astir EC-GTA (biplaza)</option><option value="dg400">DG-400 EC-HDG (motovelero)</option></select></label><label>Suelta del remolque <select id="glRel"><option value="auto">La de la misión</option><option value="400">400 m</option><option value="600">600 m</option><option value="1000">1.000 m</option><option value="motor">Despegue con motor (DG-400)</option></select></label><label>Remolcador <select id="glTug"><option value="do27">Dornier Do 27</option><option value="rallye">Morane Rallye</option></select></label></div>
+    <button class="pick" data-m="p-gl8"><b>DG-400: despegue autónomo</b><span>Corral de Ayllón. Despega con tu motor, sube a 600 m, para y recoge el motor, y a planear en térmicas hasta el circuito.</span></button>
+    <button class="pick" data-m="p-gl9"><b>DG-400: rearranque en vuelo</b><span>Lejos de Corral, bajo y en descendencia: saca el motor con altura, arráncalo y vuelve a casa.</span></button>
+    <button class="pick" data-m="p-gl7"><b>Travesía Corral → La Iglesuela</b><span>Viento norte. Despegue por la 36 de Corral, térmicas, ladera del Guadarrama y onda de Gredos hasta tomar en la 04 de El Tiétar (unos 22 km).</span></button>
+    <button class="pick" data-m="p-gl1"><b>Remolque y circuito</b><span>Corral de Ayllón. Remolque con la Dornier o la Rallye, suelta a 600 m, vuelo libre y circuito de tráfico para aterrizar en la 18.</span></button>
+    <button class="pick" data-m="p-gl2"><b>Despegue a torno</b><span>Corral de Ayllón. Lanzamiento con el torno: aceleración fuerte, subida a 40° y suelta arriba a unos 350 m. Después, circuito y toma.</span></button>
+    <button class="pick" data-m="p-gl5"><b>Onda en Villacastín</b><span>Viento sureste fuerte sobre el Guadarrama. Remolque a través del rotor hasta la primera onda, suelta sobre las crestas y sube a 3.000 m sobre el campo. Lenticulares, rotor y vuelta con cuidado.</span></button>
+    <button class="pick" data-m="p-gl6"><b>Onda en La Iglesuela (El Tiétar)</b><span>Viento norte sobre Gredos. Despegue por la 04, remolque hasta la onda al sur de la sierra y sube a 3.000 m sobre el campo.</span></button>
+    <button class="pick" data-m="p-gl4"><b>Vuelo de ladera</b><span>Corral de Ayllón con viento sur de 40 km/h. Remolque hasta la cara sur de la sierra, al suroeste del campo. Aguanta 5 minutos en ladera y vuelve con cuidado del sotavento.</span></button>
+    <button class="pick" data-m="p-gl3"><b>Vuelo en térmica</b><span>Corral de Ayllón. Remolque a 600 m, busca los cúmulos, centra la térmica y sube a 1.200 m sobre el campo. Vuelta y toma en la 18. Mejor de día y despejado.</span></button>
     <label class="inv"><input type="checkbox" id="lt" checked> Acelerador a la izquierda, palanca a la derecha</label>
     <label class="inv">Sensibilidad del mando <select id="sens"><option value="x">Mínima</option><option value="m">Muy suave</option><option value="s">Suave</option><option value="n">Normal</option><option value="r">Rápida</option></select></label>
     <label class="inv">Mando <select id="ctlSel"><option value="d">Dedo (palanca en pantalla)</option><option value="t">Inclinar el móvil</option><option value="m">Ratón (PC)</option></select></label>
@@ -295,6 +305,8 @@ body.cmb #bGun,body.cmb #bMsl{border-color:#F1BF00;background:rgba(60,40,0,.5)}
   </div>
 </div>
 <div id="campv" class="overlay hide"><div class="card"><h1>Operación Escudo</h1><div class="flag"><i></i><i></i><i></i></div><p id="campIntro"></p><div id="campList"></div><button class="btn alt" id="campBack">Menú</button><button class="btn alt" id="campReset">Reiniciar campaña</button></div></div>
+<div id="plan" class="overlay hide"><div class="card plCard"><h1 id="plT">Plan de misión</h1><div class="fcRow"><canvas id="plC"></canvas><div><p id="plObj"></p><table id="plTab"></table><p id="plTh"></p><button class="btn" id="plGo">Entendido</button></div></div></div></div>
+<div id="fcst" class="overlay hide"><div class="card fcCard"><h1>Previsión del día</h1><div class="fcRow"><canvas id="fcC"></canvas><div><div id="fcLeg"><span><i style="background:#f2c53d"></i>Térmicas</span><span><i style="background:#ff7a1a"></i>Ladera</span><span><i style="background:#3a6ee8"></i>Sotavento</span><span><i style="background:#c650ff"></i>Onda</span><span><i style="background:#e8344a"></i>Rotor</span></div><p id="fcTxt" style="white-space:pre-line"></p><button class="btn" id="fcGo">Entendido</button></div></div></div></div>
 <div id="brief" class="overlay hide"><div class="card"><h1 id="brT"></h1><div class="flag"><i></i><i></i><i></i></div><p id="brTxt" style="white-space:pre-line"></p><button class="btn" id="brGo">Armamento y despegue</button><button class="btn alt" id="brBack">Volver</button></div></div>
 <div id="rpBar" class="hide"><b style="color:#ff6b6b">● REPETICIÓN</b><span id="rpTime"></span><button class="tb" id="rpCam">Cámara: persecución</button><button class="tb" id="rpSpd">x1</button><button class="tb" id="rpExit">Salir</button></div>
 <div id="msg" class="overlay hide">
@@ -837,9 +849,9 @@ const GLM={
    rd:[[3.9,-.06,.7,.8]],slots:{tip:[[6.03,-.13,.1]],out:[[2.95,-.72,-.25]],mid:[[2.27,-.72,-.25]],fus:[[.8,-1.2,-1.6],[.8,-1.2,1.4]],ctr:[[0,-1.35,.4]]}},
  sh:{u:'models/f18.json',s:1.17,oy:-.46,oz:-2.2,noz:[.67,6.0],cock:[0,.83,-6.18],dec:[.66,.15,-4],ck:/^(cube|cylinder|sphere|Stick|Canopy)/i,
    rd:null,slots:{tip:[[6.53,.06,.0]],out:[[3.2,-.57,-.4]],mid:[[2.46,-.57,-.4]],inn:[[1.7,-.6,-.4]],fus:[[.85,-1.1,-1.8],[.85,-1.1,1.5]],ctr:[[0,-1.25,.3]]}},
- c101:{u:'models/c101.json',s:1,oy:-.66,oz:.4,noz:[0,4.6],cock:[0,-.08,-2.9],ck:/^(Compuerta|Cristal|Interior|Panel|Parasol)/,noDec:1,hinge:1,paTex:'models/c101_pa.jpg',
+ c101:{u:'models/c101.json',s:1,oy:-.66,oz:.4,noz:[0,4.6],cock:[0,-.2,-2.9],ck:/^(Compuerta|Cristal|Interior|Panel|Parasol)/,noDec:1,hinge:1,paTex:'models/c101_pa.jpg',
    gr:/^(Rueda|Tren|CompTren)/,map:[[/^Aleron/,'ail'],[/^Flap_/,'flp'],[/^Elevador/,'stab'],[/^Timon/,'rud'],[/^Spoiler_01/,'sb']],rd:null,slots:{}},
- pc21:{u:'models/pc21.json',s:1.1,oy:-1.1,oz:-.3,noz:[0,4],cock:[0,.55,-1.95],ck:/^(canopy|arch|archi|rubber)$/,dec:[.42,.12,2.1],snap:1,decS:.72,hinge:1,prop:[0,.75,-4.3],
+ pc21:{u:'models/pc21.json',s:1.1,oy:-1.1,oz:-.3,noz:[0,4],cock:[0,.45,-1.78],ck:/^(canopy|arch|archi|rubber)$/,dec:[.42,.12,2.1],snap:1,decS:.72,hinge:1,prop:[0,.75,-4.3],
    gr:/(tyre|wheel|gear|strut|scissor|hubcap|^[lr]b?door|taxibox)/i,map:[[/^[lr]aileron$/,'ail'],[/^[lr]flap$/,'flp'],[/^[lr]elevator$/,'stab'],[/^rudder$/,'rud'],[/^airbrake$/,'sb']],rd:null,slots:{}},
  av8:{u:'models/av8.json',s:1,oy:0,oz:0,noz:[0,0],cock:[0,1.3,-3.75],dec:[.78,-.12,-4.3],ck:/^Canopy/,rd:null,nozN:/^nozzle_/,
    slots:{out:[[3.3,-.12,1.4]],mid:[[2.2,.12,.77]],inn:[[1.5,.28,.3]],ctr:[[0,-1.1,.2]]}},
@@ -848,6 +860,13 @@ const GLM={
  // MOD2 · 2: planeadores y transportes de FlightGear (GPL-2): FGMEMBERS/L13, G103, A400M, Bombardier-415, A321
  blanik:{u:'models/l13.json',lazy:1,s:1,oy:.04,oz:.1,noz:[0,0],cock:[0,.2,-2.6],noDec:1,metal:.55,rough:.38,hinge:1,ck:/^(canopy|interior|stick|doorhandle)/,gr:/(?!)/,
    map:[[/^aileron/,'ail'],[/^flap/,'flp'],[/^elevator/,'stab'],[/^rudder$/,'rud']],rd:null,slots:{}},
+ // MOD2 · 4: modelos libres parecidos (FlightGear, FGMEMBERS): Ka 6CR (Ka6, GPL-2), LS4 (LS4, GPL-2) y DG-101G (base del DG-400, con el motor por código)
+ swallow:{u:'models/ka6.json',lazy:1,s:1,oy:.14,oz:1.13,noz:[0,0],cock:[0,.2,-.95],col:0xf3e9cf,metal:.02,rough:.55,dec:[.22,-.04,1.75],snap:1,decS:.45,hinge:1,ck:/^(canopy|window)/,gr:/(?!)/,
+   map:[[/^aileron/,'ail'],[/^elevator$/,'stab'],[/^rudder$/,'rud']],rd:null,slots:{}},
+ pirat:{u:'models/ls4.json',lazy:1,s:1,oy:-.17,oz:.79,noz:[0,0],cock:[0,0,-1.35],metal:.05,rough:.3,dec:[.24,-.1,1.45],snap:1,decS:.45,hinge:1,ck:/^(canopy|interior|seat|armrest|headrest|paneltop)/,gr:/(?!)/,
+   map:[[/^aileron/,'ail'],[/^elevator$/,'stab'],[/^rudder$/,'rud']],rd:null,slots:{}},
+ dg400:{u:'models/dg101.json',lazy:1,s:1,oy:-.46,oz:-.38,noz:[0,0],cock:[0,-.27,-1.55],noDec:1,metal:.05,rough:.3,keepK:['pyl'],pyl:[0,-.12,.02],hinge:1,ck:/^(19canopy|20canopy|21cockpit|26stick)/,gr:/(?!)/,
+   map:[[/aileron_l/,'ail'],[/aileron_r/,'ail'],[/^11elevator$/,'stab'],[/^13rudder$/,'rud']],rd:null,slots:{}},
  twin:{u:'models/g103.json',lazy:1,s:1,oy:.09,oz:.42,noz:[0,0],cock:[0,.14,-2.33],noDec:1,metal:.05,rough:.3,hinge:1,ck:/^canopy/,gr:/(?!)/,
    map:[[/^aileron/,'ail'],[/^elevator$/,'stab'],[/^rudder$/,'rud']],rd:null,slots:{}},
  cl415:{u:'models/cl415.json',lazy:1,s:1,oy:2.06,oz:.3,noz:[0,0],cock:[-.45,.86,-7.3],noDec:1,hinge:1,merge:1,keepP:1,ck:/^vitre/,gr:/^(roue|axe)/,hide:/^helice/,pp:[[3.41,2.32,-4.95],[-3.41,2.32,-4.95]],
@@ -896,6 +915,7 @@ function paPaint(P,t){if(!P||!P.pa||t!=='hj')return;const g=P.g,skip=new Set();g
     ge.setAttribute('color',new THREE.BufferAttribute(C,3));o.geometry=ge;const m=o.material.clone();m.vertexColors=true;m.color.setRGB(1,1,1);if(m.map){m.map=null;}m.needsUpdate=true;o.material=m;});}
 function upgradePlane(P,t,op){op=op||{};const c=GLM[t],src=c&&GLC[c.u];if(!src||!P||!P.g)return false;const g=P.g;
   const keep=new Set();P.fl.forEach(f=>f.traverse(o=>keep.add(o)));if(c.keepP&&!op.lite)[P.prop,P.disc,P.rotodome,...(P.props||[]).reduce((a,o)=>a.concat([o.p,o.d]),[])].forEach(o=>o&&keep.add(o));
+  if(c.keepK&&!op.lite)c.keepK.forEach(k=>P[k]&&keep.add(P[k]));if(c.pyl&&P.pyl&&!op.lite)P.pyl.position.set(c.pyl[0],c.pyl[1],c.pyl[2]);
   if(c.pp&&!op.lite){[P.prop,...(P.props||[]).map(o=>o.p)].forEach((p,i)=>{if(p&&c.pp[i])p.position.set(c.pp[i][0],c.pp[i][1],c.pp[i][2]);});[P.disc,...(P.props||[]).map(o=>o.d)].forEach((d,i)=>{if(d&&c.pp[i])d.position.set(c.pp[i][0],c.pp[i][1],c.pp[i][2]-.05);});}
   g.children.slice().forEach(ch=>{if(keep.has(ch))return;if(ch===P.gear){ch.children.forEach(k=>k.visible=false);return;}ch.visible=false;});
   const W=new THREE.Group(),M=src.clone(true);W.position.set(0,c.oy,c.oz);M.rotation.y=-Math.PI/2;M.scale.setScalar(c.s);W.add(M);g.add(W);
@@ -923,7 +943,7 @@ function upgradePlane(P,t,op){op=op||{};const c=GLM[t],src=c&&GLC[c.u];if(!src||
       G.setAttribute('position',cat(P3,3));G.setAttribute('normal',cat(N3,3));if(U2.length===ns.length)G.setAttribute('uv',cat(U2,2));const mm=new THREE.Mesh(G,mt);mm.castShadow=HIQ;mm.receiveShadow=HIQ;mm.name='fijo';M.add(mm);});}
   if(c.nozN){const nz=[],wp=new THREE.Vector3();M.children.slice().forEach(n=>{if(!c.nozN.test(n.name||''))return;const pv=new THREE.Group();n.getWorldPosition(wp);pv.position.copy(g.worldToLocal(wp));g.add(pv);pv.updateMatrixWorld(true);pv.attach(n);nz.push(pv);});if(nz.length)P.noz=nz;}
   P.fm=fm;P.ckList=ck;P.glW=W;renderer.localClippingEnabled=true;P.clipPl=[0,1,2,3,4].map(()=>new THREE.Plane());const cm=new Map();
-  M.traverse(o=>{if(!o.isMesh)return;let m=cm.get(o.material);if(!m){m=o.material.clone();m.clippingPlanes=P.clipPl;m.clipIntersection=true;if(c.metal!=null&&!m.transparent){m.metalness=c.metal;m.roughness=c.rough;if(m.map)m.color.setRGB(1,1,1);}if(c.tint&&!m.transparent)m.color.multiplyScalar(c.tint);cm.set(o.material,m);}o.material=m;});P.cock.set(c.cock[0],c.cock[1],c.cock[2]);P.slots=c.slots;if(c.dec)P.decP=c.dec;
+  M.traverse(o=>{if(!o.isMesh)return;let m=cm.get(o.material);if(!m){m=o.material.clone();m.clippingPlanes=P.clipPl;m.clipIntersection=true;if(c.metal!=null&&!m.transparent){m.metalness=c.metal;m.roughness=c.rough;if(m.map)m.color.setRGB(1,1,1);}if(c.tint&&!m.transparent)m.color.multiplyScalar(c.tint);if(c.col&&!m.transparent&&m.map)m.color.setHex(c.col);cm.set(o.material,m);}o.material=m;});P.cock.set(c.cock[0],c.cock[1],c.cock[2]);P.slots=c.slots;if(c.dec)P.decP=c.dec;
   P.fl.forEach((f,i)=>{f.position.x=(P.fl.length>1?(i?1:-1)*c.noz[0]:0);f.position.z=c.noz[1]+1.5;});
   if(c.rd)c.rd.forEach(([x,y,z,r])=>[-1,1].forEach(s=>{const o=roundel(r);o.position.set(s*x,y,z);g.add(o);}));
   if(c.post)c.post(P,g);return true;}
@@ -1370,6 +1390,93 @@ function updWV(dt){if(!WV)return;const g=GLD,pp=plane.position,r=WV.last;if(stat
   if(pp.y>4000&&!WV.said.o2){WV.said.o2=1;toast('Más de 4.000 m (13.000 ft): en la realidad haría falta oxígeno',3.5);}
   const a=pp.y-g.fieldY;g.maxA=Math.max(g.maxA||0,a);
   if(opt.wave&&!opt.xc&&!g.said.wgoal&&a>=3000){g.said.wgoal=1;report.push('Objetivo cumplido: 3.000 m sobre el campo en onda');radio(CS(),glFN()+', '+CS()+', en onda a tres mil sobre el campo, subiendo.');setTimeout(()=>{if(GLD)radio(glFN(),'Recibido. Cuidado al bajar: rotor fuerte cerca del campo.');},1500);toast('¡Objetivo! Baja con aerofrenos lejos de la sierra y entra al campo con velocidad: rotor abajo',4.5);}}
+/* ---------- MET1: previsión del día para vuelo sin motor (mapa tipo SkySight/RASP): térmicas por zonas, ladera, sotavento, onda y rotor, viento ---------- */
+function fcShow(){if(!GLD||!ship)return;const o=$('fcst'),cv=$('fcC');o.classList.remove('hide');const B=opt.xc&&bases.find(b=>b.name==='El Tiétar'),C=opt.xc?{x:-12000,z:-14600}:ship.g.position,R=opt.xc?17000:14000;
+  const fy=GLD.fieldY,k=TH?TH.k:0,N=72,c=cv.getContext&&cv.getContext('2d');let nRd=0,nWv=0;
+  if(c){const S=cv.width=cv.height=N*6,cs=S/N,I=c.createImageData(S,S),d=I.data,set=(px,py,r,g,b)=>{for(let j=0;j<cs;j++)for(let i=0;i<cs;i++){const q=((py*cs+j)*S+px*cs+i)*4;d[q]=r;d[q+1]=g;d[q+2]=b;d[q+3]=255;}};
+    for(let py=0;py<N;py++)for(let px=0;px<N;px++){const x=C.x+((px+.5)/N*2-1)*R,z=C.z+((py+.5)/N*2-1)*R,h=heightAt(x,z);
+      let r,g,b;if(h<3){r=24;g=60;b=96;}else{const t=clamp(h/1800,0,1);r=58+t*90;g=72+t*70;b=52+t*70;
+        const sh=(heightAt(x+150,z)-heightAt(x-150,z))*.08;r+=sh;g+=sh;b+=sh;}
+      const mix=(cr,cg,cb,a)=>{r=r*(1-a)+cr*a;g=g*(1-a)+cg*a;b=b*(1-a)+cb*a;};
+      if(k>0&&h>=3){const th=k*(.55+.45*clamp((h-fy)/600,0,1));mix(242,197,61,clamp(th*.45,0,.55));}
+      if(windKt>=4){const w=rlAt(x,h+300,z);if(w>1.3){nRd++;mix(255,122,26,clamp(.35+w*.12,0,.85));}else if(w<-2)mix(58,110,232,clamp(.25-w*.08,0,.6));}
+      if(WV&&WV.lam){const a=wvRaw(x,WV.top+1500,z),lo=wvRaw(x,WV.top-150,z);if(lo&&lo.rot>.6&&((px+py)%4===0))mix(232,52,74,.7);else if(a&&a.w>.9){nWv++;mix(198,80,255,clamp(.35+a.w*.08,0,.8));}}
+      set(px,py,r|0,g|0,b|0);}
+    c.putImageData(I,0,0);const P=(x,z)=>[((x-C.x)/R+1)/2*S,((z-C.z)/R+1)/2*S];
+    c.lineWidth=3;c.font='bold 15px sans-serif';const pin=(p,t)=>{const [a,b]=P(p.x,p.z);c.fillStyle='#fff';c.strokeStyle='#000';c.beginPath();c.arc(a,b,6,0,7);c.fill();c.stroke();c.strokeText(t,a+9,b-8);c.fillText(t,a+9,b-8);};
+    pin(ship.g.position,glFN());if(B)pin(B.g.position,'Tiétar');
+    if(windKt>=3){const th=windDir*D2R,ux=-Math.sin(th),uy=Math.cos(th),L=60,x0=S-55,y0=55;c.strokeStyle='#fff';c.fillStyle='#fff';c.lineWidth=4;c.beginPath();c.moveTo(x0-ux*L/2,y0-uy*L/2);c.lineTo(x0+ux*L/2,y0+uy*L/2);c.stroke();
+      c.beginPath();c.moveTo(x0+ux*L/2+ux*8,y0+uy*L/2+uy*8);c.lineTo(x0+ux*L/2-uy*9,y0+uy*L/2+ux*9);c.lineTo(x0+ux*L/2+uy*9,y0+uy*L/2-ux*9);c.fill();c.font='bold 13px sans-serif';c.textAlign='center';c.strokeStyle='#000';c.lineWidth=3;c.strokeText(windKt+' kt',x0,y0+50);c.fillText(windKt+' kt',x0,y0+50);c.textAlign='left';}
+    c.fillStyle='#fff';c.font='bold 13px sans-serif';c.strokeStyle='#000';c.lineWidth=3;const sk='Norte arriba · '+Math.round(R*2/1000)+' km';c.strokeText(sk,8,18);c.fillText(sk,8,18);}
+  else{for(let i=0;i<N*N;i+=7){const x=C.x+((i%N)/N*2-1)*R,z=C.z+((i/N|0)/N*2-1)*R,h=heightAt(x,z);if(windKt>=4&&rlAt(x,h+300,z)>1.3)nRd++;if(WV&&WV.lam){const a=wvRaw(x,WV.top+1500,z);if(a&&a.w>.9)nWv++;}}}
+  const kmh=Math.round(windKt*1.852),L=[];
+  L.push(windKt<3?'Viento: en calma.':'Viento: del '+String(windDir).padStart(3,'0')+'° a '+windKt+' kt ('+kmh+' km/h). La flecha va hacia donde sopla.');
+  L.push(!k?'Térmicas: no hay (noche o lluvia).':'Térmicas: '+(k>.75?'buenas':k>.45?'flojas':'débiles')+', de '+(1.5*k).toFixed(1)+' a '+(4*k).toFixed(1)+' m/s; más fuertes sobre terreno alto y seco. Base de nubes a unos '+Math.round((TH.zi-fy)/50)*50+' m sobre el campo.'+(TH.blue?' Hoy son azules (calima): no hay cúmulos que las marquen.':' Búscalas bajo los cúmulos jóvenes.'));
+  L.push(windKt<4?'Ladera: sin viento no funciona.':nRd?'Ladera: sube en las caras que miran al viento (naranja), hasta 1-2 veces la altura de la cresta. Detrás, sotavento (azul): baja y hay turbulencia.':'Ladera: con este viento ninguna cara cercana da ascendencia útil.');
+  L.push(WV&&WV.lam&&nWv?'Onda: franjas moradas paralelas a la sierra, la primera a unos '+(WV.lam*.78/1000).toFixed(1)+' km a sotavento de la cresta y por encima de '+Math.round(WV.top/100)*100+' m. Las lenticulares la marcan. Debajo, rotor (rojo): turbulencia fuerte.':'Onda: hoy no hay.');
+  $('fcTxt').textContent=L.join('\n');}
+$('fcGo').onclick=()=>$('fcst').classList.add('hide');$('bFc').onclick=()=>fcShow();
+/* ---------- PLAN1: plan de misión (ruta con puntos, rumbos, distancias, amenazas), consultable en vuelo con el juego en pausa ---------- */
+let PL=null,PLANP=false;const nm=d=>d/1852,brgP=(a,b)=>String(Math.round((Math.atan2(b.x-a.x,-(b.z-a.z))*R2D+360)%360)%360).padStart(3,'0');
+function planPts(){const P=[],add=(t,p,l,o)=>P.push(Object.assign({t,p:V().set(p.x,0,p.z),l,done:false},o||{}));
+  if(opt.gl)glMapPts((t,p)=>{if(t==='xc')add('wp',p,XC_P[0].t);else if(t==='xcE')add('wp',p,'Meta: El Tiétar');else if(t==='wv')add('wp',p,'Onda');else if(t==='rd')add('wp',p,'Ladera');});
+  if(opt.ge){let n=0;geMapPts((t,p,r,l)=>{if(t==='jz')add('zone',p,'Zona de perturbación',{r});else if(t==='rad'){n++;add('tgt',p,'Radar '+l);}});if(!n&&typeof GE_R!=='undefined'){const c=V();GE_R.forEach(([x,z])=>c.add(V().set(x,0,z)));c.multiplyScalar(1/GE_R.length);add('zone',c,'Zona de radares (aprox.)',{r:20000});}}
+  if(opt.aew)aewMapPts((t,p)=>{if(t==='cap')add('wp',p,'Órbita CAP');});
+  if(opt.fire&&fireM){const A=fireM.H.filter(h=>h.I>.02),c=V();(A.length?A:fireM.H).forEach(h=>c.add(h.p));c.multiplyScalar(1/Math.max(1,(A.length?A:fireM.H).length));
+    if(fireM.amph){const sea=V().set(9000,0,3500),empty=fireM.water<1500;add('wp',sea,empty?'Carga de agua (amerizaje)':'Recarga en el mar',{ord:empty?1:3});}
+    add('tgt',c,A.length?'Incendio: '+A.length+' focos activos':'Incendio apagado',{ord:2,done:!A.length,r:1500});}
+  if(opt.tpt){let dz=null,sm=null;tptMapPts((t,p,r,l)=>{if(t==='dz'){dz=p;add('wp',p,'Zona de salto (DZ)',{r,ord:1,done:tpt.ph>=2});}else if(t==='carp')add('wp',p,'CARP (punto de salto)',{ord:.5});else if(t==='tgt'){sm=p;add('thr',p,'SAM',{r});}});
+    if(dz&&sm){const d=V().set(dz.x-sm.x,0,dz.z-sm.z).normalize();add('wp',V().set(sm.x+d.x*11000,0,sm.z+d.z*11000),'Lanzar drones (a 11 km del SAM)',{ord:2});}}
+  if(opt.mpa)mpaMapPts((t,p,r,l)=>{if(t==='zone')add('zone',p,'Zona de patrulla ASW',{r});else if(t==='unk'||t==='id')add('tgt',p,'Contacto '+(l||''));});
+  if(!opt.ge&&!opt.aew&&!opt.fire&&!opt.tpt&&!opt.mpa&&!opt.gl){const G=[];
+    enemies.forEach(e=>{if(!e.ground&&e.kind!=='target')return;if(e.kind==='sam')P.push({t:'thr',p:V().set(e.pos.x,0,e.pos.z),l:'SAM',r:e.samR||14000,done:!e.alive});
+      if(e.kind==='sam'&&!e.obj)return;let g=G.find(g=>Math.hypot(g.p.x-e.pos.x,g.p.z-e.pos.z)<3500);if(!g){g={p:V().set(e.pos.x,0,e.pos.z),E:[]};G.push(g);}g.E.push(e);});
+    G.forEach(g=>{const K=g.E.map(e=>e.kind),l=K.includes('bunker')?'Centro de mando':K.includes('ship')?'Buque enemigo':K.includes('boat')?'Lanchas':K.includes('gnd')?'Columna blindada':K.includes('target')?'Blanco':(g.E.length>1?'Radares SAM':'Radar SAM');add('tgt',g.p,l+(g.E.length>1?' ('+g.E.length+')':''),{done:g.E.every(e=>!e.alive)});});
+    const A=enemies.filter(e=>!e.ground&&e.kind!=='target'&&e.alive);if(A.length){const c=V();A.forEach(e=>c.add(e.pos));c.multiplyScalar(1/A.length);add('zone',c,'Zona de combate: '+A.length+' enemigos esperados',{r:8000});}
+    if(tanker)add('wp',tanker.g.position,'Cisterna (tanker)');
+    if(typeof friends!=='undefined'&&friends.length&&opt.mis==='cas'){const c=V();friends.forEach(f=>c.add(f.position));c.multiplyScalar(1/friends.length);P.push({t:'fr',p:V().set(c.x,0,c.z),l:'Tropas propias'});}}
+  return P;}
+function planInit(){if(!plane)return;const st=PL&&PL.st||V().set(plane.position.x,0,plane.position.z),home=ship?V().set(ship.g.position.x,0,ship.g.position.z):st.clone(),hn=!ship?'la salida':ship.kind==='lincoln'?'USS Lincoln':ship.kind==='jc1'?'Juan Carlos I':ship.name||'Base',
+    P=planPts(),pass=PL?PL.pass:new Set(),rest=P.filter(p=>p.t!=='thr'&&p.t!=='fr'),route=[];let cur=st;
+  if(rest.some(p=>p.ord!=null)){rest.sort((a,b)=>(a.ord||9)-(b.ord||9));route.push(...rest);cur=rest[rest.length-1].p;rest.length=0;}
+  while(rest.length){let bi=0,bd=1e12;rest.forEach((p,i)=>{const d=p.p.distanceTo(cur);if(d<bd){bd=d;bi=i;}});const p=rest.splice(bi,1)[0];route.push(p);cur=p.p;}
+  if(ship&&(home.distanceTo(cur)>1500||route.length))route.push({t:'home',p:home,l:'Regreso: '+hn,done:false});
+  PL={st,home,hn,route,thr:P.filter(p=>p.t==='thr'),fr:P.filter(p=>p.t==='fr'),pass,t:wt};}
+function planNext(){if(!PL)return null;return PL.route.find(p=>!p.done&&!PL.pass.has(p.l))||null;}
+function planShow(){if(!plane)return;planInit();PLANP=state==='fly'||state==='deck';const o=$('plan');o.classList.remove('hide');const cv=$('plC'),c=cv.getContext&&cv.getContext('2d'),R=PL.route,nx=planNext();
+  const mo=(opt.fire&&OBJ.fire)||(opt.tpt&&OBJ.para&&OBJ.para+'. Después: '+OBJ.drn)||(opt.ge&&OBJ.ge)||(opt.aew&&OBJ.aew)||(opt.mpa&&OBJ.mpa)||(opt.mis&&typeof AGOBJ!=='undefined'&&AGOBJ[opt.mis])||'',no=$('obj').textContent||'';$('plObj').textContent='Objetivo: '+(mo||no||'—')+(mo&&no&&no!==mo?'\nAhora: '+no:'');$('plObj').style.whiteSpace='pre-line';
+  const pts=[PL.st,PL.home,...PL.fr.map(p=>p.p),...R.map(p=>p.p),...PL.thr.map(p=>p.p)];let x0=1e9,x1=-1e9,z0=1e9,z1=-1e9;pts.forEach(p=>{x0=Math.min(x0,p.x);x1=Math.max(x1,p.x);z0=Math.min(z0,p.z);z1=Math.max(z1,p.z);});
+  PL.thr.concat(R.filter(p=>p.r)).forEach(p=>{x0=Math.min(x0,p.p.x-p.r);x1=Math.max(x1,p.p.x+p.r);z0=Math.min(z0,p.p.z-p.r);z1=Math.max(z1,p.p.z+p.r);});
+  const cx=(x0+x1)/2,cz=(z0+z1)/2,Rh=Math.max(6000,(Math.max(x1-x0,z1-z0)/2)*1.15);
+  if(c){const N=64,S=cv.width=cv.height=640,cs=S/N,I=c.createImageData(S,S),d=I.data;
+    for(let py=0;py<N;py++)for(let px=0;px<N;px++){const x=cx+((px+.5)/N*2-1)*Rh,z=cz+((py+.5)/N*2-1)*Rh,h=heightAt(x,z);let r,g,b;if(h<3){r=22;g=52;b=86;}else{const t=clamp(h/1800,0,1),sh=(heightAt(x+Rh/N,z)-heightAt(x-Rh/N,z))*.06;r=56+t*80+sh;g=70+t*62+sh;b=50+t*62+sh;}
+      for(let j=0;j<cs;j++)for(let i=0;i<cs;i++){const q=((py*cs+j)*S+px*cs+i)*4;d[q]=r;d[q+1]=g;d[q+2]=b;d[q+3]=255;}}
+    c.putImageData(I,0,0);const M=p=>[((p.x-cx)/Rh+1)/2*S,((p.z-cz)/Rh+1)/2*S],k=S/2/Rh,txt=(t,a,b,col,al)=>{c.font='bold 17px sans-serif';al=al||'left';const w=(c.measureText(t)||{}).width||t.length*9;if(al==='left'&&a+w>S-6){a-=w+28;}if(al==='center')a=clamp(a,w/2+6,S-w/2-6);b=clamp(b,18,S-6);c.textAlign=al;c.lineWidth=4;c.strokeStyle='rgba(0,0,0,.85)';c.strokeText(t,a,b);c.fillStyle=col;c.fillText(t,a,b);c.textAlign='left';};
+    PL.thr.forEach(p=>{const [a,b]=M(p.p);c.fillStyle=p.done?'rgba(140,140,140,.18)':'rgba(255,60,60,.2)';c.strokeStyle=p.done?'#999':'#ff4a4a';c.lineWidth=2;c.setLineDash([8,6]);c.beginPath();c.arc(a,b,p.r*k,0,7);c.fill();c.stroke();c.setLineDash([]);c.fillStyle=c.strokeStyle;c.fillRect(a-5,b-5,10,10);txt('SAM '+Math.round(p.r/1000)+' km',a,b-p.r*k+20,p.done?'#bbb':'#ff8080','center');});
+    R.forEach(p=>{if(!p.r||p.t==='thr')return;const [a,b]=M(p.p);c.strokeStyle=p.t==='zone'?'rgba(255,140,255,.8)':'#7dffa0';c.lineWidth=2;c.setLineDash([6,5]);c.beginPath();c.arc(a,b,Math.max(10,p.r*k),0,7);c.stroke();c.setLineDash([]);});
+    let prev=PL.st;c.lineWidth=3;R.forEach((p,i)=>{const [a,b]=M(prev),[e,f]=M(p.p);c.strokeStyle=p.done||PL.pass.has(p.l)?'rgba(255,140,255,.35)':'#ff8cff';c.setLineDash(p.t==='home'?[10,8]:[]);c.beginPath();c.moveTo(a,b);c.lineTo(e,f);c.stroke();c.setLineDash([]);
+      const L=Math.hypot(e-a,f-b);if(L>90)txt(brgP(prev,p.p)+'° '+nm(prev.distanceTo(p.p)).toFixed(0)+' NM',(a+e)/2,(b+f)/2+(p.t==='home'?20:-6),'#ffd0ff','center');prev=p.p;});
+    PL.fr.forEach(p=>{const [a,b]=M(p.p);c.fillStyle='#4f8cff';c.fillRect(a-8,b-8,16,16);c.strokeStyle='#fff';c.lineWidth=2;c.strokeRect(a-8,b-8,16,16);txt(p.l+' (no atacar)',a+12,b+22,'#9fc0ff');});
+    if(ship){const [a,b]=M(PL.home);c.fillStyle='#6ec1ff';c.beginPath();c.arc(a,b,9,0,7);c.fill();txt(PL.hn,a+12,b+22,'#9fdcff');}
+    {const [a,b]=M(PL.st);c.fillStyle='#fff';c.beginPath();c.moveTo(a,b-11);c.lineTo(a-8,b+8);c.lineTo(a+8,b+8);c.fill();txt('Salida',a+12,b-8,'#fff');}
+    R.forEach((p,i)=>{if(p.t==='home')return;const [a,b]=M(p.p),col=p.done?'#8a8a8a':p.t==='tgt'?'#ff7a5a':p.t==='zone'?'#ff8cff':'#ffd34d';c.fillStyle=col;c.strokeStyle='#000';c.lineWidth=2;c.beginPath();c.arc(a,b,13,0,7);c.fill();c.stroke();c.fillStyle='#000';c.font='bold 15px sans-serif';c.textAlign='center';c.fillText(String(i+1),a,b+5);c.textAlign='left';
+      txt(p.l.length>26?p.l.slice(0,25)+'…':p.l,a+16,b-10,p===nx?'#ffe680':'#fff');});
+    if(state==='fly'){const [a,b]=M(plane.position),f=fwdOf(plane.quaternion),h=Math.atan2(f.x,-f.z);c.save();c.translate(a,b);c.rotate(h);c.fillStyle='#7dffa0';c.beginPath();c.moveTo(0,-12);c.lineTo(-7,9);c.lineTo(7,9);c.fill();c.restore();}
+    txt('Norte arriba · '+Math.round(Rh*2/1000)+' km',10,24,'#fff');}
+  const T=$('plTab');T.innerHTML='<tr><th>Nº</th><th>Punto</th><th>Rumbo</th><th>Distancia</th></tr>';let prev=PL.st,tot=0;
+  R.forEach((p,i)=>{const d=prev.distanceTo(p.p);tot+=d;const tr=document.createElement('tr');if(p===nx)tr.className='cur';else if(p.done||PL.pass.has(p.l))tr.className='ok';
+    const be=p.t==='home'?'':'Desde '+PL.hn+': '+brgP(PL.home,p.p)+'° / '+nm(PL.home.distanceTo(p.p)).toFixed(0)+' NM';
+    tr.innerHTML='<td></td><td><span></span><small></small></td><td></td><td></td>';const td=tr.children;td[0].textContent=p.t==='home'?'⌂':(p.done?'✓':String(i+1));td[1].firstChild.textContent=p.l;td[1].lastChild.textContent=be;td[2].textContent=brgP(prev,p.p)+'°';td[3].textContent=nm(d).toFixed(0)+' NM ('+(d/1000).toFixed(0)+' km)';T.appendChild(tr);prev=p.p;});
+  const tr=document.createElement('tr');tr.innerHTML='<td></td><td><b>Total</b></td><td></td><td><b></b></td>';tr.querySelector('td:last-child b').textContent=nm(tot).toFixed(0)+' NM';T.appendChild(tr);
+  const th=PL.thr.filter(p=>!p.done),L=[];if(th.length)L.push('Amenazas: '+th.length+' SAM (círculos rojos). Fuera del círculo no te alcanzan; dentro, vuela por debajo de 60 m o lanza desde fuera de su alcance.');
+  if(R.some(p=>p.t==='zone'&&/combate/.test(p.l)))L.push('Cazas enemigos en la zona marcada: llega con altura y velocidad.');if(PL.fr.length)L.push('Tropas propias (cuadro azul) muy cerca del objetivo: identifica bien antes de soltar.');if(opt.fire&&fireM&&fireM.amph)L.push('Repite carga en el mar e incendio hasta apagar todos los focos.');if(!R.length)L.push('Sin puntos de ruta: misión en las inmediaciones de '+PL.hn+'.');
+  L.push('Botón «Plan» para volver a verlo; el juego queda en pausa mientras lo miras. En el minimapa, la ruta va en rosa y abajo el siguiente punto con su rumbo.');$('plTh').textContent=L.join('\n');}
+$('plGo').onclick=()=>{$('plan').classList.add('hide');PLANP=false;};
+function planMini(x,S,D,c0,K){if(!PL||state!=='fly')return;if(wt-PL.t>3)planInit();const P0=plane.position;
+  PL.route.forEach(p=>{if(!PL.pass.has(p.l)&&p.t!=='home'&&Math.hypot(P0.x-p.p.x,P0.z-p.p.z)<Math.max(2500,(p.r||0)*.6))PL.pass.add(p.l);});
+  const nx=planNext();x.save();x.translate(c0,c0);x.scale(D,D);const k=K/D,pt=p=>[(p.x-P0.x)*k,(p.z-P0.z)*k];x.strokeStyle='rgba(255,140,255,.55)';x.lineWidth=1.5;x.setLineDash([6,4]);x.beginPath();let [a,b]=pt(PL.st);x.moveTo(a,b);PL.route.forEach(p=>{[a,b]=pt(p.p);x.lineTo(a,b);});x.stroke();x.setLineDash([]);
+  PL.route.forEach((p,i)=>{if(p.t==='home')return;[a,b]=pt(p.p);x.fillStyle=p===nx?'#ffe680':'rgba(255,140,255,.8)';x.font='bold 10px sans-serif';x.fillText(String(i+1),a-3,b-6);});x.restore();
+  if(nx){const i=PL.route.indexOf(nx);x.setTransform(1,0,0,1,0,0);x.fillStyle='#ffe680';x.font='bold '+(11*D)+'px sans-serif';x.textAlign='left';x.fillText((nx.t==='home'?'⌂':(i+1))+' '+brgP(P0,nx.p)+'° '+nm(Math.hypot(P0.x-nx.p.x,P0.z-nx.p.z)).toFixed(1)+' NM',6*D,S-8*D);}}
 const XC_P=[{x:-17300,z:-13900,t:'LADERA GUADARRAMA'}];
 function glXC(dt){const g=GLD,pp=plane.position;if(g.dest)return;const B=bases.find(b=>b.name==='El Tiétar'),d=Math.hypot(pp.x-B.g.position.x,pp.z-B.g.position.z);
   if(!g.said.xc1&&Math.hypot(pp.x-XC_P[0].x,pp.z-XC_P[0].z)<4000){g.said.xc1=1;toast('Guadarrama: con viento norte la cara noroeste da ladera. Cruza por delante de la cresta y sigue hacia Gredos',4);}
@@ -1554,7 +1661,7 @@ function makePirat(){const g=new THREE.Group(),W=mat(0xf2f2ee),R=mat(0xc8202a),d
   g.add(box(.1,.1,.4,dk,0,-.47,-2.1));
   return {g,fl:[],gear:gearSet(g,[[0,-.55],[0,.6]],.85),hook:null,gearH:.85,clip:[.4,1.2,1.2,.65],cock:new THREE.Vector3(0,.7,-1.7),decP:[.46,.05,.9],
     cs:{stab,fins:[t],wing:[[7.5,.24],[.3,.62]],wy:.42,sb:null,ail:[4,7.3],flp:null,chk:.3,th:.1,sm:W}};}
-function glNm(){return {blanik:'Blanik EC-CCB',swallow:'Swallow EC-BKS',pirat:'Pirat EC-DPN'}[type]||'Planeador';}
+function glNm(){return {blanik:'Blanik EC-CCB',swallow:'Ka 6 EC-BKS',pirat:'LS4 EC-DPN'}[type]||'Planeador';}
 function glFlip(s,rev){if(!s||!s.glider)return;rev=!!rev;if(!!s.rev===rev)return;s.rev=rev;s.g.rotation.y+=Math.PI;(s.g.userData.nums||[]).forEach(m=>{m.position.z*=-1;m.rotation.z+=Math.PI;});s.g.updateMatrixWorld();s.inv.copy(s.g.matrixWorld).invert();s.invQ.copy(s.g.quaternion).invert();}
 function makeTwin(){const g=new THREE.Group(),W=mat(0xf4f4f0),R=mat(0x1f4fa0),dk=mat(0x2a2e33);
   g.add(fus([[-3.6,.1],[-3.3,.38],[-2.4,.48],[-.6,.48],[.6,.38],[1.8,.18],[4.4,.11]],W,1,1.1,{nose:0}));
@@ -1572,8 +1679,14 @@ function makeDG400(){const g=new THREE.Group(),W=mat(0xf6f6f2),B=mat(0x1b2f6e),R
   const t=fin([[0,0],[1.0,0],[1.25,1.3],[.8,1.3]],.07,W);t.position.set(0,.12,3.2);g.add(t);g.add(box(.08,.45,.5,B,0,1.12,4.12));
   const stab=pivPair(g,[[0,4.25],[1.5,4.4],[1.5,4.75],[0,4.85]],.07,W,1.42,0,4.4);
   // grupo motor escamoteable (Rotax 505 sobre mástil, hélice bipala)
-  const pyl=new THREE.Group();pyl.position.set(0,.36,-.1);g.add(pyl);pyl.add(box(.1,.95,.22,gr,0,.48,0));const eng=box(.32,.34,.75,gr,0,1.02,.05);pyl.add(eng);
-  const prop=new THREE.Group();prop.position.set(0,1.02,-.38);pyl.add(prop);prop.add(box(1.5,.12,.04,dk,0,0,0));prop.add(box(.12,.12,.12,dk,0,0,-.04));
+  const pyl=new THREE.Group();pyl.position.set(0,.36,-.1);g.add(pyl);
+  {const ms=new THREE.Mesh(new THREE.CylinderGeometry(.03,.04,.9,12),W);ms.scale.z=3.2;ms.position.y=.47;pyl.add(ms);// mástil perfilado
+   const pod=new THREE.Mesh(new THREE.SphereGeometry(.16,16,12),W);pod.scale.set(1,1.05,2.7);pod.position.set(0,1.0,.06);pyl.add(pod);// carenado del Rotax 505
+   [-1,1].forEach(s=>{const cy=new THREE.Mesh(new THREE.CylinderGeometry(.055,.055,.13,10),gr);cy.rotation.z=Math.PI/2;cy.position.set(s*.17,.98,-.05);pyl.add(cy);});
+   const ex=new THREE.Mesh(new THREE.CylinderGeometry(.03,.035,.3,8),dk);ex.rotation.x=Math.PI/2;ex.position.set(0,.86,.42);pyl.add(ex);}
+  const prop=new THREE.Group();prop.position.set(0,1.0,-.42);pyl.add(prop);
+  {const sp=new THREE.Mesh(new THREE.ConeGeometry(.075,.2,14),W);sp.rotation.x=-Math.PI/2;sp.position.z=-.06;prop.add(sp);
+   const bp=[[.06,-.055],[.5,-.04],[.74,-.018],[.76,.02],[.5,.045],[.06,.06]];[0,1].forEach(k=>{const bl=new THREE.Group();bl.rotation.z=k*Math.PI;const m=flat(bp,.022,dk);m.rotation.x=-1.25;bl.add(m);prop.add(bl);});}
   g.add(box(.62,.02,1.05,W,0,.43,.05));
   g.add(box(.1,.1,.4,dk,0,-.47,-2.1));
   return {g,fl:[],gear:gearSet(g,[[0,-.55],[0,.6]],.85),hook:null,gearH:.85,clip:[.4,1.25,1.25,.65],cock:new THREE.Vector3(0,.7,-1.65),decP:[.46,.05,.9],pyl,dgProp:prop,
@@ -2002,10 +2115,10 @@ const TYPES={
   dhc515:{app:85,vs:37,tw:4.5,cd:2.6e-4,aoaMax:16,make:makeDHC515,min:50,mil:185,max:185,stall:37,roll:1.05,pitch:.6,grav:1.0,missiles:0,flares:0,gun:0,ab:false,amph:true,other:'mpa'},
   at802:{app:90,vs:35,tw:5.0,cd:3.0e-4,aoaMax:18,make:makeAT802,min:50,mil:190,max:190,stall:35,roll:2.0,pitch:.9,grav:1.3,missiles:0,flares:0,gun:0,ab:false,other:'pc21'},
   blanik:{app:52,vs:16,tw:0,cd:0,glid:[2.857e-5,11.16],aoaMax:14,make:makeBlanik,min:0,mil:0,max:0,stall:16,roll:.5,pitch:.85,grav:5,missiles:0,flares:0,gun:0,ab:false,glider:true,other:'pc21',vt0:26},
-  swallow:{app:44,vs:14,tw:0,cd:0,glid:[4.81e-5,7.69],aoaMax:14,make:makeSwallow,min:0,mil:0,max:0,stall:14,roll:.6,pitch:.9,grav:5,missiles:0,flares:0,gun:0,ab:false,glider:true,other:'pc21',vt0:21,noFlaps:1},
+  swallow:{app:44,vs:14,tw:0,cd:0,glid:[2.99e-5,9.28],aoaMax:14,make:makeSwallow,min:0,mil:0,max:0,stall:14,roll:.6,pitch:.9,grav:5,missiles:0,flares:0,gun:0,ab:false,glider:true,other:'pc21',vt0:23.6,noFlaps:1},
   twin:{app:52,vs:17,tw:0,cd:0,glid:[1.89e-5,9.17],aoaMax:14,make:makeTwin,min:0,mil:0,max:0,stall:17,roll:.48,pitch:.85,grav:5,missiles:0,flares:0,gun:0,ab:false,glider:true,other:'pc21',vt0:26,noFlaps:1},
   dg400:{app:54,vs:18,tw:0,cd:0,glid:[1.415e-5,10.0],aoaMax:14,make:makeDG400,min:0,mil:0,max:0,stall:18,roll:.5,pitch:.85,grav:5,missiles:0,flares:0,gun:0,ab:false,glider:true,other:'pc21',vt0:27,noFlaps:1,motor:1},
-  pirat:{app:48,vs:15,tw:0,cd:0,glid:[2.72e-5,8.44],aoaMax:14,make:makePirat,min:0,mil:0,max:0,stall:15,roll:.55,pitch:.88,grav:5,missiles:0,flares:0,gun:0,ab:false,glider:true,other:'pc21',vt0:24,noFlaps:1},
+  pirat:{app:48,vs:15,tw:0,cd:0,glid:[1.62e-5,9.65],aoaMax:14,make:makePirat,min:0,mil:0,max:0,stall:15,roll:.55,pitch:.88,grav:5,missiles:0,flares:0,gun:0,ab:false,glider:true,other:'pc21',vt0:27.8,noFlaps:1},
   f20:{app:125,vs:55,tw:6,cd:1.0e-4,aoaMax:16,make:makeF20,min:80,mil:360,max:360,stall:55,roll:1.6,pitch:.8,grav:2.0,missiles:0,flares:60,gun:0,ab:false,other:'mpa'},
   a321:{app:135,vs:60,tw:5,cd:1.0e-4,aoaMax:14,make:makeA321,min:90,mil:330,max:330,stall:60,roll:.75,pitch:.45,grav:1.2,missiles:0,flares:60,gun:0,ab:false,other:'mpa'},
   a400:{app:130,vs:58,tw:4.4,cd:1.1e-4,aoaMax:15,make:makeAtlas,min:70,mil:300,max:300,stall:58,roll:.8,pitch:.5,grav:1.0,missiles:0,flares:120,gun:0,ab:false,other:'mpa'},
@@ -2163,7 +2276,7 @@ let opt={},tutStep=0,tutT=0,f1Hint=false;function start(m,t,o){opt=o||{};engN=-1
   const show=(id,on)=>$(id).classList.toggle('hide',!on),cmb=!opt.practice&&m!=='rings'&&m!=='base',esc=cmb&&m!=='claex';
   show('bGun',cmb);show('bMsl',cmb);show('bFlr',esc);show('bDrn',esc);show('bGear',m==='naval'||m==='base');
   setBtn('bGear','gear',T.ship==='lincoln'?'Tren+gancho':'Tren');if(opt.gl){setBtn('bGear','gear','Freno');$('bGear').classList.remove('on');}$('thrPC').classList.toggle('hide',!T.ab);
-  ['menu','pickPlane','msg'].forEach(i=>$(i).classList.add('hide'));['top','obj','thr','btns','ped','radio','lev','trimBox'].forEach(i=>$(i).classList.remove('hide'));applyCtl();setTimeout(tiltCenter,300);curTOD=opt.tut?'d':(opt.tod||TOD);WXNOW=opt.tut?'c':(opt.wx||WX);applyEnv(curTOD);applyWind(opt.tut||LVL==='p'?'c':(opt.wind||WINDS));if(opt.wdir)setWindFix(opt.wdir,opt.wkt||20);if(opt.wave&&GLD)wvInit();navL.forEach(n=>n.visible=curTOD!=='d');recStart();tutStep=0;tutT=0;$('obj').classList.toggle('tut',!!opt.tut);if(opt.tut)showTut();resetDmg();hy=hp=0;lid=null;ejected=false;if(chute){scene.remove(chute.g);chute=null;}aidNow=opt.tut?'c':AIDL;$('gloc').style.opacity=0;setTrim(0);setFlaps(0);if(T.hover)setFM(m==='naval'?'STOL':'CRUC');setAB(false);tdInfo='';lastGrade='';apReset();waveoff=0;comm.ball=comm.fin=comm.app=false;comm.toClear=comm.clear=comm.ballAck=false;comm.warnTO=0;comm.vecT=20;comm.pendRB=null;comm.warned=0;$('nozBox').classList.toggle('hide',!T.hover);$('flapBox').classList.toggle('hide',!!T.hover||!!T.noFlaps);if(!T.hover||m!=='naval')setNoz(0);startRadio();}
+  ['menu','pickPlane','msg'].forEach(i=>$(i).classList.add('hide'));['top','obj','thr','btns','ped','radio','lev','trimBox'].forEach(i=>$(i).classList.remove('hide'));applyCtl();setTimeout(tiltCenter,300);curTOD=opt.tut?'d':(opt.tod||TOD);WXNOW=opt.tut?'c':(opt.wx||WX);applyEnv(curTOD);applyWind(opt.tut||LVL==='p'?'c':(opt.wind||WINDS));if(opt.wdir)setWindFix(opt.wdir,opt.wkt||20);if(opt.wave&&GLD)wvInit();$('bFc').classList.toggle('hide',!GLD);if(GLD&&!opt.air)setTimeout(fcShow,300);PL=null;PLANP=false;setTimeout(()=>{if(!plane)return;planInit();if(!opt.tut&&!opt.les&&!GLD&&PL.route.length)planShow();},350);navL.forEach(n=>n.visible=curTOD!=='d');recStart();tutStep=0;tutT=0;$('obj').classList.toggle('tut',!!opt.tut);if(opt.tut)showTut();resetDmg();hy=hp=0;lid=null;ejected=false;if(chute){scene.remove(chute.g);chute=null;}aidNow=opt.tut?'c':AIDL;$('gloc').style.opacity=0;setTrim(0);setFlaps(0);if(T.hover)setFM(m==='naval'?'STOL':'CRUC');setAB(false);tdInfo='';lastGrade='';apReset();waveoff=0;comm.ball=comm.fin=comm.app=false;comm.toClear=comm.clear=comm.ballAck=false;comm.warnTO=0;comm.vecT=20;comm.pendRB=null;comm.warned=0;$('nozBox').classList.toggle('hide',!T.hover);$('flapBox').classList.toggle('hide',!!T.hover||!!T.noFlaps);if(!T.hover||m!=='naval')setNoz(0);startRadio();}
 /* ---------- Escuela de vuelo: lecciones guiadas con instructor (texto + voz), sin autogases ni autonivelado ---------- */
 const LH={agl:()=>(plane.position.y-ship.deckY)*3.281,pit:()=>Math.asin(clamp(fwdOf(plane.quaternion).y,-1,1))*R2D,
   rkt:()=>{const v=vel.clone();if(ship&&ship.vel)v.sub(ship.vel);return kt(Math.hypot(v.x,v.z));},
@@ -2273,7 +2386,7 @@ const LOGK='cuaderno-vuelo-caza';
 function loadLog(){try{return JSON.parse(localStorage.getItem(LOGK)||'[]');}catch(e){return [];}}
 function saveLog(a){try{localStorage.setItem(LOGK,JSON.stringify(a.slice(-200)));}catch(e){}}
 function missionName(){if(opt.camp!=null)return 'Campaña '+(opt.camp+1)+': '+CAMP[opt.camp].n;if(mode==='aar')return 'Práctica de repostaje en vuelo';if(mode==='ag')return 'Aire-tierra: '+AGN[opt.mis];if(mode==='naval')return (opt.practice?'Práctica ':'Misión ')+(T.hover?'Juan Carlos I'+(opt.vto?' (vertical)':''):'USS Abraham Lincoln');if(mode==='base')return 'Práctica Base Aérea de '+ship.name;return {claex:'CLAEX: pruebas de misiles',free:'Combate libre',rings:'Aros contrarreloj'}[mode]||mode;}
-const PNAME={sh:'F/A-18E Super Hornet',av8:'AV-8B Harrier II',f18:'C.15 Hornet',ef:'C.16 Eurofighter',c101:'C-101 Aviojet',pc21:'Pilatus PC-21',mpa:'C-295 MPA',a400:'A400M Atlas',blanik:'Blanik L-13',swallow:'Slingsby Swallow',twin:'Grob G 103 Twin Astir',dg400:'DG-400',pirat:'SZD-30 Pirat',f20:'Falcon 20 GE',a321:'A321 AEW',cl415:'Canadair CL-415',dhc515:'DHC-515',at802:'Air Tractor AT-802',f5:'F-5M Freedom Fighter',hj:'Saeta II (Hürjet)'};
+const PNAME={sh:'F/A-18E Super Hornet',av8:'AV-8B Harrier II',f18:'C.15 Hornet',ef:'C.16 Eurofighter',c101:'C-101 Aviojet',pc21:'Pilatus PC-21',mpa:'C-295 MPA',a400:'A400M Atlas',blanik:'Blanik L-13',swallow:'Schleicher Ka 6CR',twin:'Grob G 103 Twin Astir',dg400:'DG-400',pirat:'Rolladen-Schneider LS4',f20:'Falcon 20 GE',a321:'A321 AEW',cl415:'Canadair CL-415',dhc515:'DHC-515',at802:'Air Tractor AT-802',f5:'F-5M Freedom Fighter',hj:'Saeta II (Hürjet)'};
 function logEntry(t){if(!mode)return;const a=loadLog();a.push({d:Date.now(),m:missionName(),a:PNAME[type],r:t,ok:/cumplida|superada|completad/i.test(t),t:Math.round(elapsed),k:kills,g:lastGrade,w:deck.wire||0});saveLog(a);}
 function hm(sec){const h=Math.floor(sec/3600),m=Math.round(sec%3600/60);return h+' h '+String(m).padStart(2,'0')+' min';}
 function showLog(){const a=loadLog(),ok=a.filter(e=>e.ok).length,tom=a.filter(e=>e.g).length,ap2=a.filter(e=>e.w>0),cab=ap2.length?(ap2.reduce((x,e)=>x+e.w,0)/ap2.length).toFixed(1):'-',okN=a.filter(e=>/^_?OK|Excelente|Buena/.test(e.g||'')).length;
@@ -2287,11 +2400,27 @@ function die(r){if(dead)return;boom(plane.position,40);vib(500);if(ejected){dead
 function respawn(){const from=ringIdx?rings[ringIdx-1].c:START,at=from.clone();at.y=Math.max(at.y,heightAt(at.x,at.z)+200);plane.position.copy(at);faceTo(plane,rings[ringIdx].c);speed=170;dead=false;state='fly';}
 
 let pend=null;(()=>{let v='1';try{v=localStorage.getItem('inv')||'1';}catch(e){}$('inv').checked=v==='1';invert=v==='1';$('inv').onchange=()=>{invert=$('inv').checked;try{localStorage.setItem('inv',invert?'1':'0');}catch(e){}};})();
+// Menú: secciones plegables (se recuerda cuáles están abiertas) y buscador de misiones
+(()=>{const card=$('menu')&&$('menu').querySelector('.card');if(!card)return;const norm=t=>(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  let open={};try{open=JSON.parse(localStorage.getItem('menuOpen')||'{}')||{};}catch(e){}const save=()=>{try{localStorage.setItem('menuOpen',JSON.stringify(open));}catch(e){}};const groups=[];
+  const mk=(title,els,isSet)=>{const h=document.createElement('button');h.type='button';h.className=/^(VUELO SIN MOTOR|AJUSTES)$/.test(title)?'secH blkH':'secH';const picks=els.filter(e=>e.classList&&e.classList.contains('pick'));h.innerHTML='<span></span><i></i>';h.firstChild.textContent=title;h.lastChild.textContent=isSet?'':String(picks.length);
+    const bx=document.createElement('div');bx.className='secB';els[0].before(h);h.after(bx);els.forEach(e=>bx.appendChild(e));const G={h,bx,key:title,picks,open:false};G.set=o=>{G.open=o;h.classList.toggle('on',o);bx.style.display=o?'':'none';};G.set(!!open[title]);
+    h.onclick=()=>{G.set(!G.open);open[title]=G.open;save();};groups.push(G);};
+  [...card.querySelectorAll(':scope > .sec')].forEach(sec=>{const els=[];let n=sec.nextElementSibling;while(n&&!n.classList.contains('sec')&&!n.classList.contains('blk')&&!(n.tagName==='LABEL'&&n.querySelector('#lt'))){els.push(n);n=n.nextElementSibling;}const t=sec.textContent.trim();sec.remove();if(els.length)mk(t,els,false);});
+  {const lt=$('lt')&&$('lt').closest('label');if(lt){const els=[];let n=lt;while(n&&n.tagName==='LABEL'){els.push(n);n=n.nextElementSibling;}mk('AJUSTES',els,true);}}
+  // bloques grandes (APRENDER, COMBATE, MISIONES ESPECIALES): agrupan secciones; VUELO SIN MOTOR y AJUSTES quedan sueltos
+  const blocks=[];[...card.querySelectorAll(':scope > .blk')].forEach(bk=>{const t=bk.textContent.trim(),els=[];let n=bk.nextElementSibling;while(n&&(n.classList.contains('secH')||n.classList.contains('secB'))&&!(n.classList.contains('secH')&&/^(VUELO SIN MOTOR|AJUSTES)$/.test(n.textContent.replace(/\d+$/,'').trim()))){els.push(n);n=n.nextElementSibling;}
+    const h=document.createElement('button');h.type='button';h.className='blkH';h.innerHTML='<span></span><i></i>';h.firstChild.textContent=t;const gs=groups.filter(G=>els.includes(G.h));h.lastChild.textContent=String(gs.reduce((a,G)=>a+G.picks.length,0));
+    const bx=document.createElement('div');bx.className='blkB';bk.replaceWith(h);h.after(bx);els.forEach(e=>bx.appendChild(e));const key='B:'+t,B={h,bx,gs,key};B.set=o=>{B.open=o;h.classList.toggle('on',o);bx.style.display=o?'':'none';};B.set(!!open[key]);h.onclick=()=>{B.set(!B.open);open[key]=B.open;save();};blocks.push(B);});
+  if(!groups.length)return;const q=document.createElement('input');q.type='search';q.id='mSearch';q.placeholder='Buscar misión, avión o base…';q.setAttribute('autocomplete','off');(blocks.length?blocks[0].h:groups[0].h).before(q);
+  q.oninput=()=>{const w=norm(q.value).split(/\s+/).filter(x=>x);groups.forEach(G=>{if(!w.length){G.picks.forEach(p=>p.style.display='');G.h.style.display='';G.set(!!open[G.key]);return;}
+    let any=false;G.picks.forEach(p=>{const tx=norm(p.textContent+' '+G.key),m=w.every(x=>tx.includes(x));p.style.display=m?'':'none';any=any||m;});G.h.style.display=any?'':'none';G.h.classList.toggle('on',any);G.bx.style.display=any?'':'none';});
+    blocks.forEach(B=>{if(!w.length){B.h.style.display='';B.set(!!open[B.key]);return;}const any=B.gs.some(G=>G.h.style.display!=='none');B.h.style.display=any?'':'none';B.h.classList.toggle('on',any);B.bx.style.display=any?'':'none';});};})();
 (()=>{try{const a=localStorage.getItem('glType'),b=localStorage.getItem('glRel'),c=localStorage.getItem('glTug');if(a)$('glType').value=a;if(b)$('glRel').value=b;if(c)$('glTug').value=c;$('glTug').onchange=()=>{if($('glTug').value==='rallye')glLoad('models/rallye.json');};}catch(e){}})();
 const QUICK={'l-to':['base','f18',{practice:1,base:'Torrejón',tut:1,les:'to'}],'l-ld':['base','f18',{practice:1,base:'Torrejón',tut:1,les:'ld'}],'l-cv':['naval','sh',{practice:1,tut:1,les:'cv'}],'l-vl':['naval','av8',{practice:1,tut:1,les:'vl'}],'l-cb':['free','f18',{tut:1,les:'cb'}],'l-rf':['aar','f18',{practice:1,tut:1,les:'rf'}],'l-rf2':['aar','f18',{practice:1,tut:1,les:'rf',tk:'mrtt'}],tut:['base','f18',{practice:1,base:'Torrejón',tut:1}],'p-lincoln':['naval','sh',{practice:1}],'p-jc1':['naval','av8',{practice:1}],'p-vto':['naval','av8',{practice:1,vto:1}],'p-tj':['base','f18',{practice:1,base:'Torrejón'}],'p-ab':['base','ef',{practice:1,base:'Albacete'}],'p-sj':['base','c101',{practice:1,base:'San Javier'}],'p-pa':['base','c101',{practice:1,base:'San Javier',pa:1}],'p-mpa':['base','mpa',{base:'San Javier',mpa:1}],'p-a400':['base','a400',{base:'Zaragoza',tpt:1}],'p-gl1':['base','blanik',{base:'Corral de Ayllón',gl:1}],'p-gl2':['base','blanik',{base:'Corral de Ayllón',gl:1,winch:1}],'p-gl3':['base','blanik',{base:'Corral de Ayllón',gl:1,th:1,tod:'d'}],'p-gl5':['base','blanik',{base:'Villacastín',gl:1,wave:1,tod:'d',wdir:140,wkt:26}],'p-gl6':['base','blanik',{base:'El Tiétar',gl:1,wave:1,tod:'d',wdir:10,wkt:26}],'p-gl8':['base','dg400',{base:'Corral de Ayllón',gl:1,self:1,fix:1,tod:'d'}],'p-gl9':['base','dg400',{base:'Corral de Ayllón',gl:1,air:1,fix:1,tod:'d'}],'p-gl7':['base','blanik',{base:'Corral de Ayllón',gl:1,xc:1,wave:1,rev:1,tod:'d',wdir:10,wkt:20}],'p-gl4':['base','blanik',{base:'Corral de Ayllón',gl:1,rd:1,tod:'d',wdir:190,wkt:22}],'p-f20':['base','f20',{base:'Torrejón',ge:1}],'p-a321':['base','a321',{base:'Torrejón',aew:1}],'p-cl415':['base','cl415',{base:'San Javier',fire:1}],'p-dhc515':['base','dhc515',{base:'San Javier',fire:1}],'p-at802':['base','at802',{base:'San Javier',fire:1}],'p-pa2':['base','pc21',{practice:1,base:'San Javier',pa:1}],'p-pa3':['base','hj',{practice:1,base:'San Javier',pa:1}],'p-sj2':['base','pc21',{practice:1,base:'San Javier'}],'p-ta':['base','f5',{practice:1,base:'Talavera'}],'p-ta2':['base','hj',{practice:1,base:'Talavera'}]};
 document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{invert=$('inv').checked;const m=b.dataset.m;
   if(m==='camp')showCamp();else if(m==='lincoln'||m==='jc1')showLoadout('naval',m==='lincoln'?'sh':'av8',{});else if(QUICK[m]){const q=QUICK[m].slice();if(/^p-gl/.test(m)){if(!q[2].fix)q[1]=$('glType').value;q[2]=Object.assign({},q[2],{rel:$('glRel').value,tug:$('glTug').value});if(q[2].rel==='motor'){if(q[1]==='dg400'&&!q[2].winch&&!q[2].air)q[2].self=1;else{q[2].rel='auto';if(!q[2].fix)toast('El despegue con motor solo es para el DG-400',2.5);}}try{localStorage.setItem('glType',q[1]);localStorage.setItem('glRel',q[2].rel);localStorage.setItem('glTug',q[2].tug);}catch(e){}}start(...q);}else showPick(m);});
-const PLN={f18:['C.15 Hornet','Alas 12 y 15 (Torrejón y Zaragoza)'],ef:['C.16 Eurofighter','Alas 11 y 14 (Morón y Albacete)'],av8:['AV-8B+ Harrier II','Armada, 9ª Escuadrilla'],sh:['F/A-18E Super Hornet','US Navy'],c101:['C-101 Aviojet (E.25 Mirlo)','Academia General del Aire, San Javier'],pc21:['Pilatus PC-21 (E.27)','Academia General del Aire, San Javier'],mpa:['C-295 MPA','Patrulla marítima y lucha antisubmarina'],a400:['A400M Atlas (T.23)','Ala 31, Zaragoza'],blanik:['Planeador Blanik L-13 EC-CCB','Biplaza de escuela, Corral de Ayllón'],swallow:['Planeador Slingsby T.45 Swallow EC-BKS','Monoplaza de madera, primer vuelo solo'],twin:['Planeador Grob G 103 Twin Astir EC-GTA','Biplaza de fibra de altas prestaciones'],dg400:['Motovelero DG-400 EC-HDG','Monoplaza con motor escamoteable'],pirat:['Planeador SZD-30 Pirat EC-DPN','Monoplaza de perfeccionamiento'],f20:['Falcon 20 de guerra electrónica','Histórico · retirado en 2020'],a321:['A321 con radar de alerta temprana','Idea de Oscar · no existe en el Ejército del Aire'],cl415:['Canadair CL-415 (UD.14)','43 Grupo, el «Foca»'],dhc515:['DHC-515 Firefighter','43 Grupo · sustituto del CL-415'],at802:['Air Tractor AT-802','Avión de carga en tierra'],f5:['F-5M Freedom Fighter (AE.9)','Ala 23, Talavera la Real'],hj:['Saeta II · Hürjet (AE.10)','Ala 23, Talavera · sustituto del F-5']};
+const PLN={f18:['C.15 Hornet','Alas 12 y 15 (Torrejón y Zaragoza)'],ef:['C.16 Eurofighter','Alas 11 y 14 (Morón y Albacete)'],av8:['AV-8B+ Harrier II','Armada, 9ª Escuadrilla'],sh:['F/A-18E Super Hornet','US Navy'],c101:['C-101 Aviojet (E.25 Mirlo)','Academia General del Aire, San Javier'],pc21:['Pilatus PC-21 (E.27)','Academia General del Aire, San Javier'],mpa:['C-295 MPA','Patrulla marítima y lucha antisubmarina'],a400:['A400M Atlas (T.23)','Ala 31, Zaragoza'],blanik:['Planeador Blanik L-13 EC-CCB','Biplaza de escuela, Corral de Ayllón'],swallow:['Planeador Schleicher Ka 6CR EC-BKS','Monoplaza clásico de madera y tela'],twin:['Planeador Grob G 103 Twin Astir EC-GTA','Biplaza de fibra de altas prestaciones'],dg400:['Motovelero DG-400 EC-HDG','Monoplaza con motor escamoteable'],pirat:['Planeador Rolladen-Schneider LS4 EC-DPN','Monoplaza de fibra, clase estándar'],f20:['Falcon 20 de guerra electrónica','Histórico · retirado en 2020'],a321:['A321 con radar de alerta temprana','Idea de Oscar · no existe en el Ejército del Aire'],cl415:['Canadair CL-415 (UD.14)','43 Grupo, el «Foca»'],dhc515:['DHC-515 Firefighter','43 Grupo · sustituto del CL-415'],at802:['Air Tractor AT-802','Avión de carga en tierra'],f5:['F-5M Freedom Fighter (AE.9)','Ala 23, Talavera la Real'],hj:['Saeta II · Hürjet (AE.10)','Ala 23, Talavera · sustituto del F-5']};
 const ALLOW={'p-aar':['f18','ef','av8','sh'],'p-aar2':['f18','ef','av8','sh'],free:['f18','ef','f5','hj'],claex:['f18','ef'],rings:['f18','ef','f5','hj','c101','pc21'],'ag-taurus':['f18','ef'],'ag-cas':['f18','ef','av8','sh'],'ag-sead':['f18','sh'],'ag-ship':['f18','sh','av8']};
 function showPick(m){pend=m;const L=$('pkList');L.innerHTML='';ALLOW[m].forEach(t=>{const b=document.createElement('button');b.className='pick';b.innerHTML='<b></b><span></span>';b.querySelector('b').textContent=PLN[t][0];
   b.querySelector('span').textContent=PLN[t][1]+(m==='ag-taurus'&&t==='ef'?' · Taurus en integración':'');b.onclick=()=>{if(m==='rings')start('rings',t);else if(m==='p-aar')start('aar',t,{practice:1});else if(m==='p-aar2')start('aar',t,{practice:1,tk:'mrtt'});else if(m.startsWith('ag-'))showLoadout('ag',t,{mis:m.slice(3)});else showLoadout(m,t,{});};L.appendChild(b);});
@@ -2559,8 +2688,12 @@ function telDone(s,hit){const q=s.tel;report.push((report.length+1)+'. '+q.n+(q.
   toast(hit?'IMPACTO':'FALLO',2);claexCheck();}
 function claexCheck(){if(mode!=='claex'||state==='over'||state==='end')return;const left=wpn.reduce((a,w)=>a+w.c,0),fl=msls.some(m=>m.owner==='player'),alive=enemies.some(e=>e.alive);
   if(!alive&&tgtIdx>=3)endGame('Pruebas completadas',()=>report.join('\n'),2.5);else if(left===0&&!fl&&alive)endGame('Pruebas terminadas',()=>'Sin misiles.\n'+report.join('\n'),2.5);}
-function dropFlares(){if(state!=='fly'||mode==='rings'||mode==='claex'||mode==='base'||opt.practice)return;if(flares<=0){toast('Sin bengalas',1);return;}flares-=3;flareT=1.6;sfx('flare');
-  for(let i=0;i<3;i++)emit(fire,plane.position,vel.clone().multiplyScalar(.3).add(V().set((Math.random()-.5)*30,-12,(Math.random()-.5)*30)),2.2,1.4,.5,0xfff0b0,1);}
+function dropFlares(){const thr=opt.tpt||opt.ge||opt.mpa||opt.aew||msls.some(m=>m.owner==='enemy');// en las misiones de transporte, guerra electrónica, patrulla y AEW hay SAM: ahí sí valen
+  if(state!=='fly'||mode==='rings'||mode==='claex'||((mode==='base'||opt.practice)&&!thr))return;if(flares<=0){toast('Sin bengalas',1);return;}
+  const big=T.flares>=60&&!T.ab,n=big?8:3;flares=Math.max(0,flares-(big?6:3));flareT=big?2.4:1.6;sfx('flare');
+  if(big){// transportes: abanico a los dos lados («alas de ángel»)
+    const q=plane.quaternion,r=V().set(1,0,0).applyQuaternion(q),f=fwdOf(q);for(let i=0;i<n;i++){const sd=i%2?1:-1,k=Math.floor(i/2);emit(fire,plane.position.clone().addScaledVector(f,-6),vel.clone().multiplyScalar(.35).addScaledVector(r,sd*(14+k*7)).add(V().set(0,6-k*5,0)),2.8,1.6,.55,0xfff0b0,1);}}
+  else for(let i=0;i<3;i++)emit(fire,plane.position,vel.clone().multiplyScalar(.3).add(V().set((Math.random()-.5)*30,-12,(Math.random()-.5)*30)),2.2,1.4,.5,0xfff0b0,1);}
 function killSay(t,by){const left=enemies.filter(e=>e.alive&&!!e.ground===!!t.ground).length,q=left?' Quedan '+left+'.':(t.ground?' No quedan objetivos.':' No quedan bandidos.'),w=wing2&&wing2.alive;
   if(by==='wing')wingSay('Dos, '+(t.ground?'objetivo destruido.':'derribo confirmado.')+q);else if(by==='drone')droneSay((t.ground?'Objetivo destruido.':'Blanco abatido.')+q,2.5);else if(w)setTimeout(()=>{if(wing2&&wing2.alive)wingSay((t.ground?'Buen impacto.':'Buen derribo.')+q);},900);return q;}
 function kill(t,by){t.alive=false;kills++;boom(t.pos.clone(),35);scene.remove(t.g);if(lock.t===t){lock.t=null;lock.locked=false;}
@@ -3108,7 +3241,7 @@ function drawPanelTex(t){const {W,H}=CKP,b=CKP.base.getContext('2d'),g=CKP.glow.
   lab('STANDBY',.385,-.07,9);
   sub(.44,.04,.5,.225);lab('HOOK',.47,.21,9);lab('ARM',.47,.06,9);sw(.47,.08,'');
   if(HV){sub(-.12,-.225,.12,-.08);if(t==='av8'){lab('NOZZLE °',0,-.1,10);lab('RPM  JPT  H2O',0,-.2,10);knob(-.08,-.16,'STO');knob(.08,-.16,'TRIM');}else{lab('ENG  RPM  EGT',0,-.1,10);lab('FUEL  OIL  HYD',0,-.2,10);knob(-.08,-.16,'NAV');knob(.08,-.16,'TRIM');}lab({av8:'AV-8B+  ARMADA',f5:'F-5M  ALA 23',c101:'C-101  E.25  AGA'}[t],0,.235,9);}
-  else lab(t==='ef'?'C.16 EUROFIGHTER':t==='sh'?'F/A-18E  US NAVY':t==='pc21'?'PC-21  E.27  AGA':t==='mpa'?'C295 MPA':t==='a400'?'A400M  T.23':t==='blanik'?'L-13 BLANIK':t==='swallow'?'T.45 SWALLOW':t==='twin'?'G 103 TWIN ASTIR':t==='dg400'?'DG-400':t==='pirat'?'SZD-30 PIRAT':t==='f20'?'FALCON 20 GE':t==='a321'?'A321 AEW':t==='cl415'?'CL-415  43 GRUPO':t==='dhc515'?'DHC-515':t==='at802'?'AIR TRACTOR':t==='hj'?'SAETA II  AE.10  ALA 23':'C.15 HORNET  ALA 12',0,-.218,9);
+  else lab(t==='ef'?'C.16 EUROFIGHTER':t==='sh'?'F/A-18E  US NAVY':t==='pc21'?'PC-21  E.27  AGA':t==='mpa'?'C295 MPA':t==='a400'?'A400M  T.23':t==='blanik'?'L-13 BLANIK':t==='swallow'?'KA 6CR':t==='twin'?'G 103 TWIN ASTIR':t==='dg400'?'DG-400':t==='pirat'?'LS4':t==='f20'?'FALCON 20 GE':t==='a321'?'A321 AEW':t==='cl415'?'CL-415  43 GRUPO':t==='dhc515'?'DHC-515':t==='at802'?'AIR TRACTOR':t==='hj'?'SAETA II  AE.10  ALA 23':'C.15 HORNET  ALA 12',0,-.218,9);
   CKP.tex.needsUpdate=true;CKP.gtex.needsUpdate=true;}
 const ck2=(()=>{const g=cockpitG,ad=(o,par)=>{o.frustumCulled=false;o.renderOrder=5;(par||g).add(o);return o;},blk=new THREE.MeshLambertMaterial({color:0x16191d}),gry=new THREE.MeshLambertMaterial({color:0x3a4047}),
     suit=new THREE.MeshLambertMaterial({color:0x56604a}),glove=new THREE.MeshLambertMaterial({color:0x2a2622}),boot=new THREE.MeshLambertMaterial({color:0x1c1a18}),strap=new THREE.MeshLambertMaterial({color:0x6b6450});
@@ -3211,7 +3344,21 @@ const _cpN=[[0,-1,0],[0,0,-1],[0,0,1],[-1,0,0],[1,0,0]];
 function ckClip(on){const L=P.clipPl;if(!L)return;const c=P.cock;if(!on){L.forEach(q=>q.set(Y,1e6));return;}plane.updateMatrixWorld();
   const K=P.clip||[.32,1.6,1.3,.85],pts=[[0,c.y-K[0],0],[0,0,c.z-K[1]],[0,0,c.z+K[2]],[-K[3],0,0],[K[3],0,0]];L.forEach((q,i)=>{const n=_cpN[i],pt=pts[i];q.setFromNormalAndCoplanarPoint(V().set(n[0],n[1],n[2]),V().set(pt[0],pt[1],pt[2]));q.applyMatrix4(plane.matrixWorld);});}
 function ckHide(on){if(!P||!P.g)return;ckClip(on);if(P.ckList)P.ckList.forEach(o=>o.visible=!on);if(!P.glW)for(let i=1;i<=2;i++){const c=P.g.children[i];if(c)c.visible=!on;}}
-function updCockpit2(dt){const inC=cockpitG.visible&&view==='cock'&&!!plane;if(P&&P.g)ckHide(inC);if(inC)plane.visible=true;if(!cockpitG.visible||!T)return;setCockpitType(type);const night=curTOD==='n'?1:curTOD==='a'?.45:0;ck2.pm.emissiveIntensity=night*.9;
+/* ---------- Cabinas 3D de FlightGear (GPL): sustituyen a la cabina por código cuando están cargadas. Las pantallas siguen siendo las del juego, en vivo ---------- */
+const CKM={c101:{u:'models/c101_ck.json',pan:[[-3.985,.23,.30],[-3.985,.23,-.30],[-3.985,-.05,.30],[-3.985,-.05,-.30]]},pc21:{u:'models/pc21_ck.json',scr:[[[-1.786,1.1,0.29],[-1.786,1.1,0.13],[-1.786,0.94,0.29],[-1.786,0.94,0.13]],[[-1.786,1.08,0.08],[-1.786,1.08,-0.08],[-1.786,0.92,0.08],[-1.786,0.92,-0.08]],[[-1.786,1.1,-0.13],[-1.786,1.1,-0.29],[-1.786,0.94,-0.13],[-1.786,0.94,-0.29]]]},ef:{u:'models/ef_ck.json',scr:[[[3.6458,.8057,.262],[3.6458,.8057,.118],[3.6802,.6648,.262],[3.6802,.6648,.118]],[[3.6567,.7558,.072],[3.6567,.7558,-.072],[3.6893,.6145,.072],[3.6893,.6145,-.072]],[[3.6458,.8057,-.118],[3.6458,.8057,-.262],[3.6802,.6648,-.118],[3.6802,.6648,-.262]]]}};
+let ckFG=null;
+function ckFGset(t){const c=CKM[t];if(ckFG&&ckFG.t!==t){cockpitG.remove(ckFG.g);ckFG=null;}if(!c||!P||!P.cock)return false;if(!GLC[c.u]){glLoad(c.u);return false;}
+  if(!ckFG){const gm=GLM[t],M=GLC[c.u].clone(true),W=new THREE.Group(),G=new THREE.Group();M.rotation.y=-Math.PI/2;M.scale.setScalar(gm.s);W.add(M);W.position.set(0,gm.oy,gm.oz);G.add(W);
+    // pantallas: las tres del juego (izquierda, centro, derecha) sobre las de la cabina
+    (c.scr||[]).forEach((q,i)=>{const sc=ck2.scr[i];let mp=null;if(sc)sc.traverse(o=>{if(!mp&&o.material&&o.material.map&&o.material.map.image&&o.material.map.image.getContext)mp=o.material.map;});if(!mp)return;const ge=new THREE.BufferGeometry();ge.setAttribute('position',new THREE.Float32BufferAttribute([...q[0],...q[1],...q[2],...q[3]],3));ge.setAttribute('uv',new THREE.Float32BufferAttribute([0,1,1,1,0,0,1,0],2));ge.setIndex([0,2,1,1,2,3]);
+      const m=new THREE.Mesh(ge,new THREE.MeshBasicMaterial({map:mp,side:THREE.DoubleSide,toneMapped:false}));M.add(m);});
+    if(c.pan){// panel de instrumentos del juego (relojes en vivo) sobre el panel de la cabina 3D
+      const q=c.pan,ge=new THREE.BufferGeometry();ge.setAttribute('position',new THREE.Float32BufferAttribute([...q[0],...q[1],...q[2],...q[3]],3));ge.setAttribute('uv',new THREE.Float32BufferAttribute([0,1,1,1,0,0,1,0],2));ge.setIndex([0,2,1,1,2,3]);
+      M.add(new THREE.Mesh(ge,new THREE.MeshBasicMaterial({map:CKP.tex,side:THREE.DoubleSide,toneMapped:false})));}
+    G.traverse(o=>{o.frustumCulled=false;o.renderOrder=5;if(o.isMesh){o.castShadow=false;o.receiveShadow=false;if(o.material&&!o.material.isMeshBasicMaterial){o.material=o.material.clone();o.material.side=THREE.DoubleSide;{const m=o.material,c=m.color;if(!m.map&&!m.transparent&&c&&c.r>.8&&c.g>.8&&c.b>.8)c.setHex(0x3b4046);}if(o.material.map&&!o.material.transparent)o.material.envMapIntensity=.6;}}});cockpitG.add(G);ckFG={t,g:G};}
+  ckFG.g.position.copy(P.cock).negate();return true;}
+function updCockpit2(dt){const inC=cockpitG.visible&&view==='cock'&&!!plane;if(P&&P.g)ckHide(inC);if(inC)plane.visible=true;if(!cockpitG.visible||!T)return;setCockpitType(type);
+  {const fg=ckFGset(type);cockpitG.children.forEach(o=>{if(ckFG&&o===ckFG.g){o.visible=fg;return;}if(o.material&&o.material.colorWrite===false)return;if(fg)o.visible=false;else if(o.userData.ckH){o.visible=true;}if(fg)o.userData.ckH=1;});}const night=curTOD==='n'?1:curTOD==='a'?.45:0;ck2.pm.emissiveIntensity=night*.9;
   const on=(m,v,blink)=>{m.material.color.setHex(v&&(!blink||Math.sin(wt*8)>0)?m.on:0x111111);};
   ck2.lt.gear.forEach(m=>on(m,gearDown&&!dmg.gear));ck2.ghw.material.color.setHex(gearDown?0x553333:0x553333);
   const warn=dmg.any||fuel<.2||warnMsl;ck2.lt.mc.forEach(m=>on(m,warn,true));ck2.lt.fire.forEach((m,i)=>on(m,T.hover?dmg.eng>0:dmg.eng>i));
@@ -3322,7 +3469,7 @@ const CK7={
  mpa:{ui:'C295 MPA  PATRULLA',scr:[[36,72,304,'p','PFD'],[360,72,304,'m1','MFD'],[684,72,304,'e','EICAS']],ufc:[392,8,240,56]},
  pc21:{ui:'PC-21  E.27  AGA',scr:[[36,72,304,'p','PFD'],[360,72,304,'m1','MFD'],[684,72,304,'e','EICAS']],ufc:[392,8,240,56]},
  hj:{ui:'SAETA II  AE.10',wide:[60,56,904,300],sb:[[512,412,'adi']]}};
-CK7.blanik={ui:'L-13 BLANIK  EC-CCB',an:[[160,170,88,'asi'],[390,170,88,'alt'],[620,170,88,'vsi'],[850,170,70,'clk'],[275,370,62,'trn'],[505,370,62,'hsi'],[735,370,62,'g']]};CK7.twin={ui:'G 103 TWIN ASTIR  EC-GTA',an:[[160,170,88,'asi'],[390,170,88,'alt'],[620,170,88,'vsi'],[850,170,70,'clk'],[390,370,62,'trn'],[620,370,62,'g']]};CK7.dg400={ui:'DG-400  EC-HDG',an:[[160,170,88,'asi'],[390,170,88,'alt'],[620,170,88,'vsi'],[850,170,70,'mot'],[390,370,62,'trn'],[620,370,62,'clk']]};CK7.swallow={ui:'T.45 SWALLOW  EC-BKS',an:[[200,170,92,'asi'],[450,170,92,'alt'],[700,170,92,'vsi'],[450,370,62,'clk']]};CK7.pirat={ui:'SZD-30 PIRAT  EC-DPN',an:[[160,170,88,'asi'],[390,170,88,'alt'],[620,170,88,'vsi'],[850,170,70,'clk'],[390,370,62,'trn'],[620,370,62,'g']]};CK7.cl415=Object.assign({},CK7.c101,{ui:'CL-415  UD.14  43 GRUPO'});CK7.f20=Object.assign({},CK7.c101,{ui:'FALCON 20  GUERRA ELECTRÓNICA'});CK7.a321=Object.assign({},CK7.mpa,{ui:'A321  ALERTA TEMPRANA'});CK7.at802=Object.assign({},CK7.c101,{ui:'AIR TRACTOR AT-802'});CK7.dhc515=Object.assign({},CK7.mpa,{ui:'DHC-515  43 GRUPO'});
+CK7.blanik={ui:'L-13 BLANIK  EC-CCB',an:[[160,170,88,'asi'],[390,170,88,'alt'],[620,170,88,'vsi'],[850,170,70,'clk'],[275,370,62,'trn'],[505,370,62,'hsi'],[735,370,62,'g']]};CK7.twin={ui:'G 103 TWIN ASTIR  EC-GTA',an:[[160,170,88,'asi'],[390,170,88,'alt'],[620,170,88,'vsi'],[850,170,70,'clk'],[390,370,62,'trn'],[620,370,62,'g']]};CK7.dg400={ui:'DG-400  EC-HDG',an:[[160,170,88,'asi'],[390,170,88,'alt'],[620,170,88,'vsi'],[850,170,70,'mot'],[390,370,62,'trn'],[620,370,62,'clk']]};CK7.swallow={ui:'KA 6CR  EC-BKS',an:[[200,170,92,'asi'],[450,170,92,'alt'],[700,170,92,'vsi'],[450,370,62,'clk']]};CK7.pirat={ui:'LS4  EC-DPN',an:[[160,170,88,'asi'],[390,170,88,'alt'],[620,170,88,'vsi'],[850,170,70,'clk'],[390,370,62,'trn'],[620,370,62,'g']]};CK7.cl415=Object.assign({},CK7.c101,{ui:'CL-415  UD.14  43 GRUPO'});CK7.f20=Object.assign({},CK7.c101,{ui:'FALCON 20  GUERRA ELECTRÓNICA'});CK7.a321=Object.assign({},CK7.mpa,{ui:'A321  ALERTA TEMPRANA'});CK7.at802=Object.assign({},CK7.c101,{ui:'AIR TRACTOR AT-802'});CK7.dhc515=Object.assign({},CK7.mpa,{ui:'DHC-515  43 GRUPO'});
 const CK7C=document.createElement('canvas');CK7C.width=1024;CK7C.height=472;let ck7T=null,ck7Static=null;
 function ck7Base(t){const L=CK7[t],c=document.createElement('canvas');c.width=1024;c.height=472;const x=c.getContext('2d'),HV=!L.scr||L.an;
   x.fillStyle=t==='c101'?'#2a2e31':t==='av8'?'#22262a':'#33383d';x.fillRect(0,0,1024,472);for(let i=0;i<300;i++){x.fillStyle='rgba(0,0,0,'+(Math.random()*.06)+')';x.fillRect(Math.random()*1024,Math.random()*472,2+Math.random()*30,1+Math.random()*3);}
@@ -3388,7 +3535,7 @@ function drawMFD(){const G='#46ff95',A='#ffb84d',Rd='#ff5a5a',B='#6ec1ff',q=plan
     x.fillStyle=Rd;[['hyd','HIDRÁULICA'],['gear','TREN'],['leak','FUGA'],['wing','ALA']].forEach(([k,t])=>{if(dmg[k]&&y<250){x.fillText('⚠ '+t,10,y);y+=17;}});}
   MFD.forEach(m=>m.t.needsUpdate=true);}
 let mapOn=false,mapR=30000,mapT=0;const mc=$('mapc'),mx=mc.getContext('2d');
-tap('bMap',()=>{mapOn=!mapOn;mc.classList.toggle('hide',!mapOn);$('bMap').classList.toggle('on',mapOn);});
+tap('bPlan',()=>planShow());tap('bMap',()=>{mapOn=!mapOn;mc.classList.toggle('hide',!mapOn);$('bMap').classList.toggle('on',mapOn);});
 mc.addEventListener('pointerdown',e=>{e.preventDefault();mapR={10000:30000,30000:60000,60000:10000}[mapR];mapT=0;});
 function drawMap(){const D=Math.min(2,devicePixelRatio||1),Wd=mc.clientWidth||200;if(mc.width!==Wd*D){mc.width=mc.height=Wd*D;}const x=mx,S=mc.width,K=S/2/mapR,P0=plane.position,c0=S/2;
   x.setTransform(1,0,0,1,0,0);x.fillStyle='rgba(6,16,26,.82)';x.fillRect(0,0,S,S);x.save();x.translate(c0,c0);x.scale(D,D);const k=K/D,sz=S/D;
@@ -3414,7 +3561,7 @@ function drawMap(){const D=Math.min(2,devicePixelRatio||1),Wd=mc.clientWidth||20
     if(t==='b'||t==='bh'){x.beginPath();x.arc(a,b,3,0,7);x.fill();if(brg!=null){const q=brg*D2R,L=4000*k;x.beginPath();x.moveTo(a,b);x.lineTo(a+Math.sin(q)*L,b-Math.cos(q)*L);x.stroke();}}else{x.fillRect(a-3.5,b-3.5,7,7);}if(l)x.fillText(l,a+6,b+4);});
   if(wing2&&wing2.alive){const [a,b]=pt(wing2.pos);x.fillStyle='#8DFFB9';x.beginPath();x.arc(a,b,3,0,7);x.fill();}
   const f=fwdOf(plane.quaternion),hd=Math.atan2(f.x,-f.z);x.rotate(hd);x.fillStyle='#ffffff';x.beginPath();x.moveTo(0,-8);x.lineTo(-5,6);x.lineTo(5,6);x.fill();x.restore();
-  if(w){x.setTransform(1,0,0,1,0,0);x.fillStyle='#ff8cff';x.font='bold '+(11*D)+'px sans-serif';x.textAlign='left';x.fillText('WP '+w.n+' '+brgTo(w.p)+'° '+(plane.position.distanceTo(w.p)/1852).toFixed(1)+' NM',6*D,S-8*D);}}
+  if(w){x.setTransform(1,0,0,1,0,0);x.fillStyle='#ff8cff';x.font='bold '+(11*D)+'px sans-serif';x.textAlign='left';x.fillText('WP '+w.n+' '+brgTo(w.p)+'° '+(plane.position.distanceTo(w.p)/1852).toFixed(1)+' NM',6*D,S-8*D);}else planMini(x,S,D,c0,K);}
 let aarCam=false;
 function lookTarget(){if(tanker&&plane.position.distanceTo(tanker.g.position)<900)return nearestDrogue();if(ship&&(phase==='ret'||state==='deck'))return toWorld(ship,ship.td);if(lock.t)return lock.t.pos;const e=enemies.find(e=>e.alive&&e.det);if(e)return e.pos;if(ship)return ship.g.position.clone();return plane.position.clone().add(fwdOf(plane.quaternion).multiplyScalar(100));}
 function follow(dt){const q=plane.quaternion;
@@ -3541,7 +3688,7 @@ function engineSound(){if(!eng)return;const on=!muted&&!dead&&(state==='fly'||st
 
 /* ---------- Bucle ---------- */
 let last=performance.now();
-function loop(now){requestAnimationFrame(loop);const dt=Math.min((now-last)/1000,.05);last=now;wt+=dt;
+function loop(now){requestAnimationFrame(loop);if(PLANP){last=now;renderer.render(scene,camera);return;}const dt=Math.min((now-last)/1000,.05);last=now;wt+=dt;
   updShips(dt);
   if(toastT>0){toastT-=dt;if(toastT<=0)$('toast').style.display='none';}
   if(hitT>0){hitT-=dt;if(hitT<=0)$('hit').style.opacity=0;}
