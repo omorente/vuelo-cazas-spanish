@@ -16,3 +16,4 @@ dg101.json  Glaser-Dirks DG-101G (base del DG-400; motor por código) https://gi
 ef_ck.json  Cabina 3D del EF2000 (cockpit, paneles, pantallas, HUP, palanca) https://github.com/FGMEMBERS/EF2000 (GPL-2), juntada con herramientas/ensamblar_ac.py
 pc21_ck.json Cabina 3D delantera del PC-21 (cabina, instrumentos, CHDD, iSFD, palanca, gases, pedales, tren) https://github.com/FGMEMBERS/PC-21 (GPL-3)
 c101_ck.json Interior de la cabina del C-101 (cubeta, panel, parasol, suelo, vigas) https://github.com/FGMEMBERS/C-101 (GPL-3), con el panel de relojes del juego encima
+Draco (decodificador draco_decoder.wasm / draco_wasm_wrapper.js): Google, licencia Apache-2.0. DRACOLoader.js: three.js, licencia MIT.
