@@ -2264,7 +2264,7 @@ function setGear(on){gearDown=on;if(P.gear)P.gear.visible=on;if(P.hook)P.hook.vi
 const OBJ={aar:'Colócate detrás de una cesta, iguala velocidad (240 kt) y conecta la pértiga',cat:'Potencia máxima (PC) y pulsa Catapulta',sto:'Toberas a 50°, pulsa Soltar frenos y potencia máxima',combat:'Derriba a los 4 agresores',free:'Derriba a los 4 agresores',rings:'Pasa los 12 aros',rwy:'Pulsa Despegar, potencia máxima y tira del mando a unos 130 nudos',claex:'CLAEX: fija y lanza contra los 3 blancos. Botón Arma para cambiar de misil'};
 function setPhase(p){phase=p;if(T&&T.glider&&OBJ[p+'G']){$('obj').textContent=OBJ[p+'G'];objShow();if(opt.tut)setTimeout(()=>showTut(true),0);return;}if(opt.tut){setTimeout(()=>showTut(true),0);}$('obj').textContent=p==='ret'?(ship.kind==='base'?'Da un circuito y aterriza en '+ship.name+': tren y flaps abajo, '+T.app+' nudos':T.hover?'Vuelve al Juan Carlos I y aterriza en vertical':'Vuelve al Lincoln: tren, gancho y flaps abajo, '+T.app+' nudos'):OBJ[p];if(p==='ret')retRadio();objShow();}
 let objTm=0;function objShow(){const o=$('obj');o.style.opacity=1;clearTimeout(objTm);objTm=setTimeout(()=>{if(!opt.tut)o.style.opacity=0;},9000);}
-function setDroneBtn(){setBtn('bDrn','drn','Dron: '+({follow:'Seguir',attack:'Atacar',watch:'Vigilar'}[drone?drone.order:'follow']));}
+function setDroneBtn(){setBtn('bDrn','drn','Dron: '+({follow:'Seguir',attack:'Atacar',watch:'Vigilar'}[drone?drone.order:(DRN0||'attack')]));}
 setBtn('bFlr','flr','Bengalas');setBtn('bMsl','msl','Misil');setBtn('bGun','gun','Cañón');setBtn('bRad','mic','Radio');setBtn('bGear','gear','Tren');setDroneBtn();
 let flaps=0,waveoff=0,tdInfo='';const comm={t:0,ball:false,fin:false,app:false};
 function setFlaps(n){flaps=n;if(!(T&&T.hover))$('flapK').style.top=[4,42,80][Math.round(n)]+'px';}
@@ -2327,7 +2327,8 @@ function lensUpdate(){const L=lincoln.lens;let dev=0,show=false;if(ship===lincol
 function papiUpdate(){if(mode!=='base'||!plane)return;ship.papi.forEach(m=>{const wp=m.getWorldPosition(V()),d=Math.hypot(plane.position.x-wp.x,plane.position.z-wp.z),ang=Math.atan2(plane.position.y-wp.y,d)*R2D;m.material.color.setHex(ang>m.th?0xffffff:0xff2020);});}
 const ORD={follow:'Dron: en formación contigo',attack:'Dron: ataca al enemigo más cercano',watch:'Dron: vigila esta zona y marca contactos'};
 function droneSay(t,d){toast('Dron: '+t,d||2);radio('Dron',t);}
-function cycleDrone(){if(!drone||state==='menu')return;drone.order={follow:'attack',attack:'watch',watch:'follow'}[drone.order];
+var DRN0='attack';// FIX: la orden del dron se elige antes de despegar (por defecto: atacar), así sale ya con ella
+function cycleDrone(){if(state==='menu')return;if(!drone){DRN0={follow:'attack',attack:'watch',watch:'follow'}[DRN0];toast('Dron: al despegar, '+{follow:'seguirá en formación',attack:'atacará al enemigo más cercano',watch:'vigilará la zona'}[DRN0],2);setDroneBtn();return;}drone.order={follow:'attack',attack:'watch',watch:'follow'}[drone.order];
   if(drone.order==='watch')drone.c.copy(plane.position).setY(Math.max(plane.position.y,1500));if(drone.order==='attack'&&drone.msl<=0){drone.order='watch';drone.c.copy(plane.position).setY(1500);droneSay('Sin misiles. Vigilo esta zona y marco contactos.',2.5);}
   else droneSay({follow:'Recibido, en formación a su derecha.',attack:'Recibido, voy a por el enemigo más cercano.',watch:'Recibido, vigilo esta zona y marco contactos.'}[drone.order],2.5);setDroneBtn();}
 
@@ -2346,7 +2347,7 @@ function spawnEnemies(c){for(let i=0;i<4;i++){const e=makeEF({c:0x5b4a44,enemy:t
     g.position.set(c.x-900+600*i,c.y+Math.random()*300,c.z+(Math.random()-.5)*600);faceTo(g,plane.position);scene.add(g);
     const SKL={p:[.5,.6],m:[.6,.85],a:[.6,.85,1.1,1.1]}[LVL],sk=SKL[Math.floor(Math.random()*SKL.length)],sp0=205+sk*25;enemies.push({g,body:e.g,pos:g.position,r:10,hp:100,alive:true,cool:2,mcool:9+Math.random()*7,msl:1+(i%2),rmsl:sk>.8?1:0,spd:sp0,base:sp0,sk,idx:i,vel:V(),bank:0,det:false,evT:0,evD:V(),defT:0,defD:V(),flareT:0});}}
 function spawnDrone(){const m=makeVal(),g=new THREE.Group();g.add(m.g);g.position.copy(plane.position).add(V().set(40,-10,60).applyQuaternion(plane.quaternion));g.quaternion.copy(plane.quaternion);scene.add(g);
-  drone={g,body:m.g,pos:g.position,bank:0,spd:Math.max(speed,120),order:'follow',msl:2,cool:0,c:V(),said:false};setDroneBtn();}
+  drone={g,body:m.g,pos:g.position,bank:0,spd:Math.max(speed,120),order:DRN0,msl:2,cool:0,c:V(),said:false};if(DRN0==='watch')drone.c.copy(plane.position).setY(Math.max(plane.position.y,1500));setDroneBtn();if(DRN0==='attack')setTimeout(()=>{if(drone&&drone.order==='attack')droneSay('En el aire. Voy a por el enemigo más cercano.',2.5);},1500);}
 const TUT0=[
  {t:'Bienvenido. A la izquierda del HUD ves la velocidad en nudos y a la derecha la altitud en pies.',c:()=>true,min:6},
  {t:'Sube la potencia al máximo arrastrando la barra del acelerador hasta arriba del todo.',c:()=>throttle>.95},
