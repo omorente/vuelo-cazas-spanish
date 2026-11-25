@@ -2661,7 +2661,7 @@ function deckUpdate(dt){const s=ship,d=deck,th=engStep(dt);
   else if(d.sub==='roll')d.rs=Math.max(0,d.rs+(thrustAcc(th)*Math.cos(T.hover?noz*D2R:0)-(th<.15?brkDec(d.rs):2)-(abrk?3:0)-(deck.belly?12:0))*dt);
   else if(d.sub==='trap')d.rs=Math.max(0,d.rs-d.dec*dt);
   else d.rs=0;
-  if(d.sub==='roll'&&d.rs>.2){const kr=keys['a']||keys['arrowleft']?-1:keys['d']||keys['arrowright']?1:0,pd=keys['q']||keys['e']||Math.abs(KS.y)>.02?KS.y:rud;d.lh-=(input.roll+pd+kr)*.25*dt*Math.min(d.rs/20,1);if(!T.glider)d.lh-=clamp(pd,-1,1)*Math.min(d.rs/12,.45)*clamp(1-(d.rs-25)/30,0,1)*dt;/* FIX: dirección de la rueda de morro con los pedales: gira en rodaje y se pierde a alta velocidad */if(s.kind==='base'){const xw=WIND.x*Math.cos(d.lh)-WIND.z*Math.sin(d.lh);d.lh+=xw*.006*dt*Math.min(d.rs/15,1);if(deck.tire)d.lh+=deck.tire*.05*dt*Math.min(d.rs/20,1);}}
+  if(d.sub==='roll'&&d.rs>.2){const kr=keys['a']||keys['arrowleft']?-1:keys['d']||keys['arrowright']?1:0,pd=keys['q']||keys['e']||Math.abs(KS.y)>.02?KS.y:PEDS==='a'?input.roll:rud;d.lh-=(input.roll+pd+kr)*.25*dt*Math.min(d.rs/20,1);if(!T.glider)d.lh-=clamp(pd,-1,1)*Math.min(d.rs/12,.45)*clamp(1-(d.rs-25)/30,0,1)*dt;/* FIX: dirección de la rueda de morro con los pedales: gira en rodaje y se pierde a alta velocidad */if(s.kind==='base'){const xw=WIND.x*Math.cos(d.lh)-WIND.z*Math.sin(d.lh);d.lh+=xw*.006*dt*Math.min(d.rs/15,1);if(deck.tire)d.lh+=deck.tire*.05*dt*Math.min(d.rs/20,1);}}
   d.lp.x+=-Math.sin(d.lh)*d.rs*dt;d.lp.z+=-Math.cos(d.lh)*d.rs*dt;d.lp.y=s.surf(d.lp.z)+(deck.belly?.9:P.gearH);if(deck.belly&&d.rs>3&&Math.random()<.5)emit(fire,plane.position.clone().add(V().set(0,-1,0)),V().set((Math.random()-.5)*6,2,(Math.random()-.5)*6),.4,.3,.8,0xffd080,1);
   d.ramp=(s.kind==='jc1'&&d.lp.z<-85)?12*D2R:0;
   plane.position.copy(d.lp).applyMatrix4(s.g.matrixWorld);
@@ -3090,13 +3090,37 @@ function damageSys(k,msg){if(k==='eng'){if(dmg.eng>=(T.hover?1:2))return;dmg.eng
   const t=msg||(k==='eng'?(T.hover?'Fallo de motor':'Fallo de motor '+(dmg.eng===1?'izquierdo':'derecho')):DMGTXT[k]);toast('⚠ '+t,3);speak('Atención. '+t+'.');vib([200,80,200]);GPR.hit=1;}
 function eject(){if(state!=='fly'||ejected||dead)return;ejected=true;vib([100,50,300]);sfx('cat');
   const q=plane.quaternion,up=V().set(0,1,0).applyQuaternion(q),agl=plane.position.y-Math.max(heightAt(plane.position.x,plane.position.z),2),fatal=(up.y<-.2&&agl<200)||(agl<3&&vel.y<-15);
-  const g=new THREE.Group();g.add(box(.7,1.2,.7,mat(0x333333),0,0,0));const can=new THREE.Mesh(new THREE.SphereGeometry(5,12,6,0,6.283,0,1.4),new THREE.MeshLambertMaterial({color:0xff7a1a,side:DS}));can.position.y=9;can.visible=false;g.add(can);
-  g.position.copy(plane.position).addScaledVector(up,2.5);scene.add(g);chute={g,can,v:vel.clone().addScaledVector(up,40),t:0,fatal};
+  const E=ejMake(),g=E.g;g.quaternion.copy(q);
+  g.position.copy(plane.position).addScaledVector(up,2.5);scene.add(g);chute={g,can:E.can,seat:E.seat,flame:E.flame,lines:E.lines,v:vel.clone().addScaledVector(up,40),t:0,fatal,sv:null};
   for(let i=0;i<10;i++)emit(fire,g.position,up.clone().multiplyScalar(-10).add(V().set(Math.random()-.5,0,Math.random()-.5).multiplyScalar(6)),.6,.6,2,0xffc070,.9);
   toast('¡Eyección!',2);radio(CS(),'¡Eyecto, eyecto, eyecto!');throttle=0;firing=false;}
-function updChute(dt){const c=chute;c.t+=dt;if(c.t>1.8)c.can.visible=true;if(c.can.visible)c.v.lerp(WIND.clone().setY(-6),Math.min(1,dt*1.5));else{c.v.y-=9.8*dt;c.v.multiplyScalar(1-dt*.6);}
+/* FIX: asiento eyectable de verdad (tipo Martin-Baker): asiento con reposacabezas y cohete, piloto con casco y mono de vuelo; a los 1,5 s se separa y se abre el paracaídas a gajos con sus cuerdas */
+function ejMake(){const g=new THREE.Group(),seat=new THREE.Group(),pil=new THREE.Group();g.add(seat);g.add(pil);
+  const dk=mat(0x2c3034),gy=mat(0x4a5258),ye=mat(0xe8c21a),bk=mat(0x111111),su=mat(0x56603e),hm=mat(0xd8dcdf),vs=new THREE.MeshStandardMaterial({color:0x1a1408,metalness:.8,roughness:.15}),sk=mat(0x3a2a1e);
+  seat.add(box(.56,.1,.55,dk,0,-.35,-.05));seat.add(box(.56,1.05,.12,dk,0,.18,.27));seat.add(box(.5,.34,.16,gy,0,.88,.25));
+  [-1,1].forEach(sd=>{seat.add(box(.06,1.35,.08,gy,sd*.3,.3,.3));seat.add(box(.05,.25,.5,dk,sd*.3,-.25,-.05));});
+  for(let i=0;i<5;i++)seat.add(box(.05,.05,.05,i%2?ye:bk,-.1+i*.05,-.27,-.33));// tirador amarillo y negro entre las piernas
+  {const h=new THREE.Mesh(new THREE.TorusGeometry(.09,.018,6,12,Math.PI),ye);h.position.set(0,1.07,.22);seat.add(h);}
+  seat.add(box(.2,.3,.12,gy,0,-.15,.38));// paquete del cohete
+  pil.add(box(.34,.5,.24,su,0,.22,.13));pil.add(box(.38,.14,.26,su,0,.46,.13));// torso y hombros
+  [-1,1].forEach(sd=>{pil.add(box(.13,.13,.46,su,sd*.1,-.24,-.1));const sh=box(.12,.45,.12,su,sd*.1,-.5,-.33);pil.add(sh);pil.add(box(.12,.08,.22,bk,sd*.1,-.74,-.38));
+    const a=box(.09,.36,.09,su,sd*.22,.25,.03);a.rotation.x=.5;pil.add(a);pil.add(box(.08,.08,.08,sk,sd*.22,.07,-.1));});
+  {const he=new THREE.Mesh(new THREE.SphereGeometry(.15,14,10),hm);he.position.set(0,.68,.1);he.scale.set(1,1.08,1.12);pil.add(he);
+   const v=new THREE.Mesh(new THREE.SphereGeometry(.152,14,8,-.9,1.8,1.25,.75),vs);v.position.copy(he.position);v.rotation.y=Math.PI;v.scale.copy(he.scale);pil.add(v);
+   pil.add(box(.14,.08,.08,bk,0,.56,-.03));}// máscara de oxígeno
+  const fm=new THREE.MeshBasicMaterial({color:0xffb040,transparent:true,opacity:.9,blending:THREE.AdditiveBlending,depthWrite:false}),flame=new THREE.Mesh(new THREE.ConeGeometry(.12,1.4,10),fm);flame.position.set(0,-1.0,.38);flame.rotation.x=Math.PI;seat.add(flame);
+  // paracaídas: gajos naranja y blanco
+  let cg=new THREE.SphereGeometry(5,16,6,0,6.283,0,1.25).toNonIndexed();const pa=cg.attributes.position,C=new Float32Array(pa.count*3),cO=new THREE.Color(0xff6a10),cW=new THREE.Color(0xf4f2ec);
+  for(let i=0;i<pa.count;i+=3){let x=0,z=0;for(let k=0;k<3;k++){x+=pa.getX(i+k);z+=pa.getZ(i+k);}const sgm=Math.floor(((Math.atan2(z,x)+Math.PI)/(2*Math.PI))*16)%2,cc=sgm?cO:cW;for(let k=0;k<3;k++){C[(i+k)*3]=cc.r;C[(i+k)*3+1]=cc.g;C[(i+k)*3+2]=cc.b;}}
+  cg.setAttribute('color',new THREE.BufferAttribute(C,3));const can=new THREE.Mesh(cg,new THREE.MeshLambertMaterial({vertexColors:true,side:DS}));can.position.y=7.5;can.visible=false;g.add(can);
+  const lines=new THREE.Group(),lm=new THREE.LineBasicMaterial({color:0xdddddd}),r0=5*Math.sin(1.25),y0=7.5+5*Math.cos(1.25);for(let i=0;i<12;i++){const a=i/12*6.283,ge=new THREE.BufferGeometry().setFromPoints([V().set(Math.cos(a)*r0,y0,Math.sin(a)*r0),V().set(0,.5,.1)]);lines.add(new THREE.Line(ge,lm));}
+  lines.visible=false;g.add(lines);return {g,seat,can,flame,lines};}
+function updChute(dt){const c=chute;c.t+=dt;if(c.flame){c.flame.visible=c.t<.45;c.flame.scale.set(1,.7+Math.random()*.6,1);}
+  if(c.seat&&c.t>1.5&&!c.sv){scene.attach(c.seat);c.sv=c.v.clone().add(V().set((Math.random()-.5)*3,-2,(Math.random()-.5)*3));}if(c.sv){c.sv.y-=9.8*dt;c.seat.position.addScaledVector(c.sv,dt);c.seat.rotateX(dt*2.2);if(c.t>9||c.seat.position.y<Math.max(heightAt(c.seat.position.x,c.seat.position.z),2)){scene.remove(c.seat);c.seat=null;c.sv=null;}}
+  {const f=fwdOf(c.g.quaternion);_wq.setFromEuler(_we.set(0,Math.atan2(-f.x,-f.z),0,'YXZ'));c.g.quaternion.slerp(_wq,Math.min(1,dt*(c.t>1.8?2:.8)));}
+  if(c.t>1.8&&!c.can.visible){c.can.visible=true;c.lines.visible=true;}if(c.can.visible){const k=clamp((c.t-1.8)/.9,.15,1);c.can.scale.set(k,.6+.4*k,k);c.lines.scale.set(k,1,k);}if(c.can.visible)c.v.lerp(WIND.clone().setY(-6),Math.min(1,dt*1.5));else{c.v.y-=9.8*dt;c.v.multiplyScalar(1-dt*.6);}
   c.g.position.addScaledVector(c.v,dt);const gy=Math.max(heightAt(c.g.position.x,c.g.position.z),2);
-  if((c.g.position.y<=gy+.6||c.t>16)&&state!=='end'&&state!=='over'){const sea=gy<=2.7;scene.remove(c.g);chute=null;vib(300);
+  if((c.g.position.y<=gy+.6||c.t>16)&&state!=='end'&&state!=='over'){const sea=gy<=2.7;scene.remove(c.g);if(c.seat)scene.remove(c.seat);chute=null;vib(300);
     if(c.fatal)endGame('Misión fallida','Eyección fuera de envolvente: el piloto no ha sobrevivido.',1);
     else endGame('Piloto rescatado',(sea?'Paracaídas abierto sobre el mar: un helicóptero SAR te recoge.':'Paracaídas abierto: un helicóptero SAR te recoge al tomar tierra.')+' El avión se ha perdido.',1.5);}}
 function atcOn(){return (LVL==='p'||opt.tut)&&!opt.les&&state==='fly'&&gearDown&&flaps>=2&&!T.hover&&phase==='ret'&&atcApp();}
@@ -3552,7 +3576,7 @@ const ck6=(()=>{const g=cockpitG,ad=(o,par)=>{o.frustumCulled=false;o.renderOrde
 const _cpN=[[0,-1,0],[0,0,-1],[0,0,1],[-1,0,0],[1,0,0]];
 function ckClip(on){const L=P.clipPl;if(!L)return;const c=P.cock;if(!on){L.forEach(q=>q.set(Y,1e6));return;}plane.updateMatrixWorld();
   const K=P.clip||[.32,1.6,1.3,.85],pts=[[0,c.y-K[0],0],[0,0,c.z-K[1]],[0,0,c.z+K[2]],[-K[3],0,0],[K[3],0,0]];L.forEach((q,i)=>{const n=_cpN[i],pt=pts[i];q.setFromNormalAndCoplanarPoint(V().set(n[0],n[1],n[2]),V().set(pt[0],pt[1],pt[2]));q.applyMatrix4(plane.matrixWorld);});}
-function ckHide(on){if(!P||!P.g)return;ckClip(on);if(P.clipPl)P.g.traverse(o=>{const m=o.isMesh&&o.material;if(!m||Array.isArray(m)||m.clippingPlanes!==P.clipPl||m.transparent)return;if(m.userData.s0==null)m.userData.s0=m.side;if(m.userData.s0!==THREE.FrontSide)return;const sd=on?THREE.DoubleSide:THREE.FrontSide;if(m.side!==sd){m.side=sd;m.needsUpdate=true;}});/* FIX: en cabina se ven las caras interiores del fuselaje: el suelo ya no es transparente */if(P.ckList)P.ckList.forEach(o=>o.visible=!on);if(!P.glW)for(let i=1;i<=2;i++){const c=P.g.children[i];if(c)c.visible=!on;}}
+function ckHide(on){if(!P||!P.g)return;ckClip(on);if(P.clip&&P.clipPl&&!P.tub&&!(T&&T.glider)){const K=P.clip,c=P.cock,y0=c.y-K[0]-.03,y1=c.y-.25,z0=c.z-K[1],z1=c.z+K[2],tm=new THREE.MeshStandardMaterial({color:0x2e3236,roughness:.9,side:DS}),tb=new THREE.Group();if(y1>y0){[-1,1].forEach(sd=>{const w=new THREE.Mesh(new THREE.PlaneGeometry(z1-z0,y1-y0),tm);w.rotation.y=Math.PI/2;w.position.set(sd*K[3]*.97,(y0+y1)/2,(z0+z1)/2);tb.add(w);});const bw=new THREE.Mesh(new THREE.PlaneGeometry(K[3]*2*.97,y1-y0),tm);bw.position.set(0,(y0+y1)/2,z1);tb.add(bw);}const fl=new THREE.Mesh(new THREE.PlaneGeometry(K[3]*2*.97,z1-z0),tm);fl.rotation.x=-Math.PI/2;fl.position.set(0,y0,(z0+z1)/2);tb.add(fl);P.g.add(tb);P.tub=tb;}if(P.tub)P.tub.visible=!!on;/* FIX: paredes bajas y suelo de la cabina en los aviones grandes: ya no se ve el suelo por los lados */if(P.clipPl)P.g.traverse(o=>{const m=o.isMesh&&o.material;if(!m||Array.isArray(m)||m.clippingPlanes!==P.clipPl||m.transparent)return;if(m.userData.s0==null)m.userData.s0=m.side;if(m.userData.s0!==THREE.FrontSide)return;const sd=on?THREE.DoubleSide:THREE.FrontSide;if(m.side!==sd){m.side=sd;m.needsUpdate=true;}});/* FIX: en cabina se ven las caras interiores del fuselaje: el suelo ya no es transparente */if(P.ckList)P.ckList.forEach(o=>o.visible=!on);if(!P.glW)for(let i=1;i<=2;i++){const c=P.g.children[i];if(c)c.visible=!on;}}
 /* ---------- Cabinas 3D de FlightGear (GPL): sustituyen a la cabina por código cuando están cargadas. Las pantallas siguen siendo las del juego, en vivo ---------- */
 const CKM={c101:{u:'models/c101_ck.glb',pan:[[-3.985,.23,.30],[-3.985,.23,-.30],[-3.985,-.05,.30],[-3.985,-.05,-.30]]},pc21:{u:'models/pc21_ck.glb',scr:[[[-1.786,1.1,0.29],[-1.786,1.1,0.13],[-1.786,0.94,0.29],[-1.786,0.94,0.13]],[[-1.786,1.08,0.08],[-1.786,1.08,-0.08],[-1.786,0.92,0.08],[-1.786,0.92,-0.08]],[[-1.786,1.1,-0.13],[-1.786,1.1,-0.29],[-1.786,0.94,-0.13],[-1.786,0.94,-0.29]]]},ef:{u:'models/ef_ck.glb',scr:[[[3.6458,.8057,.262],[3.6458,.8057,.118],[3.6802,.6648,.262],[3.6802,.6648,.118]],[[3.6567,.7558,.072],[3.6567,.7558,-.072],[3.6893,.6145,.072],[3.6893,.6145,-.072]],[[3.6458,.8057,-.118],[3.6458,.8057,-.262],[3.6802,.6648,-.118],[3.6802,.6648,-.262]]]}};
 let ckFG=null;
