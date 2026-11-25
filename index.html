@@ -86,6 +86,7 @@ body.lt #ped{left:auto;right:12px}
 #ped span{pointer-events:none;position:relative}#ped::before{content:'';position:absolute;inset:-18px -22px}
 #tdbg{position:fixed;inset:0;pointer-events:none;z-index:9999}#tdbg .td{position:absolute;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;border:3px solid #0f0;background:rgba(0,255,0,.18);color:#fff;font:800 11px/1.1 sans-serif;text-shadow:0 1px 2px #000;display:flex;align-items:center;justify-content:center;text-align:center}#tdbg .td.x{border-color:#f33;background:rgba(255,40,40,.3)}#tdbg #tdh{position:absolute;left:50%;top:calc(env(safe-area-inset-top,0px) + 54px);transform:translateX(-50%);background:rgba(0,0,0,.65);color:#fff;font:700 12px/1.3 sans-serif;padding:4px 8px;border-radius:6px;white-space:nowrap}
 #radio{position:fixed;left:8px;right:8px;top:calc(env(safe-area-inset-top,0px) + 3px);height:44px;overflow:hidden;pointer-events:none;display:flex;flex-direction:column;justify-content:flex-end;gap:2px}
+#dmgP{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 96px);width:min(420px,80vw);background:rgba(20,10,10,.92);border:1px solid #ff6a4a;border-radius:12px;padding:10px 14px;color:#fff;font-size:14px;z-index:6}#dmgP p{margin:8px 0 0}
 #rmenu{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 80px);display:flex;flex-direction:column;gap:6px;z-index:5}
 .rp{font:inherit;font-size:15px;font-weight:600;background:rgba(10,20,30,.9);color:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 14px;text-align:left;cursor:pointer}
 .rl{background:rgba(0,0,0,.45);color:#fff;font-size:12px;font-weight:600;padding:2px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:none;border-radius:8px;border-left:3px solid var(--hud);transition:opacity .6s}
@@ -171,7 +172,7 @@ body.glid #bAct.yel{background:radial-gradient(circle at 40% 35%,#fff3a0,#e8c200
 <div id="zone"></div>
 <canvas id="hudc"></canvas>
 <div id="hit"></div><div id="gloc"></div>
-<div id="top" class="hide"><button class="tb" id="bExit">Salir</button><button class="tb" id="bView">Vista</button><button class="tb" id="bSnd">Sonido</button><button class="tb" id="bMap">Mapa</button><button class="tb" id="bPlan">Plan</button><button class="tb" id="bFold">Mandos</button><button class="tb" id="bEj">Eyectar</button></div>
+<div id="top" class="hide"><button class="tb" id="bExit">Salir</button><button class="tb" id="bView">Vista</button><button class="tb" id="bSnd">Sonido</button><button class="tb" id="bMap">Mapa</button><button class="tb" id="bPlan">Plan</button><button class="tb" id="bFold">Mandos</button><button class="tb" id="bEj">Eyectar</button><button class="tb hide" id="bDmg" style="background:rgba(160,20,20,.85);color:#fff">⚠ Averías</button></div><div id="dmgP" class="hide"></div>
 <div id="keysH" class="hide"><h3>Teclas y ratón (F1 para cerrar)</h3><div><p><b>Flechas / WASD</b> palanca (progresiva)</p><p><b>Q / E</b> pedales</p><p><b>R / F</b> más / menos potencia</p><p><b>Rueda del ratón</b> potencia</p><p><b>1 … 9</b> potencia: 1 ralentí, 5 crucero, 9 militar</p><p><b>0</b> postcombustión</p><p><b>Espacio</b> cañón</p><p><b>M</b> misil o bomba</p><p><b>Tabulador / X</b> cambiar de arma (o acción)</p><p><b>B</b> bengalas</p><p><b>G</b> tren</p><p><b>L</b> flaps</p><p><b>K</b> aerofreno</p><p><b>U / J</b> compensador</p><p><b>, / .</b> toberas del Harrier: 0°, 50°, 90°, 98°</p><p><b>N / H</b> toberas de 10 en 10</p><p><b>V</b> vista</p><p><b>O</b> dron</p><p><b>P</b> eyectar (dos veces)</p><p><b>Ratón</b> (menú: Mando → Ratón): mover = palanca, clic izquierdo = cañón, clic derecho = misil</p></div></div>
 <canvas id="mapc" class="hide"></canvas>
 <div id="obj" class="hide"></div>
@@ -269,6 +270,7 @@ body.glid #bAct.yel{background:radial-gradient(circle at 40% 35%,#fff3a0,#e8c200
     <label class="inv">Pedales <select id="pedSel"><option value="m">En pantalla</option><option value="g">Inclinar el móvil (como un volante)</option><option value="x3">Palanca → pedal 30 %</option><option value="x6">Palanca → pedal 60 %</option><option value="a">Automáticos (más fácil)</option></select></label>
     <label class="inv"><input type="checkbox" id="tdbgC"> Prueba de dedos (enseña cada dedo y el mando que coge)</label>
     <label class="inv">Comunicaciones <select id="commSel"><option value="a">Automáticas</option><option value="m">Manuales (tú hablas)</option><option value="i">IA: conversación libre</option></select></label>
+    <label class="inv">Bengalas <select id="flrSel"><option value="a">Automáticas si te disparan</option><option value="m">Manuales</option></select></label>
     <label class="inv">Hora <select id="todSel"><option value="d">Día</option><option value="m">Amanecer</option><option value="a">Atardecer</option><option value="n">Noche</option></select></label>
     <label class="inv">Viento <select id="windSel"><option value="c">Calma</option><option value="m">Moderado</option><option value="f">Fuerte con rachas</option></select></label>
     <label class="inv">Tiempo <select id="wxSel"><option value="c">Despejado</option><option value="h">Calima</option><option value="f">Niebla matinal</option><option value="r">Lluvia</option></select></label>
@@ -2652,7 +2654,7 @@ $('commSel').onchange=()=>{commAuto=$('commSel').value==='a';commMode=$('commSel
 $('lt').onchange=()=>{const on=$('lt').checked;document.body.classList.toggle('lt',on);try{localStorage.setItem('lt',on?'1':'0');}catch(e){}};
 
 /* ---------- Cubierta ---------- */
-function enterDeck(sub,lp,lh,rs){state='deck';deck.belly=false;if(sub!=='roll')deck.tire=0;deck.sub=sub;deck.lp.copy(lp);deck.lh=lh;deck.rs=rs;hover=false;}
+function enterDeck(sub,lp,lh,rs){state='deck';deck.belly=false;deck.barr=0;if(sub!=='roll')deck.tire=0;deck.sub=sub;deck.lp.copy(lp);deck.lh=lh;deck.rs=rs;hover=false;}
 function deckUpdate(dt){const s=ship,d=deck,th=engStep(dt);
   if(T.hover&&(d.sub==='park'||d.sub==='roll')&&phase!=='ret'&&thrustAcc(th)/massF()*Math.sin(noz*D2R)>10.3){if(!commAuto&&!comm.toClear&&!comm.warned){comm.warned=1;toast('Despegue sin autorización de la torre',2.5);}
     else{state='fly';plane.position.y+=.3;vel.copy(s.vel).add(V().set(0,.8,0));speed=vel.length();prevVel.copy(vel);afterTakeoff();return;}}
@@ -2681,7 +2683,7 @@ function toFlight(p){state='fly';plane.rotateX(p);speed=deck.rs+ship.speed;prevV
   if(phase==='cat'||phase==='sto'||phase==='rwy')afterTakeoff();}
 function afterTakeoff(){if(opt.gl)return;if(opt.ge&&geM&&phase!=='ret'){radio('Torre de '+ship.name,CS()+', en el aire.');geAfterTO();return;}if(opt.aew&&aewM&&phase!=='ret'){radio('Torre de '+ship.name,CS()+', en el aire.');aewAfterTO();return;}if(opt.fire&&fireM&&phase!=='ret'){radio('Torre de '+ship.name,CS()+', en el aire. Libre al incendio.');fireAfterTO();return;}if(opt.tpt&&tpt&&phase!=='ret'){radio('Torre de '+ship.name,CS()+', en el aire. Libre a la zona de salto.');tptAfterTO();return;}if(opt.mpa&&mpa&&phase!=='ret'){radio('Torre de '+ship.name,CS()+', en el aire. Libre a la zona de patrulla.');mpaAfterTO();return;}if(ship.kind==='lincoln')radio('Lincoln','Buen lanzamiento, '+CS()+'. Rumbo libre.');else if(ship.kind==='base')radio('Torre de '+ship.name,CS()+', en el aire. Libre de virar.');if(opt.practice){setPhase('ret');toast('En el aire. Sube el tren, da una vuelta y vuelve a tomar',3);}
   else{setPhase('combat');spawnEnemies(V().set(0,1500,1200));spawnDrone();if(opt.wing)spawnWing();toast('En el aire. Sube el tren',2.5);}setAction(wpn&&wpn.length?'Arma: '+wpn[wi].s:null);if(opt.pa)setAction('Humo');}
-function landed(){if(phase==='ret'){radio(ship.kind==='base'?'Torre de '+ship.name:ship.name,ship.kind==='base'?'Bienvenido, '+CS()+'. Abandone pista por la derecha.':'Bienvenido a bordo, '+CS()+'.');const ex=ship.kind==='lincoln'?'Cable '+deck.wire+(deck.wire===3?' (el ideal). ':'. '):ship.kind==='base'?'Aterrizaje en '+ship.name+'. ':'Toma vertical. ';const ex2=lastGrade?'\nNota: '+lastGrade+'\n':'';
+function landed(){if(phase==='ret'){radio(ship.kind==='base'?'Torre de '+ship.name:ship.name,ship.kind==='base'?'Bienvenido, '+CS()+'. Abandone pista por la derecha.':'Bienvenido a bordo, '+CS()+'.');const ex=ship.kind==='lincoln'&&deck.barr?'Parado por la barrera de emergencia. ':ship.kind==='lincoln'?'Cable '+deck.wire+(deck.wire===3?' (el ideal). ':'. '):ship.kind==='base'?'Aterrizaje en '+ship.name+'. ':'Toma vertical. ';const ex2=lastGrade?'\nNota: '+lastGrade+'\n':'';
     endGame(opt.practice?'Práctica superada':'Misión cumplida',ex+(!commAuto&&!comm.clear?'Sin autorización de aterrizaje. ':'')+(tdInfo?'Toma a '+tdInfo+'. ':'')+(opt.practice?'':'Derribos: '+kills+'. ')+'Combustible: '+Math.round(fuel*100)+'%. Tiempo: '+fmt(elapsed)+'.'+ex2,1.2);}
   else endGame('Misión incompleta','Has vuelto al barco sin terminar el combate.',1.2);}
 function act(){if(opt.gl&&glAct())return;if(opt.ge&&geAct())return;if(opt.aew&&aewAct())return;if(opt.fire&&fireAct())return;if(opt.tpt&&tptAct())return;if(state==='fly'&&opt.mpa&&phase==='mpa'){mpaBuoy();return;}if(state==='fly'&&opt.pa){paOn=!paOn;toast(paOn?'Humo encendido':'Humo apagado',1);setAction(paOn?'Humo: ON':'Humo');return;}if(!commAuto&&state==='deck'&&!comm.toClear&&(deck.sub==='cat'||deck.sub==='park')&&phase!=='ret'&&!comm.warnTO){comm.warnTO=1;toast('Sin autorización de la torre. Pulsa otra vez para despegar igualmente',3);return;}
@@ -2691,12 +2693,13 @@ function act(){if(opt.gl&&glAct())return;if(opt.ge&&geAct())return;if(opt.aew&&a
   if(state==='deck'&&deck.sub==='park'&&phase==='sto'){throttle=1;deck.sub='roll';toast('Frenos sueltos: carrera corta y rampa de proa',2);setAction(null);return;}}
 function touchdown(s,L){const relV=vel.clone().sub(s.vel),relH=Math.hypot(relV.x,relV.z),up=V().set(0,1,0).applyQuaternion(plane.quaternion);
   const lf=fwdOf(plane.quaternion).applyQuaternion(s.invQ),lh=Math.atan2(-lf.x,-lf.z),lp=L.clone();
-  if(!gearDown){if(s.kind==='base'&&vel.y>-3&&relH<90&&up.y>.95){lastGrade='Aterrizaje de emergencia sin tren';enterDeck('roll',lp,lh,relH);deck.belly=true;throttle=0;toast('¡Aterrizaje de emergencia!',2);vib(700);return;}return die('Has tocado sin tren.');}
+  if(!gearDown&&!(s.kind==='lincoln'&&EMG.barr)){if(s.kind==='base'&&vel.y>-3&&relH<90&&up.y>.95){lastGrade='Aterrizaje de emergencia sin tren';enterDeck('roll',lp,lh,relH);deck.belly=true;throttle=0;toast('¡Aterrizaje de emergencia!',2);vib(700);return;}return die(s.kind==='lincoln'?'Has tocado sin tren. Con el tren roto, declara MAYDAY por radio: montan la barrera.':'Has tocado sin tren.');}
   tdInfo=kt(relH)+' nudos y '+Math.round(Math.max(0,-vel.y)*196.85)+' pies/min';if(vel.y<(s.kind==='base'?-5:-7)*TL().sink)return die('Toma demasiado dura: '+Math.round(-vel.y*196.85)+' pies/min. Usa flaps abajo y '+T.app+' nudos.');
   if(up.y<TL().lev)return die('Has tocado con las alas sin nivelar.');
   tireFx(Math.max(0,-vel.y));
   if(T.hover&&relH<TL().hov){const sp=Math.hypot(L.x-s.td.x,L.z-s.td.z),sk=Math.max(0,-vel.y)*196.85;lastGrade=(sk<200&&sp<5?'Excelente':sk<400&&sp<10?'Buena':sk<700?'Regular':'Mala')+': '+(sp<5?'en el punto':'a '+Math.round(sp)+' m del punto')+', '+Math.round(sk)+' pies/min';enterDeck('park',lp,lh,0);deck.wire=0;sfx('trap');landed();return;}
   if(s.kind==='base'){if(relH<95){const blow=aidNow!=='c'&&!T.glider&&(-vel.y>3.4*TL().sink||relH*1.944>T.app*1.28);const sk=Math.max(0,-vel.y)*196.85,off=Math.abs(L.x),g0=gradeApp(0,sk);lastGrade=(sk<300?'Toma muy suave':sk<600?'Toma buena':sk<900?'Toma firme':'Toma dura')+(off>8?', descentrada '+Math.round(off)+' m':'')+' · Aproximación: '+g0;enterDeck('roll',lp,lh,relH);throttle=0;deck.tire=0;if(blow){deck.tire=Math.random()<.5?-1:1;toast('¡Reventón de rueda! Mantén el avión recto con los pedales',3);speak('Reventón');vib([100,40,200]);lastGrade+=' · reventón de rueda';}else toast('Toma. Potencia al mínimo para frenar',2);}else die('Demasiado rápido: '+kt(relH)+' nudos.');return;}
+  if(s.kind==='lincoln'&&EMG.barr){const st=s.strip(L.x,L.z);if(st.in&&(!gearDown||!(st.s>=TL().w0&&st.s<=TL().w1&&relH<82*TL().trapV))&&relH<95&&vel.y>-7&&up.y>.9){deck.wire=0;lastGrade='Barrera de emergencia';enterDeck('trap',lp,lh,relH);deck.belly=!gearDown;deck.barr=1;deck.dec=relH*relH/(2*Math.max(20,150-st.s));sfx('trap');vib([300,80,500]);toast('¡Parado por la barrera!',2.5);radio('LSO',CS()+', en la barrera. Bien hecho.');return;}}
   if(s.kind==='lincoln'){const st=s.strip(L.x,L.z);
     if(st.in&&st.s>=TL().w0&&st.s<=TL().w1&&relH<82*TL().trapV){deck.wire=clamp(Math.round((st.s-40)/12)+1,1,4);lastGrade=gradeApp(deck.wire,Math.max(0,-vel.y)*196.85);enterDeck('trap',lp,lh,relH);deck.dec=relH*relH/190;sfx('trap');vib([150,50,300]);toast('¡Enganchado en el cable '+deck.wire+'!',2);radio('LSO',CS()+', '+lastGrade.replace(/_/g,'').split(/ \[|:|\. Bolters/)[0]+', cable '+deck.wire+'.');return;}
     if(relH>=82*TL().trapV)return die('Demasiado rápido: '+kt(relH)+' nudos.');
@@ -2735,7 +2738,7 @@ function rwrTone(dt){if(state!=='fly'||!plane||dead){RWRS.mode='';return;}const 
   if(!m||RWRS.t>0)return;if(m==='S'){tone(1200,1200,.05,'square',.012,.003);RWRS.t=2.2;}else if(m==='K'){tone(1000,1000,.09,'square',.02,.003);RWRS.t=.45;}}
 function launchMsl(from,dir,spd,t,owner,sp){const g=new THREE.Group();g.add(new THREE.Mesh(mGeo,mMat));g.add(new THREE.Mesh(fGeo,flameMat));g.position.copy(from);faceTo(g,from.clone().add(dir));scene.add(g);
   const o={m:g,spec:sp,sk:(sp&&(sp.sk||(sp.k&&/radar/i.test(sp.k)?'rad':'')))||'ir',lk:0,dir:dir.clone(),spd,life:sp?sp.life:12,vmax:sp?sp.vmax:750,turn:sp?sp.turn:2.4,t,owner,decided:false};msls.push(o);if(owner!=='enemy'){sfx('msl');vib(40);}return o;}
-function fireMissile(){if(opt.mpa){mpaTorp();return;}if(state!=='fly'||mode==='rings'||mode==='base'||opt.practice||!wpn||!wpn.length)return;const W=wpn[wi];if(!W||W.c<=0){toast('Sin '+(W?W.s:'armas')+'. Cambia de arma',1.5);return;}
+function fireMissile(){if(opt.mpa){mpaTorp();return;}if(state!=='fly'||mode==='rings'||mode==='base'||opt.practice||!wpn||!wpn.length)return;if(wpn[wi]&&wpn[wi].c<=0&&wpn.some(w=>w.c>0)){const s0=wpn[wi].s;cycleWpn(1);toast('Sin '+s0+': cambio a '+wpn[wi].s,1.5);}const W=wpn[wi];if(!W||W.c<=0){toast('Sin '+(W?W.s:'armas')+'. Cambia de arma',1.5);return;}
   const q=plane.quaternion,from=plane.position.clone().add(V().set(0,-1.8,0).applyQuaternion(q)),tg=lock.locked?lock.t:null;
   if(W.g==='cruise'&&!tg){toast('Taurus: objetivo fuera de alcance ('+Math.round(W.rng/1000)+' km)',2);return;}
   if(['arm','agm','ship','rkt'].includes(W.g)&&!tg){toast('Fija un objetivo antes de lanzar',1.5);return;}
@@ -2865,7 +2868,7 @@ thr.addEventListener('pointerdown',e=>{tid=e.pointerId;thr.setPointerCapture(tid
 thr.addEventListener('pointermove',e=>{if(e.pointerId===tid)setThr(e);});
 ['pointerup','pointercancel','lostpointercapture'].forEach(ev=>thr.addEventListener(ev,e=>{if(e.pointerId===tid)tid=null;}));
 function tireFx(sink){sfx('tire');vib(Math.min(400,60+sink*.25));const p0=plane.position.clone().add(V().set(0,-P.gearH,0));for(let i=0;i<6;i++)emit(smoke,p0,V().set((Math.random()-.5)*4,1+Math.random()*2,(Math.random()-.5)*4).add(vel.clone().multiplyScalar(.2)),1.6,.8,4,0xd8d8d8,.55);}
-function toggleGear(){if(T&&T.glider&&GLD&&GLD.eng&&state==='fly'){glEngCmd('pyl');return;}if(T&&T.glider&&GLD){GLD.brk=!GLD.brk;setBtn('bGear','gear',GLD.brk?'Freno: ON':'Freno');$('bGear').classList.toggle('on',GLD.brk);toast(GLD.brk?'Freno de rueda aplicado':'Freno de rueda suelto',1);return;}if(state!=='fly'||(mode!=='naval'&&mode!=='base'))return;if(!gearDown&&dmg.gear){toast('Tren averiado: no baja',2);return;}
+function toggleGear(){if(T&&T.glider&&GLD&&GLD.eng&&state==='fly'){glEngCmd('pyl');return;}if(T&&T.glider&&GLD){GLD.brk=!GLD.brk;setBtn('bGear','gear',GLD.brk?'Freno: ON':'Freno');$('bGear').classList.toggle('on',GLD.brk);toast(GLD.brk?'Freno de rueda aplicado':'Freno de rueda suelto',1);return;}if(state!=='fly'||(mode!=='naval'&&mode!=='base'))return;if(!gearDown&&dmg.gear){emgGear();return;}if(gearDown&&EMG.gLock){toast('Tren bajado de emergencia: no se puede subir',2);return;}
   if(!gearDown&&dmg.hyd){toast('Sin hidráulica: extensión de emergencia del tren (10 s)',3);setTimeout(()=>{if(state==='fly'&&!gearDown){setGear(true);sfx('gear');toast('Tren abajo (emergencia)',1.5);}},10000);return;}setGear(!gearDown);sfx('gear');toast(gearDown?(T.ship==='lincoln'?'Tren y gancho fuera':'Tren fuera'):'Tren arriba',1);}
 const bG=$('bGun');let gT=0;const gOn=()=>{firing=true;bG.classList.add('on');},gOff=()=>{firing=false;bG.classList.remove('on');};
 bG.addEventListener('touchstart',e=>{e.preventDefault();gT=performance.now();gOn();},{passive:false});['touchend','touchcancel'].forEach(ev=>bG.addEventListener(ev,e=>{e.preventDefault();gOff();},{passive:false}));
@@ -2911,6 +2914,7 @@ function phrases(){const L=[];
   if(state==='fly'&&enemies.some(e=>e.alive))L.push(['Solicito situación',()=>{const n=enemies.filter(e=>e.alive).length;return n+(n===1?' contacto activo. ':' contactos activos. ')+CS()+', libre para atacar.';}]);
   if(state==='fly')L.push(['Combustible bajo',()=>'Recibido, '+CS()+'. Tiene prioridad para la toma.']);
   if(ship&&ship.kind==='lincoln'&&phase==='ret'&&comm.ball&&!comm.ballAck)L.unshift(['Bola',()=>'Recibido, bola (Roger ball).']);
+  if(state==='fly'&&(dmg.any||doomed)&&!EMG.may)L.unshift(['Mayday, mayday, mayday',()=>emgMayday()]);
   if(!commAuto)L.push(['Recibido (colacionar)',()=>null]);
   L.push(['Repita',()=>lastCtl?lastCtl[1]:'Sin mensajes pendientes.']);return L;}
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null;
@@ -2980,8 +2984,55 @@ function handleSpeechS(alts){radio(CS(),cap(alts[0].trim())+'.',false);let rep=n
 function openRadio(){const m=$('rmenu');if(!m.classList.contains('hide')){m.classList.add('hide');stopRec();return;}m.innerHTML='';
   phrases().forEach(([t,f])=>{const b=document.createElement('button');b.className='rp';b.textContent=t;b.onpointerdown=e=>{e.preventDefault();stopRec();m.classList.add('hide');radio(CS(),t+', '+CS()+'.');const who=ctlName();if(commMode==='i'&&aiS&&!/^Punto|repostaje/i.test(t)){askAI(t).then(ok=>{if(!ok){const r=f();if(r)radio(who,r);}});}else{let r=scriptReply(t);if(r===null)r=f();setTimeout(()=>sayReply(r,who),1200);}};m.appendChild(b);});
   m.classList.remove('hide');clearTimeout(m._t);m._t=setTimeout(()=>m.classList.add('hide'),8000);listen();}
-tap('bRad',openRadio);
-tap('bMsl',fireMissile);tap('bFlr',dropFlares);tap('bGear',toggleGear);tap('bAct',act);tap('bDrn',cycleDrone);
+tap('bFlr',dropFlares);tap('bGear',toggleGear);tap('bAct',act);tap('bDrn',cycleDrone);
+/* ---------- EMG: radio de un toque, emergencias (averías, MAYDAY, tren de emergencia, barrera del Lincoln), armas rápidas y bengalas automáticas ---------- */
+const EMG={may:0,barr:0,barrT:0,net:null,gTry:0,gLock:0,sitT:-99,lbl:'',dmgN:-1};
+let AUTOFLR=true;try{AUTOFLR=localStorage.getItem('flrA')!=='0';}catch(e){}
+function emgReset(){EMG.may=0;EMG.barr=0;EMG.barrT=0;EMG.gTry=0;EMG.gLock=0;EMG.sitT=-99;EMG.dmgN=-1;if(EMG.net)EMG.net.visible=false;$('dmgP').classList.add('hide');$('bDmg').classList.add('hide');}
+// barrera de nailon del Lincoln: dos postes y cintas verticales sobre la pista en ángulo, delante de los cables
+function emgNet(){if(EMG.net||typeof lincoln==='undefined'||!lincoln)return;const s=lincoln,g=new THREE.Group(),dk=s.deckY,a=Math.atan2(s.dir.x*-1,-s.dir.z),sA=130,p=s.td.clone().addScaledVector(s.dir,sA-58);
+  const pm=mat(0x8a8f94),nm=new THREE.LineBasicMaterial({color:0xe8e4d0});[-1,1].forEach(sd=>{const c=cyl(.25,.3,6.5,pm,8);c.position.set(sd*13,3.25,0);g.add(c);});
+  const pts=[];for(let i=0;i<=26;i++){const x=-13+i;pts.push(V().set(x,.3,0),V().set(x,5.6,0));}pts.push(V().set(-13,5.6,0),V().set(13,5.6,0),V().set(-13,3,0),V().set(13,3,0));
+  g.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts),nm));g.position.set(p.x,dk,p.z);g.rotation.y=a;g.visible=false;s.g.add(g);EMG.net=g;}
+const DMGI={eng:()=>T.hover?['Motor parado','Sin empuje: no puedes mantenerte. Eyecta o planea hasta el agua.']:dmg.eng>=2?['Los dos motores parados','Planeas sin empuje. Eyecta si no llegas a una pista.']:['Un motor parado','Tienes la mitad de empuje. Puedes volar: sube despacio y vuelve.'],
+  hyd:()=>['Sin hidráulica','Mandos lentos. El tren baja solo con la extensión de emergencia (10 s).'],
+  gear:()=>gearDown?['Tren bajado de emergencia','No lo subas: queda bloqueado abajo.']:['Tren averiado: no baja',(EMG.gTry?'La extensión de emergencia ha fallado. ':'Pulsa Tren para la extensión de emergencia. ')+'Si no baja: MAYDAY y barrera en el Lincoln, o aterrizaje de panza en una base.'],
+  leak:()=>['Fuga de combustible','Pierdes combustible: vuelve ya a la base más cercana.'],
+  wing:()=>['Ala dañada','El avión tira hacia un lado: compénsalo con la palanca. Velocidad moderada.']};
+function emgVerdict(){if(doomed)return ['¡EYECTA YA!','#ff4d4d'];if(health<30||dmg.leak||dmg.eng>=(T.hover?1:2)||(dmg.gear&&!gearDown))return ['VUELVE YA · declara MAYDAY','#ff9a3c'];if(dmg.any)return ['Puedes seguir volando con cuidado','#F1BF00'];return ['Sin averías','#5ee08a'];}
+function emgPanel(){const P0=$('dmgP');if(!P0.classList.contains('hide')){P0.classList.add('hide');return;}const v=emgVerdict();let h='<b style="color:'+v[1]+'">'+v[0]+'</b><br><span style="opacity:.8">Estado del avión: '+Math.round(health)+' %</span>';
+  ['eng','hyd','gear','leak','wing'].forEach(k=>{if(dmg[k]){const [a,b]=DMGI[k]();h+='<p><b>⚠ '+a+'</b><br>'+b+'</p>';}});h+='<p style="opacity:.7">Toca para cerrar</p>';P0.innerHTML=h;P0.classList.remove('hide');clearTimeout(P0._t);P0._t=setTimeout(()=>P0.classList.add('hide'),12000);}
+// MAYDAY: el control contesta según la avería y el sitio; en el Lincoln montan la barrera
+function emgMayday(){EMG.may=1;if(phase!=='ret'&&ship)setPhase('ret');comm.clear=true;const nog=dmg.gear&&!gearDown;
+  if(ship&&ship.kind==='lincoln'){if(nog||dmg.hyd){emgNet();EMG.barrT=15;return 'Mayday recibido, '+CS()+'. Montamos la barrera, lista en 15 segundos. Entrada directa a la pista en ángulo, alas niveladas y descenso suave. La barrera te para.';}
+    return 'Mayday recibido, '+CS()+'. Cubierta libre y prioridad. Entrada directa, cable 3.';}
+  if(ship&&ship.kind==='base')return 'Mayday recibido, '+CS()+'. Pista '+RW()+' libre y bomberos en espera.'+(nog?' Toma sin tren: alas niveladas, descenso muy suave y menos de 170 nudos.':' Autorizado a aterrizar.');
+  if(ship)return 'Mayday recibido, '+CS()+'. Autorizado a la toma inmediata.';return 'Mayday recibido, '+CS()+'. Vuelve a la base más cercana; si no puedes controlar el avión, eyecta.';}
+function emgUpd(dt){if(EMG.barrT>0){EMG.barrT-=dt;if(EMG.barrT<=0&&EMG.net){EMG.net.visible=true;EMG.barr=1;radio(ship?ship.name:'Lincoln',CS()+', barrera montada. Cubierta lista.');}}
+  const n=['eng','hyd','gear','leak','wing'].filter(k=>dmg[k]).length+(doomed?1:0);if(n!==EMG.dmgN){EMG.dmgN=n;const b=$('bDmg');b.classList.toggle('hide',!n||state!=='fly');b.textContent='⚠ Averías ('+n+')';}
+  if(state!=='fly')$('bDmg').classList.add('hide');
+  if(AUTOFLR&&state==='fly'&&warnMsl&&flareT<=0&&flares>0)dropFlares();// bengalas automáticas, como el modo AUTO del ALE-47
+  EMG.rT=(EMG.rT||0)-dt;if((state==='fly'||state==='deck')&&EMG.rT<=0){EMG.rT=.4;const b=emgBest(),l=b?b[2]:'Radio';if(l!==EMG.lbl){EMG.lbl=l;setBtn('bRad','mic',l);}}}
+// tren de emergencia: una sola vez, 10 s, sale bien más o menos la mitad de las veces
+function emgGear(){if(EMG.gTry){toast('Tren averiado: no baja. Declara MAYDAY (Radio)',2.5);return;}EMG.gTry=1;toast('Extensión de emergencia del tren (10 s)…',3);speak('Extensión de emergencia.');
+  setTimeout(()=>{if(state!=='fly')return;if(Math.random()<.55){setGear(true);EMG.gLock=1;sfx('gear');toast('Tren abajo y blocado (emergencia). No lo subas',3);speak('Tren abajo.');}else{toast('La extensión de emergencia ha fallado. MAYDAY y barrera, o panza en tierra',4);speak('Fallo de extensión de emergencia.');}EMG.dmgN=-1;},10000);}
+// radio de un toque: el mensaje que toca según la fase (se ve escrito en el botón)
+function emgBest(){const L=phrases(),f=n=>L.find(q=>q[0]===n),al=enemies.some(e=>e.alive),lbl={'Mayday, mayday, mayday':'MAYDAY','Bola':'Bola','Listo para despegar':'Pido despegue','Solicito aterrizaje':'Pido toma','Punto: ataca':'Punto: ataca','Solicito situación':'Situación','Solicito regresar':'Pido regreso','Solicito vector':'Vector','Solicito repostaje':'Repostaje','Repita':'Repita'};
+  const ord=[['Mayday, mayday, mayday',1],['Bola',1],['Listo para despegar',!comm.toClear],['Solicito aterrizaje',!comm.clear],['Punto: ataca',al&&wing2&&wing2.alive&&wing2.order!=='attack'],['Solicito situación',al&&elapsed-EMG.sitT>60],['Solicito regresar',!al],['Solicito vector',1],['Repita',1]];
+  for(const [n,c] of ord){if(!c)continue;const q=f(n);if(q)return [q[0],q[1],lbl[n]||n];}return null;}
+function sendPhrase(t,fn){radio(CS(),t+', '+CS()+'.');const who=ctlName();if(/^Solicito situaci/.test(t))EMG.sitT=elapsed;
+  if(/^Mayday/.test(t)){const r=fn();setTimeout(()=>sayReply(r,who),1200);return;}
+  if(commMode==='i'&&aiS&&!/^Punto|repostaje/i.test(t)){askAI(t).then(ok=>{if(!ok){const r=fn();if(r)radio(who,r);}});}else{let r=scriptReply(t);if(r===null)r=fn();setTimeout(()=>sayReply(r,who),1200);}}
+// botón Radio: toque corto = mensaje del botón; mantener = menú completo y micrófono
+(()=>{const el=$('bRad');let t0=0,lt=null,opened=false;const dn=e=>{e.preventDefault();t0=performance.now();opened=false;clearTimeout(lt);lt=setTimeout(()=>{opened=true;openRadio();},450);};
+  const up=e=>{e.preventDefault();clearTimeout(lt);if(opened)return;const m=$('rmenu');if(!m.classList.contains('hide')){m.classList.add('hide');stopRec();return;}const b=emgBest();if(b&&(state==='fly'||state==='deck'))sendPhrase(b[0],b[1]);else openRadio();};
+  el.addEventListener('pointerdown',dn);el.addEventListener('pointerup',up);el.addEventListener('pointercancel',()=>clearTimeout(lt));el.addEventListener('contextmenu',e=>e.preventDefault());})();
+// botón Misil: toque = lanzar; deslizar a un lado = cambiar de arma (el botón de cambio de arma sigue igual)
+function cycleWpn(dir){if(state!=='fly'||!wpn||!wpn.length)return;let n=0;do{wi=(wi+dir+wpn.length)%wpn.length;n++;}while(wpn[wi].c<=0&&n<wpn.length);const W=wpn[wi];setAction('Arma: '+W.s);lock.t=null;lock.time=0;lock.locked=false;toast(W.n+' · quedan '+W.c,1.5);}
+(()=>{const el=$('bMsl');let x0=0,y0=0;el.addEventListener('pointerdown',e=>{e.preventDefault();x0=e.clientX;y0=e.clientY;try{el.setPointerCapture(e.pointerId);}catch(_){}});
+  el.addEventListener('pointerup',e=>{e.preventDefault();const dx=e.clientX-x0,dy=e.clientY-y0;if(Math.abs(dx)>28&&Math.abs(dx)>Math.abs(dy))cycleWpn(dx>0?1:-1);else if(Math.abs(dy)>40)cycleWpn(dy>0?1:-1);else fireMissile();});})();
+$('bDmg').onclick=emgPanel;$('dmgP').onclick=()=>$('dmgP').classList.add('hide');
+(()=>{const s=$('flrSel');if(!s)return;s.value=AUTOFLR?'a':'m';s.onchange=()=>{AUTOFLR=s.value==='a';try{localStorage.setItem('flrA',AUTOFLR?'1':'0');}catch(e){}};})();
 addEventListener('keydown',e=>{const k=e.key.toLowerCase();keys[k]=true;if(k===' '){firing=true;e.preventDefault();}if(k==='tab'||k==='f1')e.preventDefault();if(e.repeat)return;
   if(k==='f1'){$('keysH').classList.toggle('hide');return;}const flyK=state==='fly'||state==='deck';
   if(flyK&&/^[0-9]$/.test(k)){throttle=k==='0'?1:(+k-1)/8*.85;toast(k==='0'?'Postcombustión':'Potencia '+Math.round(throttle*100)+' %',.8);}
@@ -3083,7 +3134,7 @@ function gEffects(dt){const lim=gLim(),neg=gNeg(),tol=gTol();GX.warnT-=dt;
   if(bg!==GX.lastB){GX.lastB=bg;gl.style.background=bg;}
   const gs=red?0:Math.min(1,k*1.5),f=(HIQ?'':'saturate(1.15) contrast(1.08) ')+(gs>.03?'grayscale('+gs.toFixed(2)+') brightness('+(1-.35*k).toFixed(2)+')':'');
   if(f!==GX.lastF){GX.lastF=f;renderer.domElement.style.filter=f.trim();}}
-function resetDmg(){Object.assign(dmg,{eng:0,hyd:0,gear:0,leak:0,wing:0,any:0});glocL=0;glocT=0;doomed=0;GX.ov=0;GX.warnT=0;}
+function resetDmg(){try{emgReset();}catch(e){}Object.assign(dmg,{eng:0,hyd:0,gear:0,leak:0,wing:0,any:0});glocL=0;glocT=0;doomed=0;GX.ov=0;GX.warnT=0;}
 const DMGTXT={hyd:'Fallo hidráulico',gear:'Tren dañado',leak:'Fuga de combustible',wing:'Ala dañada'};
 function engF(){return T.hover?(dmg.eng?0:1):(2-dmg.eng)/2;}
 function damageSys(k,msg){if(k==='eng'){if(dmg.eng>=(T.hover?1:2))return;dmg.eng++;}else{if(dmg[k])return;dmg[k]=k==='wing'?(Math.random()<.5?1:-1):1;}dmg.any=1;
@@ -4027,7 +4078,7 @@ let foldMan=null,mslLbl='';
 function ergoUpd(){const fl=state==='fly'||state==='deck',auto=state==='fly'&&!gearDown&&phase!=='ret'&&!(T&&T.hover)&&!!(T&&(T.gun>0||T.missiles>0)),on=fl&&(foldMan===null?auto:foldMan);if(document.body.classList.contains('cmb')!==on)document.body.classList.toggle('cmb',on);
   const W=wpn&&wpn[wi],l=W?W.s+' · '+W.c:'Misil';if(l!==mslLbl&&fl){mslLbl=l;setBtn('bMsl','msl',l);}}
 $('bFold').onclick=()=>{foldMan=!document.body.classList.contains('cmb');toast(foldMan?'Mandos de combate':'Todos los mandos',1.2);};
-function fx3(dt){ksUpd(dt);ergoUpd();vTk+=dt;if(vTk>1){vTk=0;if(vCur||VQ.length)vNext();}updCSH(dt);flGround();gpUpdate(dt);updFml();tiltUpdate();pedUpdate();updLOD();updFPS(dt);snapShadow();updDeckLife(dt);updPlaneCS(dt);updCockpit(dt);updCockpit2(dt);updTrails(dt);updWx(dt);updSea();updStores();updTrainer(dt);updMPA(dt);updTPT(dt);updFire(dt);updGE(dt);updAEW(dt);updGL(dt);if(typeof ckT!=='undefined')ckT.upd();if(typeof ckG!=='undefined')ckG.upd();}
+function fx3(dt){ksUpd(dt);ergoUpd();emgUpd(dt);vTk+=dt;if(vTk>1){vTk=0;if(vCur||VQ.length)vNext();}updCSH(dt);flGround();gpUpdate(dt);updFml();tiltUpdate();pedUpdate();updLOD();updFPS(dt);snapShadow();updDeckLife(dt);updPlaneCS(dt);updCockpit(dt);updCockpit2(dt);updTrails(dt);updWx(dt);updSea();updStores();updTrainer(dt);updMPA(dt);updTPT(dt);updFire(dt);updGE(dt);updAEW(dt);updGL(dt);if(typeof ckT!=='undefined')ckT.upd();if(typeof ckG!=='undefined')ckG.upd();}
 requestAnimationFrame(loop);
 addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();sizeHUD();});
 </script>
