@@ -146,7 +146,7 @@ body.lt #ped{right:auto;left:136px}body.lt #btns{left:auto!important;right:60px!
   body.noped #btns,body.noped #lev,body.noped #trimBox{bottom:calc(env(safe-area-inset-bottom,0px) + 16px)!important}}
 #tiltC{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 8px);font:inherit;font-weight:800;font-size:12px;color:#fff;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.5);border-radius:14px;padding:4px 10px;z-index:4}
 /* Fase 10 · 2: ergonomía */
-body.cmb #lev,body.cmb #trimBox{display:none!important}
+body.cmb #trimBox{display:none!important}body.cmb #lev{right:226px!important}body.cmb.lt #lev{left:226px!important;right:auto!important}@media (orientation:landscape) and (max-height:480px){body.cmb #lev{right:200px!important}body.cmb.lt #lev{left:200px!important}}
 body.cmb #btns{grid-template-columns:repeat(2,64px)!important;gap:10px!important;right:78px!important;left:auto!important;bottom:calc(env(safe-area-inset-bottom,0px) + 78px)!important}
 body.cmb.lt #btns{left:78px!important;right:auto!important}
 body.cmb #btns .rb{width:64px!important;height:64px!important}
@@ -1265,10 +1265,13 @@ function fireLbl(){return (fireM.water/1000).toFixed(1).replace('.',',')+' t';}
 function fireAct(){if(!fireM||state!=='fly'||phase!=='fire')return false;if(fireM.water<50){toast(fireM.amph?'Depósito vacío: carga agua en el mar':'Depósito vacío',1.8);return true;}if(fireM.drop>0)return true;
   const L=fireM.amph?fireM.water:Math.min(fireM.water,fireM.cap/2);fireM.drop=1.6;fireM.dropL=L;fireM.nDrops++;radio(CS(),'¡Descarga!',false);return true;}
 // contacto con el agua de los anfibios: el casco roza el mar y carga
-function fireWater(p,dt){if(!opt.fire||!T.amph||!fireM)return false;if(heightAt(p.x,p.z)>=0||!P.hullD)return false;if(gearDown){if(p.y<P.gearH+2.5&&!fireM.said.gw){fireM.said.gw=1;toast('¡Tren arriba para tocar el agua!',2);}return false;}if(p.y>=P.hullD+.05){if(fireM.scoop&&p.y<P.hullD+1.2&&vel.y<3&&(input.pitch||0)<.35&&fireM.water<fireM.cap){p.y=P.hullD+.04;if(vel.y>0)vel.y=0;}else{fireM.scoop=false;return true;}}
+const _wq=new THREE.Quaternion(),_we=new THREE.Euler();
+function fireWater(p,dt){if(!opt.fire||!T.amph||!fireM)return false;if(heightAt(p.x,p.z)>=0||!P.hullD)return false;if(gearDown){if(p.y<P.gearH+2.5&&!fireM.said.gw){fireM.said.gw=1;toast('¡Tren arriba para tocar el agua!',2);}return false;}if(p.y>=P.hullD+.05){if((fireM.scoop||(fireM.onW&&speed*1.944<60))&&p.y<P.hullD+1.2&&vel.y<3&&(input.pitch||0)<.35&&(fireM.water<fireM.cap||speed*1.944<60)){p.y=P.hullD+.04;if(vel.y>0)vel.y=0;}else{fireM.scoop=false;fireM.onW=0;return true;}}
   const up=V().set(0,1,0).applyQuaternion(plane.quaternion),kt=speed*1.944;
-  if(up.y<.9||vel.y<-4.5||kt>110){die('Has tocado el agua demasiado fuerte.');return true;}
-  p.y=P.hullD+.05;if(vel.y<0)vel.y=0;speed=Math.max(0,speed-dt*2.2);
+  if(fireM.onW?up.y<.7:(up.y<.9||vel.y<-4.5||kt>110)){die('Has tocado el agua demasiado fuerte.');return true;}
+  p.y=P.hullD+.05;if(vel.y<0)vel.y=0;speed=Math.max(0,speed-dt*(kt<15?.8:2.2));fireM.onW=1;
+  {/* FIX: el casco flota: parado o despacio no se hunde; se nivela sobre el agua, se gobierna con los pedales y se puede volver a acelerar y despegar */const f=fwdOf(plane.quaternion),h=Math.atan2(-f.x,-f.z),pc=Math.asin(clamp(f.y,-1,1)),pt=kt<55?2*D2R:clamp(pc,-2*D2R,12*D2R);_wq.setFromEuler(_we.set(pt,h,0,'YXZ'));plane.quaternion.slerp(_wq,Math.min(1,dt*(kt<55?3:2)));
+   if(kt<55){const pd=keys['q']||keys['e']||Math.abs(KS.y)>.02?KS.y:rud;plane.rotateY(-clamp(pd,-1,1)*Math.min(speed/8,.4)*dt);const fh=fwdOf(plane.quaternion).setY(0).normalize();vel.copy(fh).multiplyScalar(speed);}}
   if(kt<60){if(!fireM.said.slow){fireM.said.slow=1;toast('Demasiado lento: potencia y despega del agua (más de 65 kt)',2.5);}}
   else if(fireM.water<fireM.cap){if(!fireM.scoop){fireM.scoop=true;fireM.nScoops++;toast('Cargando agua…',1.2);}fireM.water=Math.min(fireM.cap,fireM.water+dt*510);setAction('Soltar '+fireLbl());
     if(fireM.water>=fireM.cap&&!fireM.said['full'+fireM.nScoops]){fireM.said['full'+fireM.nScoops]=1;radio(CS(),'Depósitos llenos. Potencia y arriba.',false);}}
@@ -2658,7 +2661,7 @@ function deckUpdate(dt){const s=ship,d=deck,th=engStep(dt);
   else if(d.sub==='roll')d.rs=Math.max(0,d.rs+(thrustAcc(th)*Math.cos(T.hover?noz*D2R:0)-(th<.15?brkDec(d.rs):2)-(abrk?3:0)-(deck.belly?12:0))*dt);
   else if(d.sub==='trap')d.rs=Math.max(0,d.rs-d.dec*dt);
   else d.rs=0;
-  if(d.sub==='roll'&&d.rs>1){const kr=keys['a']||keys['arrowleft']?-1:keys['d']||keys['arrowright']?1:0;d.lh-=(input.roll+rud+kr)*.25*dt*Math.min(d.rs/20,1);if(s.kind==='base'){const xw=WIND.x*Math.cos(d.lh)-WIND.z*Math.sin(d.lh);d.lh+=xw*.006*dt*Math.min(d.rs/15,1);if(deck.tire)d.lh+=deck.tire*.05*dt*Math.min(d.rs/20,1);}}
+  if(d.sub==='roll'&&d.rs>.2){const kr=keys['a']||keys['arrowleft']?-1:keys['d']||keys['arrowright']?1:0,pd=keys['q']||keys['e']||Math.abs(KS.y)>.02?KS.y:rud;d.lh-=(input.roll+pd+kr)*.25*dt*Math.min(d.rs/20,1);if(!T.glider)d.lh-=clamp(pd,-1,1)*Math.min(d.rs/12,.45)*clamp(1-(d.rs-25)/30,0,1)*dt;/* FIX: dirección de la rueda de morro con los pedales: gira en rodaje y se pierde a alta velocidad */if(s.kind==='base'){const xw=WIND.x*Math.cos(d.lh)-WIND.z*Math.sin(d.lh);d.lh+=xw*.006*dt*Math.min(d.rs/15,1);if(deck.tire)d.lh+=deck.tire*.05*dt*Math.min(d.rs/20,1);}}
   d.lp.x+=-Math.sin(d.lh)*d.rs*dt;d.lp.z+=-Math.cos(d.lh)*d.rs*dt;d.lp.y=s.surf(d.lp.z)+(deck.belly?.9:P.gearH);if(deck.belly&&d.rs>3&&Math.random()<.5)emit(fire,plane.position.clone().add(V().set(0,-1,0)),V().set((Math.random()-.5)*6,2,(Math.random()-.5)*6),.4,.3,.8,0xffd080,1);
   d.ramp=(s.kind==='jc1'&&d.lp.z<-85)?12*D2R:0;
   plane.position.copy(d.lp).applyMatrix4(s.g.matrixWorld);
@@ -3549,7 +3552,7 @@ const ck6=(()=>{const g=cockpitG,ad=(o,par)=>{o.frustumCulled=false;o.renderOrde
 const _cpN=[[0,-1,0],[0,0,-1],[0,0,1],[-1,0,0],[1,0,0]];
 function ckClip(on){const L=P.clipPl;if(!L)return;const c=P.cock;if(!on){L.forEach(q=>q.set(Y,1e6));return;}plane.updateMatrixWorld();
   const K=P.clip||[.32,1.6,1.3,.85],pts=[[0,c.y-K[0],0],[0,0,c.z-K[1]],[0,0,c.z+K[2]],[-K[3],0,0],[K[3],0,0]];L.forEach((q,i)=>{const n=_cpN[i],pt=pts[i];q.setFromNormalAndCoplanarPoint(V().set(n[0],n[1],n[2]),V().set(pt[0],pt[1],pt[2]));q.applyMatrix4(plane.matrixWorld);});}
-function ckHide(on){if(!P||!P.g)return;ckClip(on);if(P.ckList)P.ckList.forEach(o=>o.visible=!on);if(!P.glW)for(let i=1;i<=2;i++){const c=P.g.children[i];if(c)c.visible=!on;}}
+function ckHide(on){if(!P||!P.g)return;ckClip(on);if(P.clipPl)P.g.traverse(o=>{const m=o.isMesh&&o.material;if(!m||Array.isArray(m)||m.clippingPlanes!==P.clipPl||m.transparent)return;if(m.userData.s0==null)m.userData.s0=m.side;if(m.userData.s0!==THREE.FrontSide)return;const sd=on?THREE.DoubleSide:THREE.FrontSide;if(m.side!==sd){m.side=sd;m.needsUpdate=true;}});/* FIX: en cabina se ven las caras interiores del fuselaje: el suelo ya no es transparente */if(P.ckList)P.ckList.forEach(o=>o.visible=!on);if(!P.glW)for(let i=1;i<=2;i++){const c=P.g.children[i];if(c)c.visible=!on;}}
 /* ---------- Cabinas 3D de FlightGear (GPL): sustituyen a la cabina por código cuando están cargadas. Las pantallas siguen siendo las del juego, en vivo ---------- */
 const CKM={c101:{u:'models/c101_ck.glb',pan:[[-3.985,.23,.30],[-3.985,.23,-.30],[-3.985,-.05,.30],[-3.985,-.05,-.30]]},pc21:{u:'models/pc21_ck.glb',scr:[[[-1.786,1.1,0.29],[-1.786,1.1,0.13],[-1.786,0.94,0.29],[-1.786,0.94,0.13]],[[-1.786,1.08,0.08],[-1.786,1.08,-0.08],[-1.786,0.92,0.08],[-1.786,0.92,-0.08]],[[-1.786,1.1,-0.13],[-1.786,1.1,-0.29],[-1.786,0.94,-0.13],[-1.786,0.94,-0.29]]]},ef:{u:'models/ef_ck.glb',scr:[[[3.6458,.8057,.262],[3.6458,.8057,.118],[3.6802,.6648,.262],[3.6802,.6648,.118]],[[3.6567,.7558,.072],[3.6567,.7558,-.072],[3.6893,.6145,.072],[3.6893,.6145,-.072]],[[3.6458,.8057,-.118],[3.6458,.8057,-.262],[3.6802,.6648,-.118],[3.6802,.6648,-.262]]]}};
 let ckFG=null;
@@ -3801,7 +3804,7 @@ function drawHUD(){const UI=1.2,c=hx,W=innerWidth/UI,H=innerHeight/UI;c.setTrans
   c.font='600 13px '+FONT;c.textAlign='center';
   for(let dg=Math.ceil((hdg-35)/5)*5;dg<=hdg+35;dg+=5){const x=cx+(dg-hdg)*3.2,m=((dg%360)+360)%360;c.beginPath();c.moveTo(x,ty);c.lineTo(x,ty+(m%10?5:9));c.stroke();if(m%10===0)c.fillText(String(m/10).padStart(2,'0'),x,ty-9);}
   c.beginPath();c.moveTo(cx,ty+12);c.lineTo(cx-5,ty+19);c.lineTo(cx+5,ty+19);c.closePath();c.fill();c.fillText(String(Math.round(hdg)%360).padStart(3,'0'),cx,ty+30);
-  const LT=document.body.classList.contains('lt'),PT=H>=500,CM=document.body.classList.contains('cmb'),L0=PT?10:(LT?(CM?188:112):12),R0=PT?10:(LT?12:(CM?188:112)),my=H*(PT?.2:.3),big='800 20px '+FONT,sm='600 14px '+FONT,RX=y=>{const b=uiRect('trimBox');return b&&b.l>W/2&&y>b.t-8&&y<b.b+8?Math.min(W-R0,b.l-6):W-R0;};
+  const LT=document.body.classList.contains('lt'),PT=H>=500,CM=document.body.classList.contains('cmb'),L0=PT?10:(LT?(CM?188:112):12),R0=PT?10:(LT?12:(CM?188:112)),my=H*(PT?.2:.3),big='800 20px '+FONT,sm='600 14px '+FONT,RX=y=>{let x=W-R0;['trimBox','lev'].forEach(id=>{const b=uiRect(id);if(b&&b.l>W/2&&y>b.t-8&&y<b.b+8)x=Math.min(x,b.l-6);});return x;};
   
   c.font=big;c.strokeRect(L0,my-15,66,30);c.textAlign='right';c.fillText(kias(),L0+60,my);
   if(gearDown&&state==='fly'&&!hover){const df=kias()-T.app;c.textAlign='left';c.font='800 22px '+FONT;c.fillStyle=Math.abs(df)<=8?GR:'#F1BF00';c.fillText(df>8?'▼':df<-8?'▲':'●',L0+72,my);c.font=sm;c.fillText('APROX '+T.app,L0+2,my-46);c.fillStyle=GR;c.font=big;}
@@ -3997,7 +4000,7 @@ addEventListener('mousemove',e=>{if(CTL!=='m'||sid!==null||!(state==='fly'||stat
 addEventListener('contextmenu',e=>{if(CTL==='m'&&(state==='fly'||state==='deck'))e.preventDefault();});
 addEventListener('mouseup',e=>{if(CTL==='m'&&e.button===0)firing=false;});
 let foldMan=null,mslLbl='';
-function ergoUpd(){const fl=state==='fly'||state==='deck',auto=state==='fly'&&!gearDown&&phase!=='ret'&&!(T&&T.hover),on=fl&&(foldMan===null?auto:foldMan);if(document.body.classList.contains('cmb')!==on)document.body.classList.toggle('cmb',on);
+function ergoUpd(){const fl=state==='fly'||state==='deck',auto=state==='fly'&&!gearDown&&phase!=='ret'&&!(T&&T.hover)&&!!(T&&(T.gun>0||T.missiles>0)),on=fl&&(foldMan===null?auto:foldMan);if(document.body.classList.contains('cmb')!==on)document.body.classList.toggle('cmb',on);
   const W=wpn&&wpn[wi],l=W?W.s+' · '+W.c:'Misil';if(l!==mslLbl&&fl){mslLbl=l;setBtn('bMsl','msl',l);}}
 $('bFold').onclick=()=>{foldMan=!document.body.classList.contains('cmb');toast(foldMan?'Mandos de combate':'Todos los mandos',1.2);};
 function fx3(dt){ksUpd(dt);ergoUpd();vTk+=dt;if(vTk>1){vTk=0;if(vCur||VQ.length)vNext();}updCSH(dt);flGround();gpUpdate(dt);updFml();tiltUpdate();pedUpdate();updLOD();updFPS(dt);snapShadow();updDeckLife(dt);updPlaneCS(dt);updCockpit(dt);updCockpit2(dt);updTrails(dt);updWx(dt);updSea();updStores();updTrainer(dt);updMPA(dt);updTPT(dt);updFire(dt);updGE(dt);updAEW(dt);updGL(dt);if(typeof ckT!=='undefined')ckT.upd();if(typeof ckG!=='undefined')ckG.upd();}
